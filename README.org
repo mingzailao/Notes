@@ -28,7 +28,7 @@
 * TODO [[file:Deep%20Tracking%20Seeing%20Beyond%20Seeing%20Using%20Recurrent%20Neural/Deep%20Tracking%20Seeing%20Beyond%20Seeing%20Using%20Recurrent%20Neural.org][Deep Tracking Seeing Beyond Seeing Using Recurrent Neural]]
 * DONE [[file:Batch%20Normalization/Batch%20Normalization.org][Batch Normalization]]
   CLOSED: [2016-10-27 Thu 22:07]
-* TODO [[file:Tutorial:%20Deep%20Reinforcement%20Learning/Tutorial:%20Deep%20Reinforcement%20Learning.org][Tutorial/ Deep Reinforcement Learning]]
+* TODO [[file:Tutorial:%20Deep%20Reinforcement%20Learning/Tutorial:%20Deep%20Reinforcement%20Learning.org][Deep Reinforcement Learning]]
 * TODO [[file:Auto-Encoding%20Variational%20Bayes/Auto-Encoding%20Variational%20Bayes.org][Auto-Encoding Variational Bayes]]
 * TODO [[file:Notes%20for%20CNN/Notes%20for%20CNN.org][Notes for CNN]]
 * DONE [[file:Generative%20Adversarial%20Nets/Generative%20Adversarial%20Nets.org][Generative Adversarial Nets]]
