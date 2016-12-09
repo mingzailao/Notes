@@ -42,6 +42,7 @@
   CLOSED: [2016-11-08 Tue 16:02]
 * TODO [[file:Semi-supervised%20learning%20with%20ladder%20networks/Semi-supervised%20learning%20with%20ladder%20networks.org][Semi-supervised learning with ladder networks]] 
 * TODO [[file:An%20Architecture%20for%20Deep,%20Hierarchical%20Generative%20Models/An%20Architecture%20for%20Deep,%20Hierarchical%20Generative%20Models.org][An Architecture for Deep, Hierarchical Generative Models]]
+
 * Summary(<2016-10-27 Thu>)
 ** 关于现在做的Tracking的一些问题：
 1. 首先是关于将RNN模型放在Benchmark上的问题，由于之前考虑欠佳，如果需要将RNN用在一般的数据集上有一个很大的问题就是没有足够多的样本来做训练，这是一个最大的问题。
