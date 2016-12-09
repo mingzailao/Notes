@@ -1,0 +1,128 @@
+#+TITLE:     Notes
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      <2016-10-31 Mon>
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=STZhongsong, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+
+* DONE [[./First Step Toward Model-free, Anonymous Object Tracking with Recurrent Neural Networks/First Step Toward Model-free, Anonymous Object Tracking with Recurrent Neural Networks.org][First Step Toward Model-free, Anonymous Object Tracking with Recurrent Neural Networks]]
+  CLOSED: [2016-10-27 Thu 21:38]
+** DONE Marks
+   CLOSED: [2016-10-27 Thu 21:38]
+** DONE Code
+   CLOSED: [2016-10-27 Thu 21:38]
+
+* DONE [[./Transferring Rich Feature Hierarchies for Robust Visual Tracking/Transferring Rich Feature Hierarchies for Robust Visual Tracking.org][Transferring Rich Feature Hierarchies for Robust Visual Tracking]]
+  CLOSED: [2016-10-27 Thu 21:38]
+** DONE Marks
+   CLOSED: [2016-10-27 Thu 21:38]
+** DONE Code
+   CLOSED: [2016-10-27 Thu 21:38]
+
+* DONE [[./Video Tracking Using Learned Hierarchical Features/Video Tracking Using Learned Hierarchical Features.org][Video Tracking Using Learned Hierarchical Features]]
+  CLOSED: [2016-10-27 Thu 21:38]
+** DONE Marks
+   CLOSED: [2016-10-27 Thu 21:38]
+** DONE Code
+   CLOSED: [2016-10-27 Thu 21:38]
+
+* DONE [[./DRAW: A Recurrent Neural Network For Image Generation/DRAW: A Recurrent Neural Network For Image Generation.org][DRAW: A Recurrent Neural Network For Image Generation]]
+  CLOSED: [2016-10-27 Thu 21:37]
+** DONE Marks
+   CLOSED: [2016-10-27 Thu 21:37]
+** DONE Code
+   CLOSED: [2016-10-27 Thu 21:37]
+
+* DONE [[./RATM: Recurrent Attentive Tracking Model/RATM: Recurrent Attentive Tracking Model.org][RATM: Recurrent Attentive Tracking Model]]
+  CLOSED: [2016-10-31 Mon 14:50]
+** DONE Marks
+   CLOSED: [2016-11-08 Tue 16:00]
+** DONE Code
+   CLOSED: [2016-11-08 Tue 16:00]
+
+* DONE [[file:Learning%20a%20Deep%20Compact%20Image%20Representation%20for%20Visual%20Tracking/Learning%20a%20Deep%20Compact%20Image%20Representation%20for%20Visual%20Tracking%20Code.org][Learning a Deep Compact Image Representation for Visual Tracking]] 
+  CLOSED: [2016-10-31 Mon 14:51]
+** DONE Marks
+   CLOSED: [2016-10-27 Thu 21:37]
+** DONE [[file:Learning%20a%20Deep%20Compact%20Image%20Representation%20for%20Visual%20Tracking/Learning%20a%20Deep%20Compact%20Image%20Representation%20for%20Visual%20Tracking%20Code.org][Code]]
+   CLOSED: [2016-11-08 Tue 16:00]
+* DONE [[file:Visualizing%20and%20Understanding%20Recurrent%20Networks/Visualizing%20and%20Understanding%20Recurrent%20Networks.org][Visualizing and Understanding Recurrent Neural Networks]]
+  CLOSED: [2016-10-27 Thu 21:39]
+** DONE Marks
+   CLOSED: [2016-10-27 Thu 21:39]
+** DONE Code
+   CLOSED: [2016-10-27 Thu 21:39]
+* TODO [[file:Deep%20Tracking:%20Seeing%20Beyond%20Seeing%20Using%20Recurrent%20Neural%20Networks/Deep%20Tracking%20Seeing%20Beyond%20Seeing%20Using%20Recurrent%20Neural.org][Deep Tracking Seeing Beyond Seeing Using Recurrent Neural]]
+** TODO Marks
+** TODO Code
+
+* DONE [[file:Batch%20Normalization/Batch%20Normalization.org][Batch Normalization]]
+  CLOSED: [2016-10-27 Thu 22:07]
+** DONE Marks
+   CLOSED: [2016-10-27 Thu 22:07]
+** DONE Code
+   CLOSED: [2016-10-27 Thu 22:07]
+
+* TODO [[file:Tutorial:%20Deep%20Reinforcement%20Learning/Tutorial:%20Deep%20Reinforcement%20Learning.org][Tutorial/ Deep Reinforcement Learning]]
+** TODO Marks
+** TODO Code
+
+* TODO [[file:Auto-Encoding%20Variational%20Bayes/Auto-Encoding%20Variational%20Bayes.org][Auto-Encoding Variational Bayes]]
+** TODO Marks
+** TODO Code
+
+
+
+cite:NIPS2013_5192
+
+* TODO [[file:Notes%20for%20CNN/Notes%20for%20CNN.org][Notes for CNN]]
+** Marks
+** Code
+* DONE [[file:Generative%20Adversarial%20Nets/Generative%20Adversarial%20Nets.org][Generative Adversarial Nets]]
+  CLOSED: [2016-11-08 Tue 16:02]
+** DONE Code
+   CLOSED: [2016-11-08 Tue 16:02]
+
+* DONE [[file:Generative%20Adversarial%20Networks%20as%20Variational%20Training%20of%20Energy%20Based%20Models/Generative%20Adversarial%20Networks%20as%20Variational%20Training%20of%20Energy%20Based%20Models.org][Generative Adversarial Networks as Variational Training of Energy Based Models]]
+  CLOSED: [2016-11-16 Wed 14:33]
+* DONE [[file:Unsupervised%20Learning%20Using%20Generative%20Adversarial%20Training%20And%20Clustering/Unsupervised%20Learning%20Using%20Generative%20Adversarial%20Training%20And%20Clustering.org][Unsupervised Learning Using Generative Adversarial Training and Clustering]]
+  CLOSED: [2016-11-16 Wed 14:42]
+* [[file:Improving%20Generative%20Adversarial%20Networks%20with%20Denoising%20Feature%20Matching/Improving%20Generative%20Adversarial%20Networks%20with%20Denoising%20Feature%20Matching.org][Improving Generative Adversarial Networks with Denoising Feature Matching]]
+* DONE [[file:Layer%20Normalization/Layer%20Normalization.org][Layer Normalization]]
+  CLOSED: [2016-11-08 Tue 16:02]
+** TODO Marks
+** TODO Code
+
+
+
+* TODO [[file:Semi-supervised%20learning%20with%20ladder%20networks/Semi-supervised%20learning%20with%20ladder%20networks.org][Semi-supervised learning with ladder networks]] 
+* TODO [[file:An%20Architecture%20for%20Deep,%20Hierarchical%20Generative%20Models/An%20Architecture%20for%20Deep,%20Hierarchical%20Generative%20Models.org][An Architecture for Deep, Hierarchical Generative Models]]
+* Summary(<2016-10-27 Thu>)
+** 关于现在做的Tracking的一些问题：
+1. 首先是关于将RNN模型放在Benchmark上的问题，由于之前考虑欠佳，如果需要将RNN用在一般的数据集上有一个很大的问题就是没有足够多的样本来做训练，这是一个最大的问题。
+2. 论文的数目还是不太够。
+3. 没有找到合适的切入点去做。
+4. 需要看一下在matlab下的Tracking代码，没有接触过的领域需要长时间的代码阅读。
+
+* Summary(<2016-11-09 Wed>)
+关于GAN,CGAN,LAPGAN,DCGAN 的关于Tracking的应用还需要进一步的加强。
+* Summary(<2016-12-07 Wed>)
+1. 现在主要关注的是对抗网络和RNN， 感觉这也是以后发展的重点，最近听了一部分的拓扑数据分析的课程，感觉还是有一些用处的，但是具体的将拓扑数据分析和现在的深度学习结合感觉没有那么多的契合点。
+2. 对抗网络我感觉还是得需要将特征的学习做分层次的处理，这也和CNN良好的效果有比较大的相同之处，另外感觉残差学习某些方面来说应该只是训练方面的原因，而不是对原有的网络有特别大的改进之处。
+** 计划
+1. 对抗网络的实现可视化，首先对于mini数据集合是否可以做到比较完美的拟合效果？
+2. ALI(adversarial Learning Inference)的思想感觉是比较靠谱的，可以在这个方面下功夫。
+
+* Summary(<2016-12-09 Fri>)
+** TODAY IS TIRED
+今天感觉没有干其他的事情了，看了一整天的keras的源代码，累觉无爱。
+不过不得不说keras的源码写的还是很漂亮的，但是我不喜欢的还是对于RNN的处理感觉还是不够好。另外准备去dev 分支上看看有没有对抗网络的部分。
+
+* Problem
