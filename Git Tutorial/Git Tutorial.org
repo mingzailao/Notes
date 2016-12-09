@@ -1,0 +1,57 @@
+
+#+TITLE:     Git
+#+AUTHOR:    mingzailao
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=DFWaWaSC-W5, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+
+
+
+
+
+
+
+* Git的一般流程
+** Git的一般流程
+1. git init
+2. git add [file]
+3. git commit -m "your message"
+** git add
+- 正则表达式
+- gitignore
+** git rm 
+- 同样可以用正则表达式
+** git branch [branchname]
+create a new branch;
+- -D delete a branch;
+- -a all branch (-r ) list remote branch;
+** git check out
+from a branch checkout to another.
+** git 版本回溯(git log  +  git reset --hard )
+- git log 查看指针
+- git reset --hard 重置指针。
+** git diff 
+- 默认查看当前文件和分支文件的区别
+* Github
+** Github
+- Create a new repository on Github;
+- git remote add origin [*.git]
+- git push -u origin master(first time)
+- git push
+

@@ -1,0 +1,221 @@
+#+TITLE:     Generative Adversarial Nets
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzaialo@126.com
+#+DATE:      <2016-11-04 Fri>
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=STSong, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* Adversarial nets
+** Adversarial nets
+*** Generator
+The Generator $G$ is used to approximate the actually generate distribution.
+- Given : $z\sim P(\mathbf{z})$, $P(\mathbf{z})$ is a given prior;
+- Parameters : $\Theta_g$ 
+- Mathematic : using $G(\mathbf{z},\Theta_g)$ got $\mathbf{x}\sim p_g$
+
+** Adversarial nets
+*** Discriminator
+The discriminator $D$ is used to discriminate $x$ : 1) from empirical distribution 
+or generative distribution
+- Given : 1) $\mathbf{x}$ from real image; 2) $\mathbf{x}$ by generator $G$
+- Output : a scalar the probability of $\mathbf{x}$ from true data distribution.
+
+** Adversarial nets
+*** Loss
+\begin{equation}
+\label{eq:1}
+\min_G\max_DV(D,G)=\mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[\log D(\mathbf{x})]
++\mathbb{E}_{\mathbf{z}\sim P(\mathbf{z})}[\log (1-D(G(\mathbf{z})))]
+\end{equation}
+* Theoretical Results
+** Theoretical Results
+*** Global Optimality of $P_g=P_{data}$
+We first consider the optimal discriminator $D$ for any given generator $G$
+*** Proposition 1
+For $G$ fixed, the optimal discriminator $D$ is :
+\begin{equation}
+\label{eq:2}
+D_G^{*}(x)=\frac{P_{data}(x)}{P_{data}(x)+P_g(x)}
+\end{equation}
+** Theoretical Results
+*** Proof
+the training criterion for the discriminator $D$, given any generator $G$,
+is to maximize the quantity $V(G,D)$:
+\begin{eqnarray}
+\label{eq:3}
+V(G,D) & = &\int_{\mathbf{x}}P_{data}(\mathbf{x})\log (D(\mathbf{x}))dx+
+\int_zP_{\mathbf{z}}(\mathbf{z})\log (1-D(g(\mathbf{z})))dz\nonumber \\
+&=&\int_{\mathbf{x}}P_{data}(\mathbf{x})\log (D(\mathbf{x}))+
+P_g(\mathbf{x})\log (1-D(\mathbf{x}))dx
+\end{eqnarray}
+For $\any (a,b)\in \mathbb{R}^{2}\setminus \{0,0\}$,the function $a\log y+b\log (1-y)$
+achieves its maximum in $[0,1]$ at $\frac{a}{a+b}$.
+** Theoretical Results
+*** Notes
+The training objective for $D$ can be interpreted as maximizing the 
+log-likelihood for estimating the conditional probability $P(Y=y|\mathbf{x})$,
+where $Y$ indicates whether $\mathbf{x}$ comes from $P_{data}$ (with $y = 1$) 
+or from $P_g$ (with $y = 0$).
+** Theoretical Results
+After we got $D_g^{*}$, define:
+\begin{eqnarray}
+\label{eq:4}
+ C(G)&=& \max_DV(G,D)  \nonumber\\
+&=&\mathbb{E}_{\mathbf{x}\sim P_{data}}[\log D_G^{*}(\mathbf{x})]+
+\mathbb{E}_{\mathbf{z}\sim P_{\mathbf{z}}}[\log (1-D_G^{*}(\mathbf{z}))]\nonumber\\
+&=&\mathbb{E}_{\mathbf{x}\sim P_{data}}[\log D_G^{*}(\mathbf{x})]+
+\mathbb{E}_{\mathbf{x}\sim P_g}[\log (1-D_G^{*}(\mathbf{x}))]\nonumber\\
+&=&\mathbb{E}_{\mathbf{x}\sim P_{data}}[\log \frac{P_{data}(\mathbf{x})}{P_{data}(\mathbf{x})+P_g(\mathbf{x})}]+
+\mathbb{E}_{\mathbf{x}\sim P_g}[\log \frac{P_g(\mathbf{x})}{P_{data}(\mathbf{x})+P_g(\mathbf{x})}]\nonumber\\
+
+\end{eqnarray}
+** Theoretical Results
+*** Theorem 1
+The global minimum of the virtual training criterion 
+$C(G)$ is achieved if and only if $P_g=P_{data}$. At that point,
+$C(G)$ achieves the value $−\log 4$.
+** Theoretical Results
+*** Proof
+For $P_g=P_{data}$, $D_g^{*}=\frac{1}{2}$,it is easy to compute that $C(G)=-\log 4$
+
+we can also get:
+\begin{equation}
+\label{eq:5}
+C(G)=-\log 4+ KL(P_{data}||\frac{P_{data}+P_g}{2})+KL(P_g||\frac{P_{data}+P_g}{2})
+\end{equation}
+Use Jensen–Shannon divergence we get:
+\begin{equation}
+\label{eq:6}
+C(G)=-\log 4 + 2\cdot JSD(P_{data}||P_g)
+\end{equation}
+where Jensen–Shannon divergence is always non-negative,and zero iff they are equal.
+* Conditional Generative Adversarial Nets
+** Conditional Generative Adversarial Nets
+*** Keys
+    Generative adversarial nets can be extended to a conditional model 
+    if both the generator and discriminator are conditioned on some extra 
+    information $\mathbf{y}$(such as class labels or data from other modalities).
+** Conditional Generative Adversarial Nets 
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-08 19:05:52
+[[file:Conditional Generative Adversarial Nets/screenshot_2016-11-08_19-05-52.png]]
+* LAPGAN
+Deep Generative Image Models using a Laplacian Pyramid of Adversarial Networks cite:denton15:deep_gener_image_model_laplac
+* Deep Convolutional GANs
+** Deep Convolutional GANs 
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-08 21:43:40
+[[file:Deep Convolutional GANs/screenshot_2016-11-08_21-43-40.png]]
+
+** Deep Convolutional GANs
+*** Architecture guidelines for stable Deep Convolutional GANs
+    1. Replace any pooling layers with strided convolutions (discriminator) and fractional-strided convolutions (generator).
+    2. Use batchnorm in both the generator and the discriminator.
+    3. Remove fully connected hidden layers for deeper architectures.
+    4. Use ReLU activation in generator for all layers except for the output, which uses Tanh.
+    5. Use LeakyReLU activation in the discriminator for all layers.
+** Deep Convolutional GANs
+*** Details of Adversarial Training
+1. mini-batch size : 128
+2. All weights were initialized from a zero-centered Normal distribution with standard deviation 0.02.
+3. In the LeakyReLU, the slope of the leak was set to 0.2 in all models.
+4. Adam optimizer
+** Deep Convolutional GANs  
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-09 11:15:22
+[[file:Deep Convolutional GANs/screenshot_2016-11-09_11-15-22.png]]
+** Deep Convolutional GANs
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-09 11:16:15
+[[file:Deep Convolutional GANs/screenshot_2016-11-09_11-16-15.png]]
+** Deep Convolutional GANs
+*** Classifying CIFAR-10 Using  GANs as a Feature  Extractor
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-09 11:44:15
+[[file:Deep Convolutional GANs/screenshot_2016-11-09_11-44-15.png]]
+** Deep Convolutional GANs
+*** Classifying SVHN Using GANs as a Feature Extractor
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-09 11:45:27
+[[file:Deep Convolutional GANs/screenshot_2016-11-09_11-45-27.png]]
+
+** Deep Convolutional GANs
+*** Investigating and Visualizing the Internals of the networks
+ We do not do any kind of nearest neighbor search on the training set, Nearest 
+neighbors in pixel or feature space are trivially fooled cite:theis15
+
+** Deep Convolutional GANs
+*** Investigating and Visualizing the Internals of the networks
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-09 12:04:43
+[[file:Deep Convolutional GANs/screenshot_2016-11-09_12-04-43.png]]
+
+Interpolation between a series of 9 random points in Z show that the space
+learned has smooth transitions, with every image in the space plausibly 
+looking like a bedroom.
+** Deep Convolutional GANs
+*** Investigating and Visualizing the Internals of the networks
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-09 12:07:24
+[[file:Deep Convolutional GANs/screenshot_2016-11-09_12-07-24.png]]
+
+You see a room without a window slowly transforming into a room with a 
+giant window.
+** Deep Convolutional GANs
+*** Investigating and Visualizing the Internals of the networks
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-09 12:07:03
+[[file:Deep Convolutional GANs/screenshot_2016-11-09_12-07-03.png]]
+
+You see what appears to be a TV slowly being transformed into a window.
+
+** Deep Convolutional GANs
+*** Visualizing the Discriminator Features
+Using guided backpropagation as proposed by cite:Zeiler2014
+
+
+** Deep Convolutional GANs
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-09 12:32:46
+[[file:Deep Convolutional GANs/screenshot_2016-11-09_12-32-46.png]]
+* Generating Images With Recurrent Adversarial Networks
+** Generating Images With Recurrent Adversarial Networks
+*** Keys
+Replace the generator as the recurrent neural networks.
+** Structure
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-11-11 15:09:59
+[[file:Generating Images With Recurrent Adversarial Networks/screenshot_2016-11-11_15-09-59.png]]
+** Generating Images with Recurrent Adversarial Networks
+*** Generator
+We then compute the following for each time step $t=1\cdots T$:
+\begin{eqnarray}
+\mathbf{z}_t & \sim & p(Z)\\
+\mathbf{h}_{c,t}& =&g(\Delta C_{t-1})\\
+\mathbf{h}_{z,t}& = & tanh(W\mathbf{z}_t+b)\\
+\Delta C_t&=& f([\mathbf{h}_{z,t},\mathbf{h}_{c,t}])
+\end{eqnarray}
+\begin{equation}
+\label{eq:8}
+C=\sigma(\sum_{t=1}^T\Delta C_t)
+\end{equation}
+
+* Reference
+** Reference
+ \bibliographystyle{unsrtnat}
+
+ bibliography:~/PAPERS/BibTex/mingzailao.bib
+

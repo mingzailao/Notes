@@ -1,0 +1,62 @@
+#+TITLE:     Improving Generative Adversarial Networks with Denoising Feature Matching
+#+AUTHOR:    mingzailao
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=DFWaWaSC-W5, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+
+
+
+
+
+
+
+
+* Generative Adversarial Networks
+** Generative Adversarial Networks
+*** min-max game
+\begin{equation}
+\label{eq:1}
+arg\min_Garg\max_D\mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[\log D(\mathbf{x})]+\mathbb{E}_{\mathbf{z}\sim P_z(\mathbf{z})}[log(1-D(G(\mathbf{z})))]
+\end{equation}
+*** In Practice
+Minimizing Eq (1) with respect to the parameters of $G$ proved difficult, and elected instead to optimize an alternate objective,
+\begin{equation}
+\label{eq:2}
+arg\max_G \mathbb{E}_{\mathbf{z}\sim P_z(\mathbf{z})}[\log D(G(\mathbf{z}))]
+\end{equation}
+
+* Challenges and Limitations of GANs
+** Challenges and Limitations of GANs
+*** Inception score 
+we use Inception score cite:salimans16:improv_techn_train_gans ,which uses a
+reference Inception convolutional neural network to compute:
+\begin{equation}
+\label{eq:3}
+I(\{\mathbf{x}_1^N\})=\exp (\mathbb{E}[D_{KL}(p(y|\mathbf{x}||p(y)))])
+\end{equation}
+
+where $p(y|\mathbf{x})$ is provided by the output of the Inception network and
+$p(y)$=\int_{\mathbf{x}}p(\mathbf{x})p(y|\mathbf{x})d\mathbf{x}\approx\frac{1}{N}\sum p(y|\mathbf{x}_i)
+
+* Reference
+
+  \bibliographystyle{unsrt}
+
+  bibliography:~/PAPERS/BibTex/mingzailao.bib
+

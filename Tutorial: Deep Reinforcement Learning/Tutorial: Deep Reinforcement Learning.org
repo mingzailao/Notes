@@ -1,0 +1,49 @@
+#+TITLE:     Tutorial: Deep Reinforcement Learning
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      2016-9-11
+#+KEYWORDS:  Deep Learning, AI, Reinforcement Learning
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+
+#+BEAMER_THEME: Darmstadt
+
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+* Reinforcement Learning in a nutshell
+** Reinforcement Learning in a nutshell
+*** RL is a general-purpose framework for decision-making
+- RL is for an *agent* with the capacity to *act*
+- Each *action* influences the agent’s future *state*
+- Success is measured by a scalar *reward* signal
+- Goal: *select actions to maximise future reward*
+** Reinforcement Learning in a nutshell
+*** DL is a general-purpose framework for representation learning
+- Given an *objective*
+- Learn *representation* that is required to achieve objective
+- Directly from *raw inputs*
+- Using minimal domain knowledge
+* Deep Reinforcemnet Learning: AI = RL + DL
+** Deep Reinforcement Learning: AI = RL + DL
+*** We seek a single agent which can solve any human-level task
+- RL defines the objective
+- DL gives the mechanism
+- RL + DL = general intelligence
+* Introduction to Deep Learning
+** Deep Representations
+- A *deep representation* is a composition of many functions
+#+ATTR_LATEX: :width 7cm :float t
+[[./1.png]]
+** Deep Representations
+- Its gradient can be *backpropagated* by the chain rule
+#+ATTR_LATEX: width 7cm : float  t
+[[./2.png]]
+** 

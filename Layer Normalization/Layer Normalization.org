@@ -1,0 +1,32 @@
+#+TITLE:     Layer Normalization
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      2016-9-11
+#+KEYWORDS:  Deep Learning, Normalization
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+
+#+BEAMER_THEME: Darmstadt
+
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* Layer Normalization
+** Layer Normalization
+*** Compute the layer normalization statistics
+\begin{equation*}
+\label{eq:1}
+\begin{array}[tb]{rcl}
+\mu^l&=&\frac{1}{H}\sum_{i=1}^Ha_i^l\\
+\sigma^l&=&\sqrt{\frac{1}{H}\sum_{i=1}^H(a_i^l-\mu_l)^2}\\
+\end{array}
+\end{equation*}
+- H : the number of hidden units in a layer.

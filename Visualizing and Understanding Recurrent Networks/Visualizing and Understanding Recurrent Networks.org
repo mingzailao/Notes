@@ -1,0 +1,194 @@
+#+TITLE:     Visualizing and Understanding Recurrent Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      2016-10-11
+#+KEYWORDS:  Deep Learning, AI, Reinforcement Learning
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+
+#+BEAMER_THEME: Darmstadt
+
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* EXPERIMENTAL SETUP
+** RECURRENT NEURAL NETWORK MODELS
+*** Basic Setting
+- $h_t^0=x_t$ 
+- $\{h_t^L\}$ is used to predict an output vector $y_t$
+- all $h\in \mathbb{R}^n$
+*** Vanilla Recurrent Neural Network (RNN)
+\begin{equation*}
+h_t^l=tanh W^l 
+\left({
+\begin{array}{c}
+h_t^{l-1}\\
+h_{t-1}^l
+\end{array}
+}
+\right)
+\end{equation*}
+
+** RECURRENT NEURAL NETWORK MODELS
+*** Long Short-Term Memory (LSTM)
+\begin{equation*}
+\left({
+\begin{array}{c}
+i\\
+f\\
+o\\
+g
+\end{array}
+}\right)
+=
+\left({
+\begin{array}{c}
+sigm\\
+sigm\\
+sigm\\
+tanh
+\end{array}
+}\right)
+W^l
+\left({
+\begin{array}{c}
+h_t^{l-1}\\
+h_{t-1}^l
+\end{array}
+}\right)
+\end{equation*}
+\begin{eqnarray*}
+ c_t^l&=&f\odot c_{t-1}^{l}+i\odot g\\
+ h_t^l&=&o\odot tanh(c_t^l)
+\end{eqnarray*}
+** RECURRENT NEURAL NETWORK MODELS
+*** Gated Recurrent Unit (GRU)
+\begin{equation*}
+\left(
+{
+\begin{array}{c}
+r\\
+c
+\end{array}
+}
+\right)=
+\left(
+{
+\begin{array}{c}
+sigm\\
+sigm
+\end{array}
+}
+\right)
+W_r^l
+\left(
+{
+\begin{array}{c}
+h_t^{l-1}\\
+h_{t-1}^l
+\end{array}
+}
+\right)
+\end{equation*}
+\begin{eqnarray*}
+\label{eq:4}
+\tilde{h}_t^l & = & tanh(W_x^lh_t^{l-1}+W_g^l(r\odot h_{t-1}^l))\\
+h_t^l&=&(1-z)\odot h_{t-1}^l+z\odot \tilde{h}_t^l
+\end{eqnarray*}
+** CHARACTER-LEVEL LANGUAGE MODELING
+*** SETUP
+- Input : a sequence of characters;
+- Output : the next character for each character in the sequence;
+- Between $h_t^{L}\to y$ : Softmax Classifier;
+- Encoding : assuming a fixed vocabulary of K characters, we encode all characters with K-dimensional 1-of-K vectors(OneHot);
+- Loss : cross-entropy loss;
+** CHARACTER-LEVEL LANGUAGE MODELING
+*** OPTIMIZATION
+- Initialization : uniformly in range $[-0.08,0.08]$;
+- Batch size : 100;
+- Optimizier : RMSProp;
+- Timestep : 100; 
+- Epochs : 50; 
+- Learning rate decay : after 10 epochs with decay rate 0.95 after each additional epoch; 
+- Learning rate : $2\times 10^{-3}$
+* EXPERIMENTS
+** EXPERIMENTS DATASETS AND PROCESSING
+*** Datasets
+- War and Peace (WP);
+- Linux Kernel (LK);
+*** Split the dataset
+- 80/10/10 for WP;
+- 90/5/5 for LK;
+** COMPARING RECURRENT NETWORKS
+[[./Pic1.png]]
+** COMPARING RECURRENT NETWORKS
+*** Analysis
+- Depth of at least two is beneficial;
+- The results are mixed between the LSTM and the GRU, but both significantly outperform the RNN;
+** INTERNAL MECHANISMS OF AN LSTM
+*** Interpretable, long-range LSTM cells
+- In this experiment we verify that multiple interpretable cells do in fact exist in these networks.
+- For instance, one cell is clearly acting as a line length counter, starting with a high value and then slowly decaying with each character until the next newline.
+
+** INTERNAL MECHANISMS OF AN LSTM
+[[./1.png]]
+** INTERNAL MECHANISMS OF AN LSTM
+[[./2.png]]
+** INTERNAL MECHANISMS OF AN LSTM
+[[./3.png]]
+** INTERNAL MECHANISMS OF AN LSTM
+[[./4.png]]
+** INTERNAL MECHANISMS OF AN LSTM
+[[./5.png]]
+** INTERNAL MECHANISMS OF AN LSTM
+[[./6.png]]
+** INTERNAL MECHANISMS OF AN LSTM
+[[./7.png]]
+** INTERNAL MECHANISMS OF AN LSTM
+*** Gate activation statistics
+We were particularly interested in looking at the distributions of saturation regimes in the networks, where we define a
+gate to be left or right-saturated if its activation is less than 0.1 or more than 0.9, respectively, or unsaturated otherwise.
+We then compute the fraction of times that each LSTM gate spends left or right saturated.
+** INTERNAL MECHANISMS OF AN LSTM
+LSTM
+[[./8.png]]
+** INTERNAL MECHANISMS OF AN LSTM
+GRU
+[[./9.png]]
+** INTERNAL MECHANISMS OF AN LSTM
+*** Analysis
+- For instance, the number of often right-saturated forget gates is particularly interesting, since this corresponds to cells that remember their values for very long time periods.
+- The output gate statistics also reveal that there are no cells that get consistently revealed or blocked to the hidden state.
+** INTERNAL MECHANISMS OF AN LSTM
+*** Surprising finding(UNKNOWN)
+unlike the other two layers that contain gates with nearly binary regime of operation (frequently either left or right saturated), the activations in the first layer are much more diffuse(near the origin in our scatter plots).
+** UNDERSTANDING LONG-RANGE INTERACTIONS
+*** SETUP
+Good performance of LSTMs is frequently attributed to their ability to store long-range information.
+In this section we test this hypothesis by comparing an LSTM with baseline models that 
+can only utilize information from a fixed number of previous steps. 
+** UNDERSTANDING LONG-RANGE INTERACTIONS
+*** BASELINES(n-NN)
+A fully-connected neural network with one hidden layer and tanh nonlinearities. 
+- Input : a sparse binary vector of dimension $nK$ that concatenates the one-of-$K$ encodings of n consecutive characters.
+*** BASELINES(n-gram)
+An unpruned (n + 1)-gram language model using modified Kneser-Ney smoothing
+** UNDERSTANDING LONG-RANGE INTERACTIONS
+[[./10.png]] 
+** UNDERSTANDING LONG-RANGE INTERACTIONS
+*** Analysis
+- The n-gram and n-NN models perform nearly identically for small values of n, but for larger values the n-NN models start to overfit and the n-gram model performs better.
+- On both datasets our best recurrent network outperforms the 20-gram model (1.077 vs. 1.195 on WP and 0.84 vs.0.889 on LK).
+- The 20-gram model file has 3GB, while our largest recurrent based model is about 11MB.
+** UNDERSTANDING LONG-RANGE INTERACTIONS
+[[./11.png]]
+** UNDERSTANDING LONG-RANGE INTERACTIONS
+[[./12.png]]

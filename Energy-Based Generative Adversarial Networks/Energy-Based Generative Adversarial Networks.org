@@ -1,0 +1,115 @@
+
+
+#+TITLE:     Energy-Based Generative Adversarial Networks
+#+AUTHOR: mingzailao
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=DFWaWaSC-W5, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+
+
+* Theory
+** Theory
+*** The Loss
+\begin{eqnarray}
+\label{eq:2}
+\mathcal{L}_D(\mathbf{x},\mathbf{z}) & = & D(\mathbf{x})+[m-D(G(\mathbf{z}))]^+\\
+\mathcal{L}_G(\mathbf{z})&=&D(G(\mathbf{z}))
+\end{eqnarray}
+*** The Target
+\begin{eqnarray}
+\label{eq:3}
+V(G,D) & = & \mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[D(\mathbf{x})]+\mathbb{E}_{\mathbf{z}\sim P_z(\mathbf{z})}[ [m-D(G(z))]^+ ]\\
+U(G,D)& =  & \mathbb{E}_{\mathbf{z}\sim P_z(\mathbf{z})}[D(G(\mathbf{z}))]
+\end{eqnarray}
+** Theory
+*** Nash equilibrium
+A Nash equilibrium of the system is a pair $(G^{*},D^{*})$  that satisfies:
+\begin{eqnarray}
+\label{eq:4}
+V(G^{*},D^{*}) & \le  & V(G^{*},D)\\
+U(G^{*},D^{*})&\le & U(G,D^{*})
+\end{eqnarray}
+** Theory
+*** Theorem 1
+If $(D^{*},G^{*})$ is a Nash equilibrium of the system, then $P_G= P_{data}$ 
+almost everywhere, and $V(G^{*},D^{*}) = m$.
+** Theory
+*** Lemma 1
+Let $a,b \ge0$, $\phi(y) = ay+b[m−y]^{+}$. The minimum of $\phi$ on $[0,+\infty)$ exists and is reached in $m$ if $a < b$, and it is reached in 0 otherwise (the minimum may not be unique).
+** Theory
+*** Proof
+First we observe that:
+\begin{eqnarray}
+\label{eq:5}
+V(G^{*},D) & = & \int_{\mathbf{x}}P_{data}(\mathbf{x})D(\mathbf{x})d\mathbf{x}+\int_{\mathbf{z}}P_z(\mathbf{z})[m-D(G^{*}(z))]^+d\mathbf{z}\\
+&=&\int_{\mathbf{x}}(P_{data}(\mathbf{x})D(\mathbf{x})+P_{G^{*}}[m-D(x)]^{+})d\mathbf{x}\\
+&\ge& V(G^{*},D^{*})\\
+&=& \int_{\mathbf{x}}P_{data}(\mathbf{x})D^{*}(\mathbf{x})+P_{G^{*}}[m-D^{*}(\mathbf{x})]^{+}d\mathbf{x}
+\end{eqnarray}
+
+use Lemma 1, we get:
+
+- $D^{*}(\mathbf{x})\le m$ almost everywhere;
+** Theory
+*** Proof
+- The function $\phi$ reaches its minimum in $m$ if $a<b$ and in 0 otherwise.
+So $V(G^{*}, D)$ reaches its minimum when we replace $D^{*}(\mathbf{x})$ by these values. 
+** Theory
+*** Proof
+\begin{eqnarray}
+\label{eq:6}
+V(G^{*},D^{*}) & = & m\int_{\mathbf{x}}\mathbbm{1}_{P_{data}(\mathbf{x})< P_{G^{*}}}P_{data}(\mathbf{x})d\mathbf{x}\nonumber\\
+&&+m\int_{\mathbf{x}}\mathbbm{1}_{P_{data}(\mathbf{x})\ge P_{G^{*}}(\mathbf{x})}P_{G^{*}}(\mathbf{x})d\mathbf{x}\\
+&=&m+m\int_{\mathbf{x}}\mathbbm{1}_{P_{data}(\mathbf{x})<P_{G^{*}}(\mathbf{x})}(P_{data}(\mathbf{x})-P_{G^{*}}(\mathbf{x}))d\mathbf{x} 
+\end{eqnarray}
+
+The second term in Eq (12) is non-positive, so $V^{G*}\le m$
+** Theory
+*** Proof
+Using Eq (6), Let $P_G$ be $P_{data}$:
+\begin{eqnarray}
+\label{eq:8}
+\int_{\mathbf{x}}P_{G^{*}}(\mathbf{x})D^{*}(\mathbf{x})d\mathbf{x} & \le  & \int_{\mathbf{x}}P_{data}(\mathbf{x})D^{*}(x)d\mathbf{x}
+\end{eqnarray}
+
+\begin{eqnarray}
+\label{eq:9}
+m&=&\int_{\mathbf{x}}P_{G^{*}}D^{*}(x)d\mathbf{x}+\int_{\mathbf{x}}P_{G^{*}}[m-D^{*}(\mathbf{x})]^+d\mathbf{x}\nonumber\\
+&\le& \int_{\mathbf{x}}P_{data}(\mathbf{x})D^{*}(\mathbf{x})d\mathbf{x}+\int_{\mathbf{x}}P_{G^{*}}[m-D^{*}]^{+}d\mathbf{x}\\
+&=&V(G^{*},D^{*})
+\end{eqnarray}
+then $m\le V(G^{*},D^{*})\le m$, and when equal, $\int_{\mathbf{x}}\mathbbm{1}_{P_{data}(\mathbf{x})<P_G(\mathbf{x})}=0$, then $P_{G}=P_{data}$ almost everywhere.
+** Theory
+*** Theorem 2
+Nash equilibrium of this system exists and is characterized by 
+1. $P_{G^{*}}=P_{data}$(almost everywhere);
+2. there exists a constant $\gamma\in [0,m]$ such that $D^{*}(x)=\gamma$(almost everywhere).
+
+* Repelling Regularizer
+** Repelling Regularizer
+*** Formally
+Let $S\in \mathbb{R}^{s\times N}$ denotes a batch of sample representations taken 
+from the encoder output layer, the PT term is defined as :
+\begin{equation}
+\label{eq:10}
+f_{PT}(S)=\frac{1}{N(N-1)}\sum_i\sum_{j\ne i} (\frac{S_i^TS_j}{||S_i|||S_j||})^2
+\end{equation}
+The PT term is intended to decrease the magnitude of cosine similarity between pairwise sample representations.
+*** Notes
+The PT term is used in the generator loss but not in the discriminator loss, where a weight of 0.1 is associated with it when being added to the loss.

@@ -1,0 +1,288 @@
+#+TITLE:     Pattern Recogniton and Machine Learning(1)
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      <2016-12-04 Sun>
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* Mathematical notation
+
+** Mathematical notation
+
+1. $\mathbf{x}$ : vector(column vector)
+2. $\mathbf{x}^T$ : row vector
+3. $\mathbf{M}$ : Matrix
+4. $(\omega_{1},\omega_2,\cdots,\omega_{M})$ : row vector with $M$ elements
+5. $\mathbf{w}$ : $(\omega_1,\omega_2,\cdots,\omega_{M})^T$
+6. $\mathbf{I}_M$ : the $M\times M$ identity matrix
+7. $f[y]$ : $y(x)$ in some function( this is a functional concept)
+8. $g(x)=\mathem{O}(f(x))$ denotes that $|f(x)/g(x)|$ is bounded as $x\rightarrow     \infty$.($g(x)=3x^{2}+2$ then $g(x)=\mathem{O}(x^2)$)
+9. $\mathbb{E}_{x\sim \mathbf{x}}[f(x,y)]$ : the expection of a function $f(x,y)$     with respect to a random variable $\mathbf{x}$
+
+
+
+
+
+* An example
+
+** Polynomial Curve Fitting
+
+*** Discribe
+1) $N$ observations of $x$ : $\mathbf{X}=(x_1,\cdots,x_N)^N$;
+2) $N$ observations of $y$ : $\mathbf{Y}=(t_1,\cdots,t_N)^N$;
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-04 16:38:21
+[[file:Introduction/screenshot_2016-12-04_16-38-21.png]]
+
+** Polynomial Curve Fitting
+
+*** Goal
+
+Polynomial function Space with parameters $\mathbf{w}$:
+\begin{equation*}
+\label{eq:1}
+y(x,\mathbf{w})=\omega_0+\omega_1x+\cdots+\omega_Mx^M=\sum_{j=0}^M\omega_jx^j
+\end{equation*}
+Find a polynomial function $y(x,\mathbf{w})$ to minimize:
+\begin{equation*}
+\label{eq:2}
+E(\mathbf{w})=\frac{1}{2}\sum_{n=1}^N\{y(x_n,\mathbf{w})-t_n\}^2
+\end{equation*}
+** Polynomial Curve Fitting
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-04 17:04:49
+[[file:Introduction/screenshot_2016-12-04_17-04-49.png]]
+
+** Polynomial Curve Fitting
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-04 20:40:49
+[[file:Introduction/screenshot_2016-12-04_20-40-49.png]]
+** Polynomial Curve Fitting
+*** How to chose $M$
+    For each choice of $M$, we can then evaluate the residual value of 
+    $E(\mathbf{w}^{*})$
+    given by the equation for the training data, and we can also evaluate 
+    $E(\mathbf{w}^{*})$ for the training data, use RMS:
+    
+\begin{equation*}
+\label{eq:3}
+E_{RMS}=\sqrt{2E(\mathbf{w}^{*})/N}
+\end{equation*}
+** How to chose $M$
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-04 20:42:58
+[[file:Introduction/screenshot_2016-12-04_20-42-58.png]]
+
+
+** Regularization
+*** Mathematical Equation
+\begin{equation*}
+\label{eq:4}
+\tilde{E}(\mathbf{w})=\frac{1}{2}\sum_{n=1}^{N}\{y(x_n,\mathbf{w})-t_n\}^2+\frac{\lambda}{2}||\mathbf{w}||_2^2
+\end{equation*}
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-04 20:51:00
+[[file:Introduction/screenshot_2016-12-04_20-51-00.png]]
+
+** My Notes:
+1. The equation (4) has close form
+2. In the statistics, called "ridge regression"
+3. In neural networks, called "weight decay"
+
+** Regularization
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-04 20:55:31
+[[file:Introduction/screenshot_2016-12-04_20-55-31.png]]
+
+
+* Probability Theory(only some important concepts)
+** The Rules of Probability
+*** Rules 
+1. sum rule : $$p(X)=\sum_Y P(X,Y)$$
+2. product rule : $$P(X,Y)=P(Y|X)P(X)$$
+*** Bayes
+\begin{equation*}
+\label{eq:5}
+P(Y|X)=\frac{P(X|Y)P(Y)}{P(X)}
+\end{equation*}
+** Probability densities
+*** Definition
+If the probability of a real-valued variable x falling in the interval 
+$(x,x+\delta x)$ is given by $p(x)\delta x$ for $\delta x\rightarrow 0$
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-04 21:06:09
+[[file:Probability Theory(only some important concepts)/screenshot_2016-12-04_21-06-09.png]]
+
+** Probability densities
+*** Property
+1. $$P(x)\ge 0$$
+2. $$\int_{- \infty}^{\infty}p(x)dx=1$$
+
+** Multi-variable case
+*** Property
+1. $$p(\mathbf{x})\ge 0$$
+2. $$\int p(\mathbf{x})d\mathbf{x}=1$$
+** Sum rule and product rule
+1. $$p(x)=\int p(x,y)dy$$
+2. $$p(x,y)=p(y|x)p(x)$$
+** Expectations and covariances
+*** Expectation
+\begin{equation*}
+\label{eq:6}
+\mathbb{E}[f]=\sum_{x}p(x)f(x)
+\end{equation*}
+\begin{equation*}
+\label{eq:7}
+\mathbb{E}[f]=\int p(x)f(x)dx
+\end{equation*}
+*** Notes
+In practice, we can only get a finite number N of points drawn from the probability
+distribution or probability density, we can use :
+\begin{equation}
+\label{eq:8}
+\mathbb{E}[f]\approx\frac{1}{N}\sum_{n=1}^N f(x_n)
+\end{equation}
+** Expectations and covariances
+*** Conditional expectation
+\begin{equation*}
+\label{eq:9}
+\mathbb{E}_{x}[f(x|y)]=\sum_x p(x|y)f(x)
+\end{equation*}
+\begin{equation*}
+\label{eq:10}
+\mathbb{E}_{x}[f(x|y)]=\int_{x}p(x|y)f(x)dx
+\end{equation*}
+
+** Expectations and covariances
+*** Covariances
+
+\begin{equation*}
+\label{eq:11}
+var[f]=\mathbb{E}[f(x)^2]-\mathbb{E}[f(x)]^2
+\end{equation*}
+
+*** Notes
+In particular, we can consider the variance of the variable x itself,
+which is given by
+\begin{equation*}
+\label{eq:12}
+var[x]=\mathbb{E}[x^2]-\mathbb{E}_[x]^{2}
+\end{equation*}
+** Expectations and covariances
+*** Covariance
+\begin{equation}
+\label{eq:13}
+cov[x,y]=\mathbb{E}_{x,y}[\{x-\mathbb{E}[x]]\}\{y-\mathbb{E}[y]\}=\mathbb{E}_{x,y}[xy]-\mathbb{E}[x]\mathbb{E}[y]
+\end{equation}
+*** Covariance matrix
+\begin{equation*}
+\label{eq:14}
+cov[\mathbf{x},\mathbf{y}]=\mathbb{E}_{\mathbf{x},\mathbf{y}}[\mathbf{x}\mathbf{y}^T]-\mathbb{E}[\mathbf{x}]\mathbb{E}[\mathbf{y}^T]
+\end{equation*}
+*** Notes 
+- $cov[\mathbf{x}]=cov[\mathbf{x},\mathbf{x}]$
+*** Question
+what $cov[\mathbf{x}]=diag$ means?
+
+** The Gaussian distribution
+*** The Gaussian distribution
+\begin{equation*}
+\label{eq:15}
+\mathcal{N}(x|\mu,\sigma^2)=\frac{1}{(2\pi \sigma^2)}\exp \{\frac{1}{2\sigma^2}(x-\mu)^2\}
+\end{equation*}
+
+\begin{equation}
+\label{eq:17}
+\mathcal{N}(\mathbf{x}|\mathbf{\mu},\Sigma)=\frac{1}{(2\pi)^{D/2}}\frac{1}{|\Sigma|^{1/2}}\exp \{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu})^T\Sigma^{-1}(\mathbf{x}-\mathbf{\mu})\}
+\end{equation}
+
+** The Gaussian distribution
+*** For a dataset
+for a dataset $\mathbf{X}=(x_1,\cdots,x_N)^T$,
+\begin{equation*}
+\label{eq:18}
+p(\mathbf{X}|\mathbf{\mu},\Sigma)=\prod_{n=1}^N \mathbf{N}(x_n|\mu,\sigma^2)
+\end{equation*}
+
+*** The log-likelihood
+\begin{equation}
+\label{eq:19}
+\ln p(\mathbf{X}|\mu,\sigma^{2})=-\frac{1}{2\sigma^2}\sum_{n=1}^{N}(x_n-\mu)^2-\frac{N}{2}\ln \sigma^2-\frac{N}{2}\ln(2\pi)
+\end{equation}
+** The Gaussian distribution
+*** Maximizing with respect to $\mu$ and $\sigma^2$
+\begin{equation*}
+\label{eq:20}
+\mu_{ML}=\frac{1}{N}\sum_{n=1}^Nx_n
+\end{equation*}
+
+\begin{equation*}
+\label{eq:21}
+\sigma^2_{ML}=\frac{1}{N}\sum_{n=1}^N(x_n-\mu_{ML})^2
+\end{equation*}
+
+and 
+\begin{equation*}
+\label{eq:22}
+\mathbb{E}[\mu_{ML}]=\mu
+\end{equation*}
+\begin{equation*}
+\label{eq:23}
+\mathbb{E}[\sigma_{ML}^2]=(\frac{N-1}{N})\sigma^2
+\end{equation*}
+
+** Back to the example
+*** Rethink
+Given $x$, the corresponding value of $t$ has a Gaussian distribution with a mean 
+value $y(x,\mathbf{w})$, thus:
+\begin{equation*}
+\label{eq:16}
+p(t|x,\mathbf{w},\beta)=\mathcal{N}(t|y(x;\mathbf{w}),\beta^{-1})
+\end{equation*}
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-05 11:29:36
+
+[[file:Probability Theory(only some important concepts)/screenshot_2016-12-05_11-29-36.png]]
+
+** Back to example
+*** Rethink
+\begin{equation*}
+p(\mathbf{t}|\mathbf{X},\mathbf{w},\beta)=\prod_{n=1}^N\mathcal{N}(t_n|y(x_n,\mathbf{w}),\beta^{-1})
+\end{equation*}
+\begin{equation*}
+\label{eq:26}
+\ln p(\mathbf{t}|\mathbf{X},\mathbf{w},\beta)=-\frac{\beta}{2}\sum_{n=1}^N\{y(x_n,\mathbf{w})-t_n\}+\frac{N}{2}\ln \beta-\frac{N}{2}\ln (2\pi)
+\end{equation*}
+
+\begin{equation*}
+\label{eq:27}
+\frac{1}{\beta_{ML}}=\frac{1}{N}\sum_{n=1}^N\{y(x_n,\mathbf{w})-t_n\}^2
+\end{equation*}
+
+** More Bayes
+*** Hyperparameters
+
+\begin{equation}
+\label{eq:28}
+p(\mathbf{w}|\alpha)=\mathcal{N}(\mathbf{w}|0,\alpha^{-1}\mathbf{I})=(\frac{\alpha}{2\pi})^{(M+1)/2}\exp \{-\frac{\alpha}{2}\mathbf{w}^T\mathbf{w}\}
+\end{equation}
+*** MAP
+\begin{equation*}
+\label{eq:30}
+p(\mathbf{w}|\mathbf{X},\mathbf{t},\alpha,\beta)\propto p(\mathbf{t}|\mathbf{X},\mathbf{w},\beta)p(\mathbf{w}|\alpha)
+\end{equation*}
+
+

@@ -1,0 +1,96 @@
+
+#+TITLE:     Code : Learning a Deep Compact Representation for Visial Tracking
+
+#+AUTHOR:    mingzailao
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=DFWaWaSC-W5, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+
+
+
+
+
+
+
+
+* MatLab Code
+
+** Set the parameters
+*** Load data 
+| Name     | Type   | Means                                          |
+| dataPath | String | the dir of all the tracking benchmark datasets |
+| title    | String | which dataset we use                           |
+#+BEGIN_SRC octave
+  fullPath=[dataPath,title,'/img/'];
+  d=dir(fullPath,"*.jpg");
+  if size(d,1)==0
+    d=dir(fullPath,"*.png");
+  end
+  if size(d,1)==0
+    d=dir(fullPath,"*.bmp");
+  end
+  seq.opt=opt;
+  seq.init_rect=[p(1)-p(3)/2,p(2)-p(4)/2,p(3),p(4),p(5)];
+  for i=1:size(d,1):
+    seq.s_frames{i}=[fullPath,d(i).name];
+  end
+#+END_SRC
+
+*** run_DLT
+**** Before Tracking:
+#+BEGIN_SRC octave
+  rect=seq.init_rect;
+  p=[rect(1)+rect(3)/2,rect(2)+rect(4)/2,rect(3),rect(4),0];
+  # frame is the first frame of the sequence;
+  frame=imread(seq.s_frames{1});
+  # dealing with th RGB image
+  if size(frame,3)==3:
+    frame=double(rgb2gray(img));
+  end
+
+  #size(frame)=[288,352];opt.normalHeight=240,opt.normalWidth=320
+  #compute the scale of image resize;
+  scaleHeight=size(frame,1)/opt.normalHeight;
+  scaleWidth =size(frame,2)/opt.normalWidth;
+  p(1)=p(1)/scaleWidth;
+  p(3)=p(3)/scaleWidth;
+  p(2)=p(2)/scaleHeight;
+  p(4)=p(4)/scaleHeight;
+
+  # resize the image;
+  frame=imresize()
+  frame=double(frame)/255;
+
+  #opt.tmpsize=[32,32];
+  paramOld=[p(1),p(2),p(3)/opt.tmpsize(2),p(5)
+            ,p(4)/p(3)/(opt.tmpsize(1)/opt.tmpsize(2)),0];
+  param0=affparam2mat(paramOld);
+
+  if ~exist('opt','var')
+    opt=[];
+  end
+  if ~isfield(opt,'mniopt')
+    opt.mniopt=optimset;
+    opt.minopt.MaxIter=25;
+    opt.minopt.Display='off';
+  end
+  reportRes=[]
+  tmpl.mean=warping(frame,param0,opt.tmplsize);
+
+#+END_SRC

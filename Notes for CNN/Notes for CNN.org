@@ -1,0 +1,37 @@
+
+#+TITLE:     CNN
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      <2016-11-20 Sun>
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=STZhongsong, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* Introduction
+** Introduction
+*** Class
+    CNN[fn:1] is invented by Yan Lecun in 1998,
+* Footnotes
+
+[fn:1] In 1998, Yan Lecun first introduced this special neural network in the paper
+  
+* Reference
+
+  \bibliographystyle{unsrtnat}
+
+  bibliography:~/PAPERS/BibTex/mingzailao.bib

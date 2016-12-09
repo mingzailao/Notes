@@ -1,0 +1,68 @@
+#+TITLE:     Learning a Deep Compact Image Representation for Visual Tracking
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      2016-9-11
+#+KEYWORDS:  RNN, CV, 
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+
+#+BEAMER_THEME: Darmstadt
+
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* Training
+** Offline Training with Auxiliary Data
+*** Dataset
+    Tiny Images dataset : 80 million tiny images each of size $32\times 32$
+- randomly sample 1 million images for offline training
+** Offline Training with Auxiliary Data
+*** Learning Generic Image Features with a Stacked Denoising Autoencoder
+[[./1.png]]
+** Offline Training with Auxiliary Data
+*** Loss for a DAE
+\begin{equation}
+\mathcal{L}=\sum_{i=1}^k||x_i-\hat{x}_i||_2^2+\lambda(||W||_F^2+||W'||_F^2)
+\end{equation}
+*** Sparsity(use Cross-Entropy)
+- $\rho_j$ : the target sparsity level of the j-th unit;
+- $\hat{\rho}_j$ : average empirical activation of the j-th unit;
+\begin{equation}
+H(\rho||\hat{\rho})=-sum_{j=1}^m[\rho_j\log(\hat{\rho}_j)+(1-\rho_j)\log(1-\hat{\rho}_j)]
+\end{equation}
+** Online Tracking Process
+*** Structure
+1. A sigmoid classification layer is then added to the encoder part of the SDAE obtained from offline training.
+2. When a new video frame arrives, we first draw particles according to the particle filter approach.
+3. The confidence $p_i$ of each particle is then determined by making a simple forward pass through the network.
+** Online Tracking Process
+*** Threshold(tradeoff)
+If the maximum confidence of all particles in a frame is below a predefined threshold $\tau$,
+it may indicate significant appearance change of the object being tracked. To address this issue, the whole network can be tuned again in case this happens.
+
+* Experiments
+** DLT Implementation Details
+*** Gradient based method
+- momentum : 0.9
+*** SDAE(offline)
+- Noise type : Gaussian noise with a variance of 0.0004
+- $\lambda$ : 0.0001, $\rho_i$ : 0.05
+- batch size : 100
+*** SDAE(online)
+- $\lambda$ : 0.002(to avoid overfitting)
+- batch size :10
+- $\tau$ : 0.9
+- number of particles : 1000
+
+
+
+
+

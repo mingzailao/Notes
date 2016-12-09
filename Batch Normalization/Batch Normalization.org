@@ -1,0 +1,139 @@
+
+#+TITLE:     Batch Normalization
+#+AUTHOR: mingzailao
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=DFWaWaSC-W5, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+
+* Introduction
+** SGD Introduction
+*** SGD optimize function
+\begin{equation}
+\label{eq:1}
+\Theta=arg\min_{\Theta}\frac{1}{N}\sum_{i=1}^N\mathnormal{l}(x_i,\Theta)
+\end{equation}
+- $x_{1...N}$ : the training set
+- $\mathnormal{l}(\cdot)$ : loss function
+- $\Theta$ : the parameters.
+with SGD, the training proceeds in steps,and at each step we consider a minibatch
+$x_{1...m}$ of size $m$.
+
+
+
+
+** SGD workflow
+*** How SGD works
+The mini-batch is used to approximate the gradient of the loss function with respect
+to the parameters, by computing
+\begin{equation}
+\label{eq:2}
+\frac{1}{m}\sum_{i=1}^m\frac{\partial \mathnormal{l}(x_i,\Theta)}{\partial \theta}
+\end{equation}
+** Fixed distribution of inputs
+*** Positive consequences
+Consider a layer with a sigmoid activation function 
+$$z=g(Wu+b)$$
+where 
+$$g(x)=\frac{1}{1+exp(-x)}$$
+As $|x|$ increases, $g'(x)$ tends to zero.
+** Fixed distribution of inputs
+*** Positive cinsequences
+This means that for all dimensions of $x=Wu+b$ except those with small absolute values, the gradient flowing down to u will vanish and the model will train slowly. 
+If, however, we could ensure that the distribution of nonlinearity inputs remains more stable as the network trains, then the optimizer would be less likely to get stuck in the saturated regime, and the training would accelerate.
+
+* Towards Reducing Internal Covariate Shift
+** Internal Covariate Shift
+*** Definition
+The change in the distribution of network activations due to the change in network parameters during training. 
+*** The way to reducing the Internal Convariate Shift
+By fixing the distribution of the layer inputs x as the training progresses, we expect to improve the training speed.
+*** Example 
+Whiting 
+* Normalization via Mini-Batch Statistics
+** Normalization via Mini-Batch Statistics
+*** From $x$ to $\hat{x}$
+For a layer with $d$-dimensional input $x=(x^{(1)},x^{(2)},\cdots,x^{(d)})$,we will normalize each dimension
+\begin{equation}
+\label{eq:6}
+\hat{x}^{(k)}=\frac{x^{(k)}-E[x^{(k)}]}{\sqrt{Var[x^{(k)}]}}
+\end{equation}
+*** Notes
+Simply normalizing each input of a layer may change what the layer can represent.
+** Normalization via Mini-Batch Statistics
+*** From $\hat{x}$ to $y$
+To address the problem above, we make sure that the transformation inserted in the network can represent the identity transform.
+\begin{equation}
+\label{eq:7}
+y^{(k)}=\gamma^{(k)}\hat{x}^{(k)}+\beta^{(k)}
+\end{equation}
+- $\gamma^{(k)}=\sqrt{Var[x^{(k)}]}$
+- $\beta^{(k)}=E[x^{(k)}]$
+** Normalization via Mini-Batch Statistics
+*** Algorithm
+- Input :Values of $x$ over a mini-batch: $\mathcal{B}=\{x_{1..m}\}$; Parameters to be learned: $\gamma,\beta$
+- Output :$\{y_i=BN_{\gamma,\beta}(x_i)\}$
+
+\begin{enumerate}
+\item $\mu_{\mathcal{B}}\leftarrow\frac{1}{m}\sum_{i=1}^mx_i$ 
+\item $\sigma_{\mathcal{B}}^2\leftarrow\frac{1}{m}\sum_{i=1}^m(x_i-\mu_{\mathcal{B}})^2$
+\item $\hat{x}_i\leftarrow\frac{x_i-\mu_{\mathcal{B}}}{\sqrt{\sigma_{\mathcal{B}}^2+\epsilon}}$
+\item $y_i\leftarrow\gamma \hat{x}_i+\beta\equiv BN_{\gamma,\beta}(x_i)$
+\end{enumerate}
+
+The BN transform can be added to a network to manipulate any activation.
+** Normalization via Mini-Batch Statistics
+*** BP
+\begin{equation*}
+\begin{array}{rcl}
+\frac{\partial\mathnormal{l}}{\partial \hat{x}_{i}}&=&\frac{\partial \mathnormal{l}}{\partial y_{i}}\cdot \gamma\\
+\frac{\partial \mathnormal{l}}{\partial \sigma_{\mathcal{B}}^2}&=&\sum_{i=1}^m\frac{\partial \mathnormal{l} }{\partial \hat{x}_i}\cdot (x_i-\mu_{\mathcal{B}})\cdot(-\frac{1}{2})(\sigma_{\mathcal{B}}^2+\epsilon)^{-3/2}\\
+\frac{\partial \mathnormal{l}}{\partial \mu_{\mathcal{B}}}&=&\sum_{i=1}^m\frac{\partial\mathnormal{l}}{\partial \hat{x}_i}\frac{-1}{\sqrt{\sigma_{\mathcal{B}}^2+\epsilon}}+\frac{\partial \mathnormal{l}}{\partial \sigma_{\mathcal{B}}^2}\frac{\sum_{i=1}^m-2(x_i-\mu_{\mathcal{B}})}{m}\\
+\frac{\partial\mathnormal{l}}{\partial x_i}&=&\frac{\partial\mathnormal{l}}{\partial \hat{x}_i}\cdot \frac{1}{\sqrt{\sigma_{\mathcal{B}}^2+\epsilon}}+\frac{\partial\mathnormal{l}}{\partial \sigma_{\mathcal{B}}^2}\cdot \frac{2(x_i-\mu_{\mathcal{B}})}{m}+\frac{\partial\mathnormal{l}}{\partial\mu_{\mathcal{B}}}\cdot\frac{1}{m}\\
+\frac{\partial\mathnormal{l}}{\partial\gamma}&=&\sum_{i=1}^m\frac{\partial\mathnormal{l}}{\partial y_i}\cdot \hat{x}_i\\
+\frac{\partial\mathnormal{l}}{\partial\beta}&=&\sum_{i=1}^m\frac{\partial\mathnormal{l}}{\partial y_i}\\
+\end{array}
+\end{equation*}
+
+** Training and Inference with Batch- Normalized Networks
+*** Algorithm
+- Input : Network $N$ with trainable parameters $\Theta$; subset of activations $\{x^{(k)}\}_{k=1}^K$
+- Output : Batch-normalized network for inference, $N_{BN}^{inf}$
+\begin{enumerate}
+\item $N_{BN}^{tr}\leftarrow N$
+\item for k=1...K do:
+\begin{enumerate}
+\item Add transformation $y^{(k)}=BN_{\gamma^{(k)},\beta^{(k)}}(x^{(k)})$ to $N_{BN}^{tr}$
+\item Modify each layer in $N_{BN}^{tr}$ with input $x^{(k)}$ to take $y^{(k)}$ instead
+\end{enumerate}
+\item Train $N_{BN}^{tr}$ to optimize the parameters $\Theta\cup \{\gamma^{(k)},\beta^{(k)}\}_{k=1}^K$
+\end{enumerate}
+
+
+** Training and Inference with Batch- Normalized Networks
+*** Algorithm
+\begin{enumerate}
+\item $N_{BN}^{inf}\leftarrow N_{BN}^{tr}$
+\item For k=1...K do 
+\begin{enumerate}
+\item // For clarity, $x\equiv x^{(k)}$,$\gamma\equiv \gamma^{(k)}$, $\mu_{\mathcal{B}}\equiv \mu_{\mathcal{B}}^{(k)}$ etc.
+\item Process multiple training mini-batches $\mathcal{B}$, each of size $m$, and average over them:
+$$E[x]\leftarrow E_{\mathcal{B}}[\mu_{\mathcal{B}}]$$
+$$Var[x]\leftarrow \frac{m}{m-1}E_{\mathcal{B}}[\sigma_{\mathcal{B}}^2]$$
+\item In $N_{BN}^{inf}$, replace the transform $y=BN_{\gamma,\beta}(x)$ with $y=\frac{\gamma}{\sqrt{Var[x]+\epsilon}}\cdot x+(\beta-\frac{\gamma E[x]}{\sqrt{Var[x]+\epsilon}})$
+\end{enumerate}
+\end{enumerate}

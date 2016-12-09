@@ -1,0 +1,61 @@
+
+#+TITLE:     Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzaialo@126.com
+#+DATE:      <2016-11-04 Fri>
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=STZhongsong, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEGIN_LATEX
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_LATEX
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* Introduction
+** Introduction
+*** Keys
+    By trainging a GAN [fn:1] cite:NIPS2014_5423 and later reusing parts of the 
+    generator and discriminator networks as feature extractors for supervised 
+    tasks.
+** Introduction    
+*** Contributions
+    1. We propose and evaluate a set of constraints on the architectural topology of Convolutional GANs that make them stable to train in most settings. We name this class of architectures Deep Convolutional GANs (DCGAN);
+    2. We use the trained discriminators for image classification tasks, showing competitive performance with other unsupervised algorithms.
+    3. We visualize the filters learnt by GANs and empirically show that specific filters have learned to draw specific objects.
+    4. We show that the generators have interesting vector arithmetic properties allowing for easy manipulation of many semantic qualities of generated samples.
+** Introduction
+
+
+
+
+* Reference
+
+\bibliographystyle{plain}
+
+bibliography:~/PAPERS/BibTex/mingzailao.bib
+
+
+* Footnotes
+
+
+[fn:1] Generative adversarial Networks

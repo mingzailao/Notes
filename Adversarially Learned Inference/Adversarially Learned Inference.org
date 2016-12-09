@@ -1,0 +1,77 @@
+#+TITLE:     Adversarially Learned Inference
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      <2016-12-07 Wed>
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+#+OPTIONS: tex:t  
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* Adversarially learned inference
+** Adversarially learned inference(ALI)
+*** Two distributions
+1. Encoder joint distribution $q(\mathbf{x},\mathbf{z})=q(\mathbf{x})q(\mathbf{z}|\mathbf{x})$
+2. Decoder joint distribution $p(\mathbf{x},\mathbf{z})=p(\mathbf{z})p(\mathbf{x}|\mathbf{z})$
+*** Notes
+1. Encoder margin : $q(\mathbf{x})$ is the empirical distribution;
+2. Decider margin : $p(\mathbf{z})$ is the sampler distribution(Maybe Gaussian);
+** Adversarially learned inference(ALI)
+*** Objective
+Matching two joint distributions.
+*** Matching game
+1. Joint pairs $(\mathbf{x},\mathbf{z})$ are drawn either from $q(\mathbf{x},\mathbf{z})$ or $p(\mathbf{x},\mathbf{z})$;
+2. A discriminator network learns to discriminate between the two;
+3. The encoder and decoder networks are trained to fool the discriminator.
+** Adversarial learned inference(ALI)
+*** min-max
+\begin{eqnarray*}
+\label{eq:1}
+\min_G\max_DV(D,G)&=&\mathbb{E}_{q(\mathbf{x})}[\log D(\mathbf{x},G_z(\mathbf{x}))]\\
+&+&\mathbb{E}_{p(\mathbf{z})}[\log (1-D(G_x(\mathbf{z},\mathbf{z})))]\\
+&=&\int\int q(\mathbf{x})q(\mathbf{z}|\mathbf{x})\log (D(\mathbf{x},\mathbf{z}))d\mathbf{x}d\mathbf{z}\\
+&+&\int\int p(\mathbf{z})p(\mathbf{x}|\mathbf{z})\log (1-D(\mathbf{x},\mathbf{z}))d\mathbf{x}d\mathbf{z}
+\end{eqnarray*}
+** Adversarial learned inference(ALI)
+*** Notes
+- cross entropy
+for $\mathbf{p}\in \{y,1-y\}$, $\mathbf{q}\in \{\hat{y},1-\hat{y}\}$,
+\begin{eqnarray*}
+H(\mathbf{p},\mathbf{q})& =& -y\log \hat{y}-(1-y)\log (1-\hat{y})\\
+\end{eqnarray*}
+\begin{eqnarray*}
+L_{real}(\Theta)&= &\mathbb{E}_{\mathbf{x},\mathbf{z}\sim q(\mathbf{x},\mathbf{z})}[H(1,D(\mathbf{x},\mathbf{z}))] \\
+&=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim q(\mathbf{x},\mathbf{z})}[-1\cdot \log(D(\mathbf{x},\mathbf{z}))-(1-1)\cdot\log(1-D(\mathbf{x},\mathbf{z}))]\\
+&=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim q(\mathbf{x},\mathbf{z})}[-\log(D(\mathbf{x},\mathbf{z}))]
+\end{eqnarray*}
+** Adversarial learned inference(ALI)
+*** Notes
+\begin{eqnarray*}
+L_{fake}(\Theta)& =& \mathbb{E}_{\mathbf{x},\mathbf{z}\sim p(\mathbf{x},\mathbf{z})}[H(0,D(\mathbf{x},\mathbf{z}))]\\
+&=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim p(\mathbf{x},\mathbf{z})}[-0\cdot\log (D(\mathbf{x},\mathbf{z}))-(1-0)\cdot\log(1-D(\mathbf{x},\mathbf{z}))]\\
+&=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim p(\mathbf{x},\mathbf{z})}[-\log(1-D(\mathbf{x},\mathbf{z}))]
+\end{eqnarray*}
+minimum the cross-entropy equals to maximum the min-max target function.
+** Adversarial learned inference(ALI)
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-07 17:35:41
+[[file:Adversarially learned inference/screenshot_2016-12-07_17-35-41.png]]
+** Adversarial learned inference(ALI)
+*** The ALI training procedure
+1. $\theta_g,\theta_d\leftarrow$ initialize network parameters;
+2. repeat:
+   1. $\mathbf{x}^{(1)},\cdots,\mathbf{x}^{(M)}\sim q(\mathbf{x})$, $\mathbf{z}^{(1)},\cdots,\mathbf{z}^{(M)}\sim p(\mathbf{z})$;
+   2. $\hat{\mathbf{z}}^{(i)}\sim q(\mathbf{z}|\mathbf{x}=\mathbf{x}^{(i)})$, $\hat{\mathbf{x}}^{(j)}\sim p(\mathbf{x}|\mathbf{z}=\mathbf{z}^{(j)})$, $i,j=0,\cdots,M$;
+   3. $\rho_q^{(i)}\leftarrow D(\mathbf{x}^{(i)},\hat{\mathbf{z}}^{(i)})$, $\rho_p^{(j)}\leftarrow D(\hat{\mathbf{x}}^{(j)},\hat{\mathbf{z}}^{(j)})$, $i,j=0,\cdots,M$;
+   4. $\mathcal{L}_d\leftarrow -\frac{1}{M}\sum_{i=1}^M\log (\rho_q^{(i)})-\frac{1}{M}\sum_{j=1}^M\log (1-\rho_p^{(j)})$;
+   5. $\mathcal{L}_g\leftarrow -\frac{1}{M}\sum_{i=1}^M\log(1-\rho_q^{(i)})-\frac{1}{M}\sum_{j=1}^M\log (\rho_p^{(j)})$;
+   6. $\theta_{d}\leftarrow\theta_d-\nabla_{\theta_d}\mathcal{L}_d$, $\theta_g\leftarrow\theta_g-\nabla_{\theta_g}\mathcal{L}_g$;
+

@@ -1,0 +1,82 @@
+
+#+TITLE:     Improved Techniques for Training GANs
+#+AUTHOR:    mingzailao
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=DFWaWaSC-W5, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+
+
+
+
+
+
+
+* Tricks
+** Feature Matching
+*** Notations
+- $f(\mathbf{x})$ : activations on an intermediate layer of the discriminator;
+*** New objective for the generator
+\begin{equation}
+\label{eq:1}
+||\mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[f(\mathbf{x})]-\mathbb{E}_{\mathbf{z}\sim P_z(\mathbf{z})}[f(G(\mathbf{z}))]||^{2}
+\end{equation}
+
+As with regular GAN training, the objective has a fixed point where $G$ exactly matches the distribution of training data. We have no guarantee of reaching this fixed point in practice, but our empirical results indicate that feature matching is indeed effective in situations where regular GAN becomes unstable.
+** Minibatch discrimination
+*** Keys
+Any discriminator model that looks at multiple examples in combination, rather than in isolation.(we can use BN also).
+*** Aim to identify generator samples that are particularly close together
+- Let $f(\mathbf{x}_i)\in \mathbb{R}^{A}$ denote a vector of features for input $\mathbf{x}_i$ 
+- Multiply the vector $f(\mathbf{x}_i)$ by a tensor $T\in \mathbb{A\times B\times C}$ which results in a matrix $M_i\in \mathbb{R}^{B\times C}$
+- Compute the $L_1$ distance between the rows of the resulting matrix $M_i$ across samples $i\in \{1,2,\cdots,n\}$ and apply a negative exponential $c_b(\mathbf{x}_i,\mathbf{x}_j)=\exp(-||M_{i,b}-M_{j,b}||L_1)\in \mathbb{R}$
+** Minibatch discrimination
+*** Aim to identify generator samples that are particularly close together
+The output $o(x_{i})$ for this minibatch layer for a sample $x_{i}$ is then
+defined as the sum of the $c_b(\mathbf{x}_i,\mathbf{x}_j)$’s to all other samples:
+\begin{equation}
+\label{eq:3}
+o(\mathbf{x}_i)_b=\sum_{j=1}^nc_b(\mathbf{x}_i,\mathbf{x}_j)\in \mathbb{R}
+\end{equation}
+\begin{equation}
+\label{eq:4}
+o(\mathbf{x}_i)=[o(\mathbf{x}_i)_1,o(\mathbf{x}_i)_{2},\cdots, o(\mathbf{x}_i)_B]\in \mathbb{R}^B
+\end{equation}
+\begin{equation}
+\label{eq:5}
+o(\mathbf{X})\in \mathbb{R}^{n\times B}
+\end{equation}
+** Minibatch discrimination
+*** Aim to identify generator sample that are particularly close together
+- Next, we concatenate the output $o(\mathbf{x}_i)$ of the minibatch layer with the intermediate features $f(\mathbf{x}_i)$ that were its input, and we feed the result into the next layer of the discriminator.
+** Historical averaging
+*** Historical averaging
+When applying this technique, we modify each player’s cost to include a term $||\mathbf{\theta}-\frac{1}{t}\sum_{i=1}^t\mathbf{\theta}[i]||^2$, where $\mathbf{\theta}_i$ is the value of the parameters at past time $i$.
+** One-sided label smoothing
+*** One-sided label smoothing
+Label smoothing, a technique from the 1980s recently independently re-discovered by Szegedy et.al cite:szegedy15:rethin_incep_archit_comput_vision replaces the 0 and 1 targets for a classifier with smoothed values, like .9 or .1
+
+Replacing positive classification targets with $\alpha$ and negative targets with $\beta$, the optimal discriminator becomes $D(\mathbf{x})=\frac{\alpha P_{data}(\mathbf{x})+\beta P_{model}(\mathbf{x})}{P_{data}(\mathbf{x})+P_{model}(\mathbf{x})}$
+** BN
+Pass
+
+* Reference
+
+  \bibliographystyle{unsrtnat}
+
+  bibliography:~/PAPERS/BibTex/mingzailao.bib

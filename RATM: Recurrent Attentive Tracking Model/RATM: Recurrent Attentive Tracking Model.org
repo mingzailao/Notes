@@ -1,0 +1,85 @@
+#+TITLE:     RATM: Recurrent Attentive Tracking Model
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      2016-9-11
+#+KEYWORDS:  Deep Learning, Tracking, RNN
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+
+#+BEAMER_THEME: Darmstadt
+
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+* RECURRENT NEURAL NETWORKS
+** IRNN
+*** Structure
+Basic RNN
+*** Initialization of $W_rec$
+A scaled version of the identity matrix
+*** Hidden activation function
+ReLU
+*** Initialization of $h_0$
+Zero vector
+* NEURAL ATTENTION MECHANISMS
+** Attention Mechanism
+*** DRAW
+[[file:~/PAPERS/org/DRAW:%20A%20Recurrent%20Neural%20Network%20For%20Image%20Generation/DRAW:%20A%20Recurrent%20Neural%20Network%20For%20Image%20Generation.pdf][Links]] : 
+* A MODULAR FRAMEWORK FOR VISION
+** Feature-extraction module
+*** Aims
+The feature-extraction module computes a feature representation of a given input glimpse.
+*** Pre-train is useful
+ After pre-training, the feature extractor’s parameters can either be continued to be updated during end-to-end training, or kept fixed.
+
+** Attention Module
+   [[./1.png]]
+** Objective Module
+*** Aims
+An objective module guides the model to learn an attentional policy to solve a given task.
+*** Output
+- Cost : function of its target and prediction inputs.
+\begin{equation}
+\label{eq:1}
+\mathcal{L}_{MSE}=\frac{1}{n}\sum_{i=1}^n||\mathbf{y}_{target}-\mathbf{y}_{pred}||_2^2
+\end{equation}
+* BUILDING A RECURRENT ATTENTIVE TRACKING MODEL
+** Architecture
+*** Penalty Term
+\begin{enumerate}
+\item
+\begin{equation}
+\mathcal{L}_{pixel}=||\hat{p}-p||_2^2
+\end{equation}
+where $\hat{p}$ : the glimpse extracted by the attention mechanism
+$p$ : ground truth image
+\item
+\begin{equation}
+\mathcal{L}_{feat}=||f(\hat{p})-f(p)||_2^2
+\end{equation}
+where $f$ : feature extraction function 
+\item
+\begin{equation}
+\mathcal{L}_{loc}=||\hat{g}-g||_2^2
+\end{equation}
+where $g$ : center of the ground truth.
+
+\end{enumerate}
+** Evaluation of Tracking Performance
+*** IoU
+\begin{equation}
+IoU=\frac{B_{gt}\cap B_{pred}}{B_{gt}\cup B_{pred}}
+\end{equation}
+
+* Reference
+
+
+\bibliography{../../BibTex/mingzailao}{}
+\bibliographystyle{plain}

@@ -1,0 +1,89 @@
+
+#+TITLE:     Generative Adversarial Networks as Variational Training of Energy Based Models
+#+AUTHOR:    mingzailao
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=DFWaWaSC-W5, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+
+
+
+
+
+
+
+* Energy Based Model and Adversarial Networks
+** Energy Based Model and Adversarial Networks
+*** Adversarial Networks optimization equation 
+    
+\begin{equation*}
+\label{eq:1}
+\min_G\max_D\mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[\log D(\mathbf{x})]
++\mathbb{E}_{\mathbf{z}\sim P(\mathbf{z})}[\log(1- D(G(\mathbf{z})))]
+\end{equation*}
+
+equals to
+
+\begin{equation}
+\label{eq:2}
+\max_G\min_D \mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[-\log D(\mathbf{x})]
+-\mathbb{E}_{\mathbf{z}\sim P(\mathbf{z})}[\log(1-D(G(\mathbf{z})))]
+\end{equation}
+** Energy Based Model and Adversarial Networks
+*** Energy Based Model's density function(ignore $\beta$)
+\begin{equation}
+\label{eq:3}
+p(\mathbf{x})=\frac{e^{-E(\mathbf{x})}}{\int_{\mathbf{x}}e^{-E(\mathbf{x})}d\mathbf{x}}
+\end{equation}
+*** Minimize NLL
+\begin{equation}
+\label{eq:4}
+J(E)=\mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[E(\mathbf{x})]+\log[\int_{\mathbf{x}}e^{-E(\mathbf{x})}d\mathbf{x}]
+\end{equation}
+** Energy Based Model and Adversarial Networks
+*** Rewrite NLL  
+\begin{eqnarray}
+\label{eq:6}
+J(E) & = & \mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[E(\mathbf{x})]+\log [\int_{\mathbf{x}}q(\mathbf{x})\frac{e^{-E(\mathbf{x})}}{q(\mathbf{x})}d\mathbf{x}]\\
+&=&\mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[E(\mathbf{x})]+\log [\mathbb{E}_{\mathbf{x}\sim q(\mathbf{x})}[\frac{e^{-E(\mathbf{x})}}{q(\mathbf{x})}]]\\
+& \ge & \mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[E(\mathbf{x})]+\mathbb{E}_{\mathbf{x}\sim q(\mathbf{x})}[\log \frac{e^{-E(\mathbf{x})}}{q(\mathbf{x})}]\\
+& =& \mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[E(\mathbf{x})]-\mathbb{E}_{\mathbf{x}\sim q(\mathbf{x})}[E(\mathbf{x})]+H(q)
+\end{eqnarray}
+** Energy Based Model and Adversarial Networks
+*** Bound 
+for Equation (5) to Equation (6), use Jensen’s inequality, and it gives a variational lower bound of the NLL given an $q(\mathbf{x})$. The lower bound is tight when $\frac{e^{-E(\mathbf{x})}}{q(\mathbf{x})}$ is a constant independent of $\mathbf{x}$, i.e., $q(\mathbf{x})\propto E(\mathbf{x})$, which implies that $q(\mathbf{x}) = p(\mathbf{x})$.
+This suggests an optimization procedure as follows:
+\begin{equation}
+\label{eq:8}
+\min_E\max_q\mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[E(\mathbf{x})]-\mathbb{E}_{\mathbf{x}\sim q(\mathbf{x})}[E(\mathbf{x})]+H(q)
+\end{equation}
+* Variational Generative Adversarial Networks
+** Variational Generative Adversarial Networks
+*** Replace $q(\mathbf{x})$ with the generator distribution $p_g(\mathbf{x})$:
+\begin{equation}
+\label{eq:7}
+\min_E\max_G \mathbb{E}_{\mathbf{x}\sim P_{data}(\mathbf{x})}[E(\mathbf{x})]-\mathbb{E}_{\mathbf{x}\sim p_g(\mathbf{x})}[E(\mathbf{x})]+H(p_g)
+\end{equation}
+if we further let $E(\mathbf{x})=-\log D(\mathbf{x})$, this becomes:
+\begin{equation}
+\label{eq:9}
+\min_D\max_G \mathbb{E}_{\mathbf{x}\sim P_{data(\mathbf{x})}}[-\log (D(\mathbf{x}))]-\mathbb{E}_{\mathbf{z}\sim P_{\mathbf{z}}(\mathbf{z})}[-\log D(G(\mathbf{z}))]+H(p_g)
+\end{equation}
+* Bounded Multi-Modal Energy
+
+

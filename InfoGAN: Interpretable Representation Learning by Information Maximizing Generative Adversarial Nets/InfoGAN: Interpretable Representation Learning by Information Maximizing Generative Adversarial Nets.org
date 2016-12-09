@@ -1,0 +1,77 @@
+
+#+TITLE:     InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      <2016-11-21 一>
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=STZhongsong, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+#+BEAMER_THEME: Madrid
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* GAN
+** GAN
+*** Min-Max 
+\begin{equation}
+\label{eq:1}
+\min_G\max_D \mathbb{\mathbf{x}\sim P_{data}(\mathbf{x})}[\log D(\mathbf{x})]+\mathbb{E}_{\mathbf{z}\sim P_z(\mathbf{z})}[\log (1-D(z))]
+\end{equation}
+
+* Mutual Information for Inducing Latent Codes
+** Mutual Information for Inducing Latent Codes
+*** Input : 2 parts
+1. $\mathbf{z}$ : noise;
+2. $\mathbf{c}$ : latent code;
+*** Difference
+In standard GAN, the generator is free to ignore the additional code $\mathbf{c}$ by  finding a solution satisfying $P_G(\mathbf{x}|\mathbf{c})=P_{G}(\mathbf{x})$.
+*** Information-theoretic regularization 
+There should be high mutual information between latent codes $\mathbf{c}$ and the generator distribution $G(\mathbf{z},\mathbf{c})$
+** Mutual Information for Inducing Latent Codes
+*** Mutual Information
+\begin{equation}
+\label{eq:2}
+I(\mathbf{X};\mathbf{Y})=H(\mathbf{X})-H(\mathbf{X}|\mathbf{Y})=H(\mathbf{Y})-H(\mathbf{Y}|\mathbf{X})
+\end{equation}
+* Variational Mutual Information Maximization
+** Variational Mutual Information Maximization
+*** Variational Information Maximization
+\begin{eqnarray}
+\label{eq:4}
+I(\mathbf{c},G(\mathbf{z},\mathbf{c})) & = & H(\mathbf{c})-H(\mathbf{c}|G(\mathbf{z},\mathbf{c}))\nonumber\\
+&=&\mathbb{E}_{\mathbf{x}\sim G(\mathbf{z},\mathbf{c})}[\mathbb{E}_{\mathbf{c}^{'}\sim p(\mathbf{c}|\mathbf{x})}[\log p(\mathbf{c}^{'}|\mathbf{x})]]+H(\mathbf{c})\nonumber\\
+&=&\mathbb{E}_{\mathbf{x}\sim G(\mathbf{z},\mathbf{c})}[D_{KL}(P(\cdot|\mathbf{x})||Q(\cdot|\mathbf{x}))]+\nonumber\\
+&&\mathbb{E}[\log Q(\mathbf{c}^{'}|\mathbf{x})]+H(\mathbf{c})\nonumber\\
+&\ge& \mathbb{E}_{\mathbf{x}\sim G(\mathbf{z},\mathbf{c})}[\mathbb{E}_{\mathbf{c}^{'}\sim p(\mathbf{c}|\mathbf{x})}[\log Q(\mathbf{c}^{'}|\mathbf{x})]]+H(\mathbf{c})\nonumber
+\end{eqnarray}
+** Variational Mutual Information Maximization
+*** Lemma
+For random variables $\mathbf{X},\mathbf{Y}$ and function f(x,y) under suitable regularity conditions, 
+$$\mathbb{E}_{\mathbf{x}\sim \mathbf{X},y\sim \mathbf{Y}|\mathbf{x}}[f(\mathbf{x},\mathbf{y})]=\mathbb{E}_{\mathbf{x}\sim \mathbf{X},\mathbf{y}\sim \mathbf{Y}|\mathbf{x},\mathbf{x}^{'}\sim \mathbf{X}|\mathbf{y}}[f(\mathbf{x}^{'},\mathbf{y})]$$
+*** Proof
+Pass, See the A.1 [[file:~/PAPERS/Library.papers3/Articles/2016/Chen/arXiv1606.03657%20%5Bcs%20stat%5D%202016%20Chen.pdf][The article]]
+** Variational Mutual Information Maximization
+*** Variational lower bound
+\begin{equation}
+\label{eq:5}
+L_I(G,Q)=\mathbb{E}_{\mathbf{c}\sim P(\mathbf{c}),\mathbf{x}\sim G(\mathbf{z},\mathbf{c})}[\log Q(\mathbf{c}|\mathbf{x})]
+\end{equation}
+\begin{equation}
+\label{eq:3}
+\min_{G,Q}\max_D V_{infoGAN}(D,G,Q)=V(D,G)-\lambda L_I(G,Q)
+\end{equation}
+*** Notes
+In most experiments, $Q$ and $D$ share all convolutional layers and there is one 
+final fully connected layer to output parameters for the conditional distribution 
+$Q(\mathbf{c}|\mathbf{x})$.

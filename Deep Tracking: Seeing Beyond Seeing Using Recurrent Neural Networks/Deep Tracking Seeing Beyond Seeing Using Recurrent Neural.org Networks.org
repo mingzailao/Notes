@@ -1,0 +1,73 @@
+#+TITLE:     Deep Tracking : Seeing Beyond Seeing Using Recurrent Neural Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      2016-9-11
+#+KEYWORDS:  RNN, CV, 
+#+LANGUAGE:  en
+
+
+#+STARTUP: beamer
+#+STARTUP: oddeven
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+
+#+BEAMER_THEME: Darmstadt
+
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+
+* Deep Tracking
+** The Bayes Model
+*** Graphical Model
+[[./1.png]]
+** The Bayes Model
+*** Joint Probability  
+    
+\begin{equation}
+P(y_{1:N},x_{1:N},h_{1:N})=\prod_{t=1}^NP(x_t|y_t)P(y_t|h_t)P(h_t|h_{t-1})
+\end{equation}
+- $P(h_t|h_{t-1})$ : the hidden state transition probability capturing the dynamics of the world;
+- $P(y_t|h_t)$ : modelling the instantaneous unoccluded sensor space;
+- $P(x_t|y_t)$ : describes the actual sensing process.
+
+** The Bayes Model
+*** Bayes:
+- notation : $Bel(h_t)=P(h_t|x_{1:t})$ : denotes the corrected belief after the latest measurement has become available, $Bel^-$ : belief prediction one time step into the future.
+
+\begin{equation}
+Bel^-(h_t)=\int_{h_{t-1}}P(h_t|h_{t-1})Bel(h_{t-1})
+\end{equation}
+\begin{equation}
+Bel(h_{t})\propto\int_{y_t}P(x_t|y_t)P(y_t|h_t)Bel^-(h_t)
+\end{equation}
+\begin{equation}
+P(y_t|x_{1:t})=\int_{h_t}P(y_t|h_t)Bel(h_t)
+\end{equation}
+** Filtering Using a Recurrent Neural Network
+*** Set Belif : $\mathcal{B}_{t}$
+\begin{equation}
+\mathcal{B}_t=F(\mathcal{B}_{t-1},x_t)
+\end{equation}
+then :
+\begin{equation}
+P(y_t|x_{1:t})=P(y_t|\mathcal{B}^t)
+\end{equation}
+*** Moreover
+    Proving empty observations of the form $x_{(t+1):(t+n)}=\varnothing$, 
+    can alse use $\mathcal{B}_t$ to predict $P(y_{t+n}|x_{1:t})$.
+* Training
+** Supervised mode
+*** Loss
+\begin{equation}
+\label{eq:1}
+\mathcal{L}=-\sum_{t=1}^N\log P(y_t|x_{1:t})
+\end{equation}
+- Input : $x_{1:T}$ and $y_{1:T}$ are both known.
+- Output : the parameters.
+- Use BPTT
+** TODO Unsupervised mode(difficult)
+*** Aim
+    Learning $F(\mathcal{B}_t,x_t)$ and $P(y_t|\mathcal{B}_t)$ only using $x_{1:t}$
