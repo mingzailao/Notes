@@ -11,85 +11,28 @@
 #+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
 #+LATEX_HEADER: \setCJKmonofont{STFangsong}
 
-
 * DONE [[./First Step Toward Model-free, Anonymous Object Tracking with Recurrent Neural Networks/First Step Toward Model-free, Anonymous Object Tracking with Recurrent Neural Networks.org][First Step Toward Model-free, Anonymous Object Tracking with Recurrent Neural Networks]]
   CLOSED: [2016-10-27 Thu 21:38]
-** DONE Marks
-   CLOSED: [2016-10-27 Thu 21:38]
-** DONE Code
-   CLOSED: [2016-10-27 Thu 21:38]
-
 * DONE [[./Transferring Rich Feature Hierarchies for Robust Visual Tracking/Transferring Rich Feature Hierarchies for Robust Visual Tracking.org][Transferring Rich Feature Hierarchies for Robust Visual Tracking]]
   CLOSED: [2016-10-27 Thu 21:38]
-** DONE Marks
-   CLOSED: [2016-10-27 Thu 21:38]
-** DONE Code
-   CLOSED: [2016-10-27 Thu 21:38]
-
 * DONE [[./Video Tracking Using Learned Hierarchical Features/Video Tracking Using Learned Hierarchical Features.org][Video Tracking Using Learned Hierarchical Features]]
   CLOSED: [2016-10-27 Thu 21:38]
-** DONE Marks
-   CLOSED: [2016-10-27 Thu 21:38]
-** DONE Code
-   CLOSED: [2016-10-27 Thu 21:38]
-
 * DONE [[./DRAW: A Recurrent Neural Network For Image Generation/DRAW: A Recurrent Neural Network For Image Generation.org][DRAW: A Recurrent Neural Network For Image Generation]]
   CLOSED: [2016-10-27 Thu 21:37]
-** DONE Marks
-   CLOSED: [2016-10-27 Thu 21:37]
-** DONE Code
-   CLOSED: [2016-10-27 Thu 21:37]
-
 * DONE [[./RATM: Recurrent Attentive Tracking Model/RATM: Recurrent Attentive Tracking Model.org][RATM: Recurrent Attentive Tracking Model]]
   CLOSED: [2016-10-31 Mon 14:50]
-** DONE Marks
-   CLOSED: [2016-11-08 Tue 16:00]
-** DONE Code
-   CLOSED: [2016-11-08 Tue 16:00]
-
 * DONE [[file:Learning%20a%20Deep%20Compact%20Image%20Representation%20for%20Visual%20Tracking/Learning%20a%20Deep%20Compact%20Image%20Representation%20for%20Visual%20Tracking%20Code.org][Learning a Deep Compact Image Representation for Visual Tracking]] 
   CLOSED: [2016-10-31 Mon 14:51]
-** DONE Marks
-   CLOSED: [2016-10-27 Thu 21:37]
-** DONE [[file:Learning%20a%20Deep%20Compact%20Image%20Representation%20for%20Visual%20Tracking/Learning%20a%20Deep%20Compact%20Image%20Representation%20for%20Visual%20Tracking%20Code.org][Code]]
-   CLOSED: [2016-11-08 Tue 16:00]
 * DONE [[file:Visualizing%20and%20Understanding%20Recurrent%20Networks/Visualizing%20and%20Understanding%20Recurrent%20Networks.org][Visualizing and Understanding Recurrent Neural Networks]]
   CLOSED: [2016-10-27 Thu 21:39]
-** DONE Marks
-   CLOSED: [2016-10-27 Thu 21:39]
-** DONE Code
-   CLOSED: [2016-10-27 Thu 21:39]
 * TODO [[file:Deep%20Tracking:%20Seeing%20Beyond%20Seeing%20Using%20Recurrent%20Neural%20Networks/Deep%20Tracking%20Seeing%20Beyond%20Seeing%20Using%20Recurrent%20Neural.org][Deep Tracking Seeing Beyond Seeing Using Recurrent Neural]]
-** TODO Marks
-** TODO Code
-
 * DONE [[file:Batch%20Normalization/Batch%20Normalization.org][Batch Normalization]]
   CLOSED: [2016-10-27 Thu 22:07]
-** DONE Marks
-   CLOSED: [2016-10-27 Thu 22:07]
-** DONE Code
-   CLOSED: [2016-10-27 Thu 22:07]
-
 * TODO [[file:Tutorial:%20Deep%20Reinforcement%20Learning/Tutorial:%20Deep%20Reinforcement%20Learning.org][Tutorial/ Deep Reinforcement Learning]]
-** TODO Marks
-** TODO Code
-
 * TODO [[file:Auto-Encoding%20Variational%20Bayes/Auto-Encoding%20Variational%20Bayes.org][Auto-Encoding Variational Bayes]]
-** TODO Marks
-** TODO Code
-
-
-
-cite:NIPS2013_5192
-
 * TODO [[file:Notes%20for%20CNN/Notes%20for%20CNN.org][Notes for CNN]]
-** Marks
-** Code
 * DONE [[file:Generative%20Adversarial%20Nets/Generative%20Adversarial%20Nets.org][Generative Adversarial Nets]]
   CLOSED: [2016-11-08 Tue 16:02]
-** DONE Code
-   CLOSED: [2016-11-08 Tue 16:02]
-
 * DONE [[file:Generative%20Adversarial%20Networks%20as%20Variational%20Training%20of%20Energy%20Based%20Models/Generative%20Adversarial%20Networks%20as%20Variational%20Training%20of%20Energy%20Based%20Models.org][Generative Adversarial Networks as Variational Training of Energy Based Models]]
   CLOSED: [2016-11-16 Wed 14:33]
 * DONE [[file:Unsupervised%20Learning%20Using%20Generative%20Adversarial%20Training%20And%20Clustering/Unsupervised%20Learning%20Using%20Generative%20Adversarial%20Training%20And%20Clustering.org][Unsupervised Learning Using Generative Adversarial Training and Clustering]]
@@ -97,11 +40,6 @@ cite:NIPS2013_5192
 * [[file:Improving%20Generative%20Adversarial%20Networks%20with%20Denoising%20Feature%20Matching/Improving%20Generative%20Adversarial%20Networks%20with%20Denoising%20Feature%20Matching.org][Improving Generative Adversarial Networks with Denoising Feature Matching]]
 * DONE [[file:Layer%20Normalization/Layer%20Normalization.org][Layer Normalization]]
   CLOSED: [2016-11-08 Tue 16:02]
-** TODO Marks
-** TODO Code
-
-
-
 * TODO [[file:Semi-supervised%20learning%20with%20ladder%20networks/Semi-supervised%20learning%20with%20ladder%20networks.org][Semi-supervised learning with ladder networks]] 
 * TODO [[file:An%20Architecture%20for%20Deep,%20Hierarchical%20Generative%20Models/An%20Architecture%20for%20Deep,%20Hierarchical%20Generative%20Models.org][An Architecture for Deep, Hierarchical Generative Models]]
 * Summary(<2016-10-27 Thu>)
