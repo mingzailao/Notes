@@ -1,0 +1,51 @@
+#+TITLE:     Adversarial Images for Variational Autoencoders
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Tue Dec 13 16:06:26 2016
+#+DESCRIPTION: 
+#+KEYWORDS: GAN,VAE
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Adversarial Images for Variational Autoencoders}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+* Autoencoders and Variational Autoencoders
+** Autoencoders and Variational Autoencoders
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-13 16:08:27
+[[file:Autoencoders and Variational Autoencoders/screenshot_2016-12-13_16-08-27.png]]
+** Autoencoders and Variational Autoencoders
+*** Variants of Autoencoders
+- sparse autoencoders(with $l_{1}$ -norm)
+- denoising autoencoders(use implicit regularization by feeding noise to the input)
+
+*** Variational Autoencoders
+pass
+* Adversarial Images for Autoencoders
+** Adversarial Images for Autoencoders
+*** Mislead
+- Maximize the misdirection towards a certain wrong label cite:szegedy13:intrig 
+
+
+
+* Reference
+  \bibliographystyle{plain}
+
+  bibliography:~/PAPERS/BibTex/mingzailao.bib
+

@@ -1,19 +1,246 @@
-
 #+TITLE:     Auto-Encoding Variational Bayes
-#+KEYWORDS:  Deep Learning
-#+LANGUAGE:  en
-
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Sun Dec 11 15:03:06 2016
+#+DESCRIPTION: 
+#+KEYWORDS: 
 #+STARTUP: beamer
 #+STARTUP: oddeven
 #+LaTeX_CLASS: beamer
 #+LaTeX_CLASS_OPTIONS: [bigger]
-#+LATEX_HEADER: \usepackage{xeCJK}
-#+LATEX_HEADER: \setCJKmainfont[BoldFont=DFWaWaSC-W5, ItalicFont=STKaiti]{STSong}
-#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
-#+LATEX_HEADER: \setCJKmonofont{STFangsong}
-
-#+BEAMER_THEME: Madrid
+#+BEAMER_THEME: metropolis
 #+OPTIONS:   H:2 toc:t
 #+SELECT_TAGS: export
 #+EXCLUDE_TAGS: noexport
 #+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Auto-Encoding Variational Bayes}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+* Variational Inference
+** Variational Inference
+*** Notations
+1. latent variables : $\mathbf{z}=z_{1:m}$ 
+2. obseevations : $\mathbf{x}=x_{1:n}$ 
+*** Joint density
+\begin{eqnarray*}
+p(\mathbf{z},\mathbf{x})& =& p(\mathbf{z})p(\mathbf{x}|\mathbf{z})\\
+\end{eqnarray*}
+
+** Variational Inference
+*** Notes
+   \begin{eqnarray*}
+   p(\mathbf{x}|\mathbf{z})& =& \frac{p(\mathbf{z},\mathbf{x})}{p(\mathbf{z})}\\
+   \end{eqnarray*}
+   \begin{eqnarray*}
+   p(\mathbf{z}|\mathbf{x})& =& \frac{p(\mathbf{z},\mathbf{x})}{p(\mathbf{x})}\\
+   \end{eqnarray*}
+
+\begin{eqnarray*}
+p(\mathbf{x})& =& \int p(\mathbf{z},\mathbf{x})d\mathbf{z}\\
+\end{eqnarray*}
+** Variational Inference
+*** One example
+Bayesian mixture of unit-variance univariate Gaussians.
+\begin{eqnarray*}
+\mu_k\sim \mathcal{N}(0,\sigma^2)  & k=1,\cdots,K\\
+c_i\sim Categorical(1/K,\cdots,1/K)& i=1,\cdots n\\
+x_i|c_i,\mathbf{\mu}\sim \mathcal{N}(c_i^T\mu,1)& i=1,\cdots,n
+\end{eqnarray*}
+
+** Variational Inference
+*** One example
+For a sample of size $n$, the joint density of latent and observed variables is:
+\begin{eqnarray*}
+p(\mathbf{\mu},\mathbf{c},\mathbf{x})&=&p(\mathbf{\mu})\prod_{i=1}^np(c_i)p(x_i|c_i,\mathbf{\mu}) \\
+\end{eqnarray*}
+
+then, the evidence is 
+\begin{eqnarray*}
+p(\mathbf{x})& =& \int p(\mathbf{\mu})\prod_{i=1}^n\sum_{c_i}p(c_i)p(x_i|c_i,\mathbf{\mu})d\mathbf{\mu}\\
+&=& \sum_{\mathbf{c}}p(\mathbf{c})\int p(\mathbf{\mu})\prod_{i=1}^np(x_i|c_i,\mathbf{\mu})d\mathbf{\mu}
+\end{eqnarray*}
+
+** Variational Inference
+*** Notes
+1. assume that $\mathcal{Z}$ : a set of densities over the latent variables.
+2. what we want :
+   \begin{eqnarray*}
+    q^{*}(\mathbf{z})&=&arg\min_{q(\mathbf{z})\in \mathcal{Z}}KL(q(\mathbf{z})|p(\mathbf{z}|\mathbf{x})) \\
+    \end{eqnarray*}
+3. Variational inference thus turns the inference problem into an optimization problem.
+** Variational Inference
+*** recall KL 
+\begin{eqnarray*}
+KL(q(\mathbf{z})||p(\mathbf{z}|\mathbf{x}))& =&\mathbb{E}_{q(\mathbf{z})}[\log q(\mathbf{z})]-\mathbb{E}_{q(\mathbf{z})}[\log p(\mathbf{z}|\mathbf{x})] \\
+&=&\mathbb{E}_{q(\mathbf{z})}[\log q(\mathbf{z})]-\mathbb{E}_{q(\mathbf{z})}[\log \frac{p(\mathbf{z},\mathbf{x})}{p(\mathbf{x})}]\\
+&=&\mathbb{E}_{q(\mathbf{z})}[\log q(\mathbf{z})]-\mathbb{E}_{q(\mathbf{z})}[\log p(\mathbf{z},\mathbf{x})]+\log p(\mathbf{x})
+\end{eqnarray*}
+
+** Variational Inference
+*** Define evidence lower bound(ELBO)
+\begin{eqnarray*}
+ELBO(q(\mathbf{z}))&= &\mathbb{E}_{q(\mathbf{z})}[\log p(\mathbf{z},\mathbf{x})]-\mathbb{E}_{q(\mathbf{z})}[\log q(\mathbf{z})] \\
+\end{eqnarray*}
+then $\max ELBO(q(\mathbf{z}))\Leftrightarrow \min KL(q(\mathbf{z})|p(\mathbf{z}|\mathbf{x}))$
+
+Another form of $ELBO$:
+\begin{eqnarray*}
+ELBO(q(\mathbf{z}))& =& \mathbb{E}_{q(\mathbf{z})}[p(\mathbf{x}|\mathbf{z})]-KL(q(\mathbf{z})||p(\mathbf{z}))\\
+\end{eqnarray*}
+
+* Auto-Encoding Variational Bayes
+** Auto-Encoding Variational Bayes
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-11 13:29:18
+[[file:Variational Inference/screenshot_2016-12-11_13-29-18.png]]
+** Auto-Encoding Variational Bayes 
+*** Define $q(\mathbf{z}|\mathbf{x}^{(i)})$ use the information of $\mathbf{x}^{(i)}$
+Given dataset $\{\mathbf{x}^{(i)}\}_{i=1}^N$,then :
+\begin{eqnarray*}
+\log p_{\theta}(\mathbf{x}^{(i)})& =& KL(q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})||p_{\theta}(\mathbf{z}|\mathbf{x}^{(i)}))+ELBO(q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)}))\\
+\end{eqnarray*}
+*** ELBO
+\begin{eqnarray*}
+ELBO(q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)}))& =& \mathbb{E}_{q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})}[\log p_{\theta}(\mathbf{x}^{(i)}|\mathbf{z})]\\
+&-&KL(q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})||p_{\theta}(\mathbf{z})) \\
+&=&\mathbb{E}_{q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})}[-\log q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})+\log p_{\theta}(\mathbf{x},\mathbf{z})]
+\end{eqnarray*}
+** Auto-Encoding Variational Bayes
+*** The usual (naive) Monte Carlo gradient estimator
+\begin{eqnarray*}
+\nabla_{\phi}\mathbb{E}_{q_{\phi}(\mathbf{z})}[f(\mathbf{z})]&= &\mathbb{E}_{q_{\phi}(\mathbf{z})}[f(\mathbf{z})\nabla_{q_{\phi}(\mathbf{z})}\log q_{\phi}(\mathbf{z})] \\
+&\approx&\frac{1}{L}\sum_{l=1}^L f(\mathbf{z})\nabla_{q_{\phi}(\mathbf{z}^{(l)})}\log q_{\phi}(\mathbf{z}^{(l)})
+\end{eqnarray*}
+
+where $\mathbf{z}^{(l)}\sim q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})$
+** Auto-Encoding Variational Bayes
+*** Chose $q_{\mathbf{\phi}}(\mathbf{z}|\mathbf{x})$:
+\begin{eqnarray*}
+\tilde{\mathbf{z}}\sim g_{\mathbf{\phi}}(\mathbf{\epsilon},\mathbf{x})& with& \mathbf{\epsilon}\sim p(\mathbf{\epsilon})\\
+\end{eqnarray*}
+*** Use Monte Carlo estimates of expectations
+\begin{eqnarray*}
+\mathbb{E}_{q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})}[f(\mathbf{z})]& =& \mathbb{E}_{p(\mathbf{\epsilon})}[f(g_{\phi}(\mathbf{\epsilon},\mathbf{x}^{(i)}))]\\
+&\approx&\frac{1}{L}\sum_{l=1}^L f(g_{\mathbf{\phi}}(\mathbf{\epsilon}^{(l)},\mathbf{x}^{(i)})) \ \ \ where \ \mathbf{\epsilon}^{(l)}\sim p(\mathbf{\epsilon})
+\end{eqnarray*}
+** Auto-Encoding Variational Bayes
+*** Apply the technique to the variational lower bound 
+Get generic Stochastic Gradient Variational Bayes (SGVB) estimator
+ $\tilde{\mathcal{L}}^A (\mathbf{\theta},\mathbf{\phi};\mathbf{x}^{(i)})\approx \mathcal{L}(\mathbf{\theta},\mathbf{\phi};\mathbf{x}^{(i)})$:
+\begin{eqnarray*}
+\tilde{\mathcal{L}}^{A}(\mathbf{\theta},\mathbf{\phi};\mathbf{x}^{(i)})& =& \frac{1}{L}\sum_{l=1}^{L}\log p_{\mathbf{\theta}}(\mathbf{x}^{(i)},\mathbf{z}^{(i,l)})\\
+&-&\log q_{\mathbf{\phi}}(\mathbf{z}^{(i,l)}|\mathbf{x}^{(i)})
+\end{eqnarray*}
+where $\mathbf{z}^{i,l}= g_{\mathbf{\phi}}(\mathbf{\epsilon}_{i,l},\mathbf{x}^{(i)})$, and $\mathbf{\epsilon}^{(i,l)}\sim p(\mathbf{\epsilon})$  for $\forall \ i,l$
+** Auto-Encoding Variational Bayes
+*** Anther 
+\begin{eqnarray*}
+\tilde{\mathcal{L}}^{(B)}(\mathbf{\theta},\mathbf{\phi};\mathbf{x}^{(i)})& =& -KL(q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})||p_{\theta}(\mathbf{z}))+\frac{1}{L}\sum_{l=1}^L(\log p_{\theta}(\mathbf{x}^{(i)}|\mathbf{z}^{(i,l)}))\\
+\end{eqnarray*}
+where $\mathbf{z}^{i,l}= g_{\mathbf{\phi}}(\mathbf{\epsilon}_{i,l},\mathbf{x}^{(i)})$, and $\mathbf{\epsilon}^{(i,l)}\sim p(\mathbf{\epsilon})$  for $\forall \ i,l$
+
+*** Batch version
+\begin{eqnarray*}
+\tilde{\mathcal{L}}(\theta,\phi;\mathbf{X})\approx \tilde{\mathcal{L}}^{M}(\theta,\phi;\mathbf{X}^M) & =& \frac{N}{M}\sum_{i=1}^M \tilde{\mathcal{L}}^{M}(\theta,\phi;\mathbf{x}^{(i)})\\
+\end{eqnarray*}
+** Auto-Encoding Variational Bayes
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-11 15:56:21
+[[file:Auto-Encoding Variational Bayes/screenshot_2016-12-11_15-56-21.png]]
+* Example: Variational Auto-Encoder
+** Example : Variational Auto-Encoder
+*** Idea:
+Use a neural network for the probabilistic encoder $q_{\phi}(\mathbf{z}|\mathbf{x})$ the approximation to the posterior of the generative model $p_{\theta}(\mathbf{x},\mathbf{z})$, and where the parameters $\theta$ and $\phi$ are optimized jointly with the AEVB algorithm.
+** Example : Variational Auto-Encoder
+*** Set $p_{\theta}(\mathbf{z})$:
+\begin{eqnarray*}
+p_{\theta}(\mathbf{z})& =& \mathcal{N}(\mathbf{z};0,\mathbf{I})\\
+\end{eqnarray*}
+*** Notes
+- In this case, the prior lacks parameters.
+** Example : Variational Auto-Encoder
+*** Set $p_{\theta}(\mathbf{x}|\mathbf{z})$:
+1. Multivariate Gaussian (in case of real-valued data) 
+2. Bernoulli (in case of binary data)
+Both parameters of the distributions are computed from $\mathbf{z}$ with a MLP(a fully-connected neural network with a single hidden layer)
+** Example : Variational Auto-Encoder
+*** Set $q_{\phi}(\mathbf{z}|\mathbf{x})$
+
+\begin{eqnarray*}
+\log q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})&= & \log \mathcal{N}(\mathbf{z};\mu^{(i)},(\sigma^{(i)})^2\mathbf{I})\\
+\end{eqnarray*}
+where the $\mu^{(i)}$ and $\sigma^{(i)}$ are the output of the encoding MLP
+** Example : Variational Auto-Encoder
+*** DO IT IN PRACTICE
+\begin{eqnarray*}
+\mathbf{z}^{(i,l)}&=&g_{\phi}(\mathbf{x}^{(i)},\mathbf{\epsilon}^{(l)}) \\
+&=&\mu^{(i)}+\sigma^{(i)}\odot \mathbf{\epsilon}^{(l)} 
+\end{eqnarray*}
+where $\mathbf{\epsilon}^{(l)} \sim \mathcal{N}(\mathbf{0},\mathbf{I})$
+1) In this model both both $p_{\theta}(\mathbf{z})$ (the prior) and $q_{\phi}(\mathbf{z}|\mathbf{x})$ are Gaussian;
+ 
+** Example : Variational Auto-Encoder
+*** Solution of $-KL(q_{\phi}(\mathbf{z})||p_{\theta}(\mathbf{z}))$, Gaussian case
+$p_{\theta}(\mathbf{z})=\mathcal{N}(\mathbf{z};\mathbf{0},\mathbf{I})$, and $q_{\phi}(\mathbf{z})=\mathcal{N}(\mathbf{z};\mu,\sigma^{2}\mathbf{I})$
+\begin{eqnarray*}
+-KL(q_{\phi}(\mathbf{z})||p_{\theta}(\mathbf{z}))& = & \frac{1}{2}\sum_{j=1}^{J}(1+\log ((\sigma_j)^2)-(\mu_j)^2-(\sigma_j)^2)\\
+\end{eqnarray*}
+** Example : Variational Auto-Encoder
+***  The resulting estimator for this model and datapoint $\mathbf{x}^{(i)}$
+\begin{eqnarray*}
+\mathcal{L}(\theta,\phi;\mathbf{x}^{(i)})&\approx &\frac{1}{2}\sum_{j=1}^{J}(1+\log ((\sigma_j^{(i)})^2)-(\mu_j^{(i)})^2-(\sigma_j^{(i)})^2) \\
+&+&\frac{1}{L}\sum_{l=1}^L\log p_{\theta}(\mathbf{x}^{(i)}|\mathbf{z}^{(i,l)})
+\end{eqnarray*}
+where $\mathbf{z}^{(i,l)}=\mu^{(i)}+\sigma^{(i)}\odot \mathbf{\epsilon}^{(l)}$, and  $\mathbf{\epsilon}^{(l)}\sim \mathcal{N}(\mathbf{0},\mathbf{I})$
+- the decoding term $p_{\theta}(\mathbf{x}^{(i)}|\mathbf{z}^{(i,l)})$  is a Bernoulli or Gaussian MLP, depending on the type of data we are modelling.
+** Example : Variational Auto-Encoder
+*** MLP’s as probabilistic encoders and decoders
+1) encoder : MLP with Gaussian output;
+2) decoder : MLPs with either Gaussian or Bernoulli outputs, depending on the type of data.
+
+** Example : Variational Auto-Encoder 
+*** Bernoulli MLP as decoder
+- Recall Bernoulli :  $p^k (1-p)^{1-k}$
+ 
+
+\begin{eqnarray*}
+\log p(\mathbf{x}|\mathbf{z})& =& \sum_{i=1}^Dx_i \log y_i+(1-x_i)\cdot \log (1-y_i)
+\end{eqnarray*}
+where 
+\begin{eqnarray*}
+\mathbf{y}& =& f_{\sigma}(\mathbf{W}_2\tanh (\mathbf{W}_1\mathbf{z}+\mathbf{b}_1)+\mathbf{b}_{2})
+\end{eqnarray*}
+** Example : Variational Auto-Encoder
+*** Gaussian MLP as decoder
+\begin{eqnarray*}
+\log p(\mathbf{x}|\mathbf{z})& =& \log \mathcal{N}(\mathbf{x};\mu,\sigma^2\mathbf{I})\\
+\end{eqnarray*}
+where 
+\begin{eqnarray*}
+\mu& =& \mathbf{W}_4\mathbf{h}+\mathbf{b}_4\\
+\log \mathbf{\sigma}^2&=&\mathbf{W}_{5}\mathbf{h}+\mathbf{b}_{5}\\
+\mathbf{h}&=&\tanh(\mathbf{W}_{3}\mathbf{z}+b_{3})
+\end{eqnarray*}
+
+** Example : Variational Auto-Encoder
+*** Gaussian MLP as encoder
+
+\begin{eqnarray*}
+\log p(\mathbf{z}|\mathbf{x})& =& \log \mathcal{N}(\mathbf{z};\mu,\sigma^2\mathbf{I})\\
+\end{eqnarray*}
+where 
+\begin{eqnarray*}
+\mu& =& \mathbf{W}_7\mathbf{h}+\mathbf{b}_7\\
+\log \mathbf{\sigma}^2&=&\mathbf{W}_{8}\mathbf{h}+\mathbf{b}_{8}\\
+\mathbf{h}&=&\tanh(\mathbf{W}_{6}\mathbf{z}+b_{6})
+\end{eqnarray*}
+
+
