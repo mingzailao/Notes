@@ -1,0 +1,21 @@
+#+TITLE:     tensorflow
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      
+#+KEYWORDS:  Deep Learning
+#+LANGUAGE:  en
+
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=STZhongsong, ItalicFont=STKaiti]{STSong}
+#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
+#+LATEX_HEADER: \setCJKmonofont{STFangsong}
+
+* class tf.Graph
+A TensorFlow computation, represented as a dataflow graph.
+- Graph
+  - Operation : units of computation
+  - Tensor    : units of data that flow between operations
+
+
+

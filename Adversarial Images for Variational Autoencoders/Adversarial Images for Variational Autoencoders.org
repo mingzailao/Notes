@@ -40,10 +40,8 @@ pass
 * Adversarial Images for Autoencoders
 ** Adversarial Images for Autoencoders
 *** Mislead
-- Maximize the misdirection towards a certain wrong label cite:szegedy13:intrig 
-
-
-
+- Maximize the misdirection towards a certain wrong label cite:szegedy13:intrig, cite:tabacof15:explor_space_adver_images or away from the correct one cite:goodfellow14:explain_harnes_adver_examp 
+- 
 * Reference
   \bibliographystyle{plain}
 

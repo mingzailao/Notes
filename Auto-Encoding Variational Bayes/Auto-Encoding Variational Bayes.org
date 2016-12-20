@@ -93,7 +93,7 @@ then $\max ELBO(q(\mathbf{z}))\Leftrightarrow \min KL(q(\mathbf{z})|p(\mathbf{z}
 
 Another form of $ELBO$:
 \begin{eqnarray*}
-ELBO(q(\mathbf{z}))& =& \mathbb{E}_{q(\mathbf{z})}[p(\mathbf{x}|\mathbf{z})]-KL(q(\mathbf{z})||p(\mathbf{z}))\\
+ELBO(q(\mathbf{z}))& =& \mathbb{E}_{q(\mathbf{z})}[\log p(\mathbf{x}|\mathbf{z})]-KL(q(\mathbf{z})||p(\mathbf{z}))\\
 \end{eqnarray*}
 
 * Auto-Encoding Variational Bayes

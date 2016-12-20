@@ -1,20 +1,28 @@
 #+TITLE:     Adversarially Learned Inference
 #+AUTHOR:    mingzailao
-#+EMAIL:     mingzailao@126.com
-#+DATE:      <2016-12-07 Wed>
-#+KEYWORDS:  Deep Learning
-#+LANGUAGE:  en
-#+OPTIONS: tex:t  
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Sun Dec 18 10:19:10 2016
+#+DESCRIPTION: 
+#+KEYWORDS: 
 #+STARTUP: beamer
 #+STARTUP: oddeven
 #+LaTeX_CLASS: beamer
 #+LaTeX_CLASS_OPTIONS: [bigger]
-
-#+BEAMER_THEME: Madrid
+#+BEAMER_THEME: metropolis
 #+OPTIONS:   H:2 toc:t
 #+SELECT_TAGS: export
 #+EXCLUDE_TAGS: noexport
 #+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Adversarially Learned Inference}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
 
 * Adversarially learned inference
 ** Adversarially learned inference(ALI)
@@ -49,14 +57,16 @@ H(\mathbf{p},\mathbf{q})& =& -y\log \hat{y}-(1-y)\log (1-\hat{y})\\
 \end{eqnarray*}
 \begin{eqnarray*}
 L_{real}(\Theta)&= &\mathbb{E}_{\mathbf{x},\mathbf{z}\sim q(\mathbf{x},\mathbf{z})}[H(1,D(\mathbf{x},\mathbf{z}))] \\
-&=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim q(\mathbf{x},\mathbf{z})}[-1\cdot \log(D(\mathbf{x},\mathbf{z}))-(1-1)\cdot\log(1-D(\mathbf{x},\mathbf{z}))]\\
+&=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim q(\mathbf{x},\mathbf{z})}[-1\cdot \log(D(\mathbf{x},\mathbf{z}))\\
+&-&(1-1)\cdot\log(1-D(\mathbf{x},\mathbf{z}))]\\
 &=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim q(\mathbf{x},\mathbf{z})}[-\log(D(\mathbf{x},\mathbf{z}))]
 \end{eqnarray*}
 ** Adversarial learned inference(ALI)
 *** Notes
 \begin{eqnarray*}
 L_{fake}(\Theta)& =& \mathbb{E}_{\mathbf{x},\mathbf{z}\sim p(\mathbf{x},\mathbf{z})}[H(0,D(\mathbf{x},\mathbf{z}))]\\
-&=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim p(\mathbf{x},\mathbf{z})}[-0\cdot\log (D(\mathbf{x},\mathbf{z}))-(1-0)\cdot\log(1-D(\mathbf{x},\mathbf{z}))]\\
+&=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim p(\mathbf{x},\mathbf{z})}[-0\cdot\log (D(\mathbf{x},\mathbf{z}))\\
+&-&(1-0)\cdot\log(1-D(\mathbf{x},\mathbf{z}))]\\
 &=&\mathbb{E}_{\mathbf{x},\mathbf{z}\sim p(\mathbf{x},\mathbf{z})}[-\log(1-D(\mathbf{x},\mathbf{z}))]
 \end{eqnarray*}
 minimum the cross-entropy equals to maximum the min-max target function.
