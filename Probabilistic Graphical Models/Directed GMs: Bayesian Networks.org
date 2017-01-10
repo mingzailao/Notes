@@ -1,0 +1,70 @@
+#+TITLE:     Directed GMs: Bayesian Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Mon Jan  2 15:45:12 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:1 toc:nil
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Directed GMs: Bayesian Networks}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+* Notation
+- Variable, value and index
+- Random variable
+- Random vector
+- Random matrix
+- Parameters
+* Knowledge Engineering
+- Picking variables
+  - Observed
+  - Hidden
+- Picking structure
+  - CAUSAL
+  - Generative
+  - Coupling
+- Picking Probabilities
+  - Zero probabilities
+  - Orders of magnitudes
+  - Relative values
+* Hidden Markov Model
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:53:52
+[[file:Hidden Markov Model/screenshot_2017-01-02_15-53-52.png]]
+* Probability of a parse
+- Joint PDF
+\begin{equation}
+\label{eq:1}
+p(\mathbf{x},\mathbf{y})=p(y_1,\cdots,y_T)p(x_1,\cdots,x_T|y_1,\cdots,y_T)
+\end{equation}
+- Marginal probability 
+\begin{equation}
+\label{eq:2}
+p(\mathbf{x})=\sum_yp(\mathbf{x},\mathbf{y})=\sum_{y_1}\sum_{y_2}\cdots\sum_{y_N}\pi_{y_1}\prod_{t=2}^Ta_{y_{t-1},y_t}\prod_{t=1}^Tp(x_t|y_t)
+\end{equation}
+- Posterior probability
+\begin{equation}
+\label{eq:3}
+p(\mathbf{y}|\mathbf{x})=p(\mathbf{x},\mathbf{y})/p(\mathbf{x})
+\end{equation}
+* Bayesian Network: Factorization Theorem
+Given a DAG, The most general form of the probability distribution that is consistent with the graph factors according to “node given its parents”:
+\begin{equation}
+\label{eq:4}
+P(\mathbf{X})=\prod_{i=1:d}P(X_i|X_{\pi_i})
+\end{equation}
+

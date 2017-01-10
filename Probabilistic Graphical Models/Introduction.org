@@ -1,0 +1,177 @@
+#+TITLE:     Introduction to GM and Directed GMs: Bayesian Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Mon Jan  2 14:25:06 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:1 toc:nil
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Introduction}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+* Graphical Model
+- Model : $\mathcal{M}$
+- Data : $\mathcal{D}=\{X_1^i,\cdot X_m^i\}_{i=1}^N$
+
+* The Fundamental Questions
+** Representation
+- How to capture/model uncertainties in possible worlds?
+- How to encode our domain knowledge/assumptions?
+** Inference
+- How do I answers questions/queries according to my model and/or based given data?
+e.g.: $P(X_i|\mathcal{D})$
+
+** Learning
+- What model is "right" for my data? 
+e.g.: $\mathcal{M}=\arg\max_{\mathcal{M}\in \mathbf{M}}F(\mathcal{D},\mathcal{M})$
+* Recap of Basic Prob. Concepts
+- Representation: what is the joint probability dist. on multiple variables?
+   - If the variables are binary, the number of state is $2^8$
+   - Are they all needed to be represented?
+   - *Do we get any scientific/medical insight?*
+\begin{equation}
+\label{eq:2}
+P(X_1,X_2,\cdots,X_8)
+\end{equation}
+* Recap of Basic Prob. Concepts
+- Learning: where do we get all this probabilities?
+  - Maximal-likelihood estimation? but how many data do we need?
+  - Are there other est. principles?
+  - Where do we put domain knowledge in terms of plausible relationships between variables, and plausible values of the probabilities?
+* Recap of Basic Prob. Concepts
+- Inference: If not all variables are observable, how to compute the conditional distribution of latent variables given evidence?
+Computing $p(H|A)$ would require summing over all $2^6$ configurations of the unobserved variables
+* What is a Graphical Model?
+Multivariate Distribution in High-D Space
+
+A possible world for cellular signal transduction:
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:02:22
+[[file:What is a Graphical Model?/screenshot_2017-01-02_15-02-22.png]]
+
+* GM: Structure Simplifies Representation
+Dependencies among variables
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:03:14
+[[file:GM: Structure Simplifies Representation/screenshot_2017-01-02_15-03-14.png]]
+* Probabilistic Graphical Models
+  
+** If $X_i's$ are conditionally independent(as described by a PGM) the joint can be factored to a product of simpler terms, e.g.
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:06:10
+[[file:Probabilistic Graphical Models/screenshot_2017-01-02_15-06-10.png]]
+* Probabilistic Graphical Models
+- Why we may favor a PGM?
+
+Incorporation of domain knowledge and causal (logical) structures
+
+*1+1+2+2+2+4+2+4=18, a 16-fold reduction from 28 in representation cost !*
+* GM: Data Integration
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:11:02
+[[file:GM: Data Integration/screenshot_2017-01-02_15-11-02.png]]
+* More Data Integration
+- Text + Image + Network $\rightarrow$ Holistic Social Media
+- Genome + Proteome + Transcritome + Phenome + $\rightarrow$ PanOmic Biology
+* Probabilistic Graphical Models
+- If $X_i$'s are conditionally independent (as described by a PGM),the joint can be factored to a product of simpler terms, e.g.:
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:13:07
+[[file:Probabilistic Graphical Models/screenshot_2017-01-02_15-13-07.png]]
+* Probabilistic Graphical Models
+- Why we may favor a PGM?
+
+ Modular combination of heterogeneous parts – data fusion
+
+* Rational Statistical Inference
+- The Bayes Theorem:
+\begin{equation}
+\label{eq:3}
+p(h|d)=\frac{p(d|h)p(h)}{\sum_{h'\in H}p(d|h')p(h')}
+\end{equation}
+- This allows us to capture uncertainty about the model in a principled way
+* GM: MLE and Bayesian Learning
+- Probabilistic statements of $\Theta$  is conditioned on the values of the observed variables $A_{obs}$ and prior $p(|\chi)$
+\begin{equation}
+\label{eq:4}
+p(\Theta|A;\chi)\propto p(A|\Theta)p(\Theta;\chi)
+\end{equation}
+
+* Probabilistic Graphical Models
+- Why we may favor a PGM
+
+Bayesian Philosophy
+- Knowledge meets data
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:28:23
+[[file:Probabilistic Graphical Models/screenshot_2017-01-02_15-28-23.png]]
+* So What is a Graphical Model? 
+GM = Multivariate Statistics + Structure
+* Two types of GMs
+- Directed edges give causality relationships (Bayesian Network or Directed Graphical Model):
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:30:06
+[[file:Two types of GMs/screenshot_2017-01-02_15-30-06.png]]
+* Two types of GMs
+- Undirected edges simply give correlations between variables (Markov Random Field or Undirected Graphical model):
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:30:25
+[[file:Two types of GMs/screenshot_2017-01-02_15-30-25.png]]
+* GMs are your old friends
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:36:29
+[[file:GMs are your old friends/screenshot_2017-01-02_15-36-29.png]]
+* GMs are your old friends
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:36:51
+[[file:GMs are your old friends/screenshot_2017-01-02_15-36-51.png]]
+* Fancier GMs: reinforcement learning
+- Partially observed Markov decision processes (POMDP)
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:37:36
+[[file:Fancier GMs: reinforcement learning/screenshot_2017-01-02_15-37-36.png]]
+* Fancier GMs: machine translation
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:37:54
+[[file:Fancier GMs: machine translation/screenshot_2017-01-02_15-37-54.png]]
+* Fancier GMs: genetic pedigree
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:38:12
+[[file:Fancier GMs: genetic pedigree/screenshot_2017-01-02_15-38-12.png]]
+* Fancier GMs: solid state physics
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-02 15:38:49
+[[file:Fancier GMs: solid state physics/screenshot_2017-01-02_15-38-49.png]]
+* Application of GMs
+- Machine Learning
+- Computational statistics
+- Computer vision and graphics 
+- Natural language processing 
+- Informational retrieval
+- Robotic control
+- Decision making under uncertainty
+- Error-control codes
+- Computational biology
+- Genetics and medical diagnosis/prognosis 
+- Finance and economics
+- Etc.

@@ -1,0 +1,72 @@
+#+TITLE:     Autoencoding beyond pixels using a learned similarity metric
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Fri Dec 30 16:39:20 2016
+#+DESCRIPTION: ICML2016 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Autoencoding beyond pixels using a learned similarity metric}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT 
+
+* Overview 
+** Overview
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-30 16:41:56
+[[file:Overview/screenshot_2016-12-30_16-41-56.png]]
+** Variational autoencoder
+- $\mathbf{z}\sim Enc(\mathbf{x})=q(\mathbf{z}|\mathbf{x})$
+- $\hat{\mathbf{}x}\sim Dec(\mathbf{z})=p(\mathbf{x}|\mathbf{z})$
+
+  then : 
+\begin{eqnarray*}
+\mathcal{L}_{VAE}&=&-\mathbb{E}_{q(\mathbf{z}|\mathbf{x})}[\log p(\mathbf{x}|\mathbf{z})]+D_{KL}(q(\mathbf{z}|\mathbf{x})||p(\mathbf{z}))\\
+&=&\mathcal{L}_{like}^{pixel}+\mathcal{L}_{prior}
+\end{eqnarray*}
+** GAN
+maxi- mize/minimize the binary cross entropy:
+\begin{eqnarray*}
+\mathcal{L}_{GAN} & =& \log (Dis(\mathbf{x}))+\log (1-Dis(Gen(\mathbf{z})))\\
+\end{eqnarray*}
+with respect to Dis / Gen with $\mathbf{x}$ being a training sample and $\mathbf{z}\sim p(\mathbf{z})$ 
+* Beyond element-wise reconstruction error
+** Beyond element-wise reconstruction error
+*** Keys
+Replacing the VAE reconstruction (expected log likelihood) error term with a reconstruction error expressed in the GAN discriminator
+** Beyond element-wise reconstruction error
+*** Notations
+- $Dis_l(\mathbf{x})$ : the hidden representation of the $l$ -th layer of the discriminator.
+*** Gaussian observation model for $Dis_l(\mathbf{x})$ with means $Dis_l(\mathbf{x})$ and identity covari- ance:
+\begin{eqnarray*}
+p(Dis_l(\mathbf{x})|\mathbf{z}) & =& \mathcal{N}(Dis_l(\mathbf{x})|Dis(\hat{\mathbf{x}}),\mathbf{I})\\
+\end{eqnarray*}
+where $\hat{\mathbf{x}}\sim Dec(\mathbf{z})$ is the sample from the decoder of $\mathbf{x}$
+\begin{eqnarray*}
+\mathcal{L} & =& D_{KL}(q(\mathbf{z}|\mathbf{x})||p(\mathbf{z}))-\mathbb{E}_{q(\mathbf{z}|\mathbf{x})}[\log p(Dis_l(\mathbf{x})|\mathbf{z})]+\mathcal{L}_{GAN} \\
+\end{eqnarray*}
+
+** Process
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-31 20:38:28
+[[file:Beyond element-wise reconstruction error with VAE/GAN/screenshot_2016-12-31_20-38-28.png]]
+** Algorithm
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-31 20:40:48
+[[file:Beyond element-wise reconstruction error with VAE/GAN/screenshot_2016-12-31_20-40-48.png]]

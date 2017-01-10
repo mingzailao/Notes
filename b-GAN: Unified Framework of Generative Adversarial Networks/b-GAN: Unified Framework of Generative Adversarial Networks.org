@@ -1,26 +1,28 @@
-
 #+TITLE:     b-GAN: Unified Framework of Generative Adversarial Networks
 #+AUTHOR:    mingzailao
-#+EMAIL:     mingzailao@126.com
-#+DATE:      <2016-11-22 Tue>
-#+KEYWORDS:  Deep Learning
-#+LANGUAGE:  en
-
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Thu Dec 22 19:24:14 2016
+#+DESCRIPTION: 
+#+KEYWORDS: 
 #+STARTUP: beamer
 #+STARTUP: oddeven
 #+LaTeX_CLASS: beamer
 #+LaTeX_CLASS_OPTIONS: [bigger]
-#+LATEX_HEADER: \usepackage{xeCJK}
-#+LATEX_HEADER: \setCJKmainfont[BoldFont=STZhongsong, ItalicFont=STKaiti]{STSong}
-#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
-#+LATEX_HEADER: \setCJKmonofont{STFangsong}
-
-#+BEAMER_THEME: Madrid
+#+BEAMER_THEME: metropolis
 #+OPTIONS:   H:2 toc:t
 #+SELECT_TAGS: export
 #+EXCLUDE_TAGS: noexport
 #+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
-
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{b-GAN: Unified Framework of Generative Adversarial Networks}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
 
 * GANs
 ** GANs
@@ -35,6 +37,7 @@
 \label{eq:2}
 D_G^{*}(\mathbf{x})=\frac{P_{data}(\mathbf{x})}{P_{data}(\mathbf{x})+P_g(\mathbf{x})}
 \end{equation}
+
 
 * Reference
 

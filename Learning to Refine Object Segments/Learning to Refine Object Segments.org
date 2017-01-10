@@ -1,0 +1,113 @@
+#+TITLE:     Learning to Refine Object Segments
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Wed Jan  4 15:45:02 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Learning to Refine Object Segments}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+* Network Structure
+** Network Structure
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-04 15:47:43
+[[file:Network Structure/screenshot_2017-01-04_15-47-43.png]]
+** Network Structure
+- Feedforward nets, such as DeepMask[fn:1] (a)
+- with skip architectures,such as Fully convolutional networks for semantic segmentation[fn:2] (b)
+- This model (c,d)
+* DeepMask
+** DeepMask Structure
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-04 15:55:51
+
+[[file:DeepMask/screenshot_2017-01-04_15-55-51.png]]
+** DeepMask notations
+Each sample $k$ in the training set is a triplet containing 
+- the RGB input $x_k$
+- the binary mask corresponding to the input patch $m_k$ ($m_k^{ij}\in\{-1,+1\}$ )
+- a label $y_k$ which specifies whether the patch contains an object
+
+Specifically, a patch $x_k$ is given label $y_{k} = 1$ if it satisfies the following constraints
+1. the patch contains an object roughly centered in the input patch
+2. the object is fully contained in the patch and in a given scale range
+
+** DeepMask Segmentation Branch
+Points 
+- The branch of the network dedicated to segmentation is composed of a single $1\times 1$ convolution layer(ReLU non-linearity) followed by a classification layer.
+- The classification layer consists of $h\times w$ pixel classifiers 
+- Decompose the classification layer into two linear layers with no non-linearity in between.
+
+
+  set the output of the classification layer to be $h^o\times w^o$ with $h^o<h$ and $w^o<w$
+
+** DeepMask Loss
+Given an input patch $x_k\in \mathcal{I}$, the model is trained to jointly infer a pixel-wise segmentation mask and an object score.
+
+\begin{eqnarray}
+\label{eq:1}
+\mathcal{L}(\theta)&=&\sum_k(\frac{1+y_k}{2*w^o*h^o}\sum_{i,j}\log(1+e^{-m_k^{ij}f_{segm}^{ij}(x_k)})\\
+&+&\lambda\log(1+e^{-y_kf_{score}(x_k)}))
+\end{eqnarray}
+
+** DeepMask Implementation Details
+Look for the paper
+ 
+* Fully convolutional networks for semantic segmentation
+** PASS
+PASS
+* SharpMask
+** Refinement Overview
+each module $R^i$ takes as input a mask encoding $M^i$ generated in the top-down pass, along with mathcing features $F^i$ in the bottom-up pass, and learn to merge the information to generate a new upsampled object encoding $M^{i+1}$.
+\begin{equation}
+\label{eq:2}
+M^{i+1}=R^i(M^i,F^i)
+\end{equation}
+** Refinement Details
+- the simplest way: concatenate $M^{i}$ and $F^i$
+
+Two problem :
+1. $k_f^i>> k_m^i$ ,loss the information of $M^i$
+2. In mordern CNN, $k_f^i$ can be quite large, using $F^i$ directly would be computationallyexpensive.
+** Refinement Details
+- solution
+by a $3\times 3$ convolutional module s.t. $k_s^i<<k_f^i$
+
+*KEYS: the convolutional modules are shared*
+** Refinement Details
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-04 18:55:24
+[[file:SharpMask/screenshot_2017-01-04_18-55-24.png]]
+
+** Training and Inference
+- first, the model is trained to jointly infer a coarse pixel-wise segmentation mask and an object score;
+- second, the feedforward path is ‘frozen’ and the refinement modules trained
+
+
+Once learning of the first stage converges, the final mask prediction layer of the feedforward network is removed and replaced with a linear layer that generates a mask encoding $M^1$ in place of the actual mask output.
+** Feedforward Architecture
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-04 18:59:00
+[[file:SharpMask/screenshot_2017-01-04_18-59-00.png]]
+** Experiments Details
+READ THE PAPER
+* Footnotes
+
+[fn:2] Long J, Shelhamer E, Darrell T. Fully convolutional networks for semantic segmentation[C]//Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2015: 3431-3440.
+
+[fn:1] Pinheiro P O, Collobert R, Dollar P. Learning to segment object candidates[C]//Advances in Neural Information Processing Systems. 2015: 1990-1998.

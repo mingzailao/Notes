@@ -1,0 +1,63 @@
+#+TITLE:     Learning to Generate with Memory
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Sat Jan  7 19:04:32 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Learning to Generate with Memory}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+
+* Probabilistic DGMs with Memory
+** Overall Architecture
+- training data : $\mathcal{D}$
+each sample $\mathbf{x}\in \mathcal{D}$ is independently generated with latent factors $\mathbf{z}_{L},\cdots,\mathbf{z}_1$:
+1. Draw the top-layer factors $\mathbf{z}_L\sim \mathcal{N}(0,1)$
+2. For $l=L-1,\cdots,0$, calculate the mean parameters $\mathbf{\mu}_l=g_l(\mathbf{z}_{l+1};M_l)$ and draw the factors $\mathbf{z}_l\sim P_l(\mathbf{\mu}_l)$
+
+$g_l$ is a feed-forward deep neural network with $I_l$ deterministic layers and a set of memories $\{M_l^{(i)}\}_{i=0}^{I_l-1}$.
+
+** Overall Architecture
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-09 14:00:15
+[[file:Probabilistic DGMs with Memory/screenshot_2017-01-09_14-00-15.png]]
+** Concrete Examples with Hierarchical Memory Mechanisms
+   For simplicity, here we consider a generative model with only one stochastic layer and $I$ deterministic layers to explain our memory mechanism.
+
+$\mathbf{h}^{I+1}=\mathbf{z}$, we compute the low-level generative information $\mathbf{h}_g^{(i)}$ based on the input $\mathbf{h}^{(i+1)}$ as :
+\begin{equation}
+\label{eq:1}
+\mathbf{h}_g^{(i)}=\phi(W_g^{(i)}\mathbf{h}^{(i+1)}+b_g^{(i)})
+\end{equation}
+** Concrete Examples with Hierarchical Memory Mechanisms
+- using the memory
+\begin{equation}
+\label{eq:2}
+\mathbf{h}_m^{(i)}=M^{(i)}\mathbf{h}_a^{(i)}
+\end{equation}
+with the coefficients $\mathbf{h}_a^{(i)}$ are computed as
+\begin{equation}
+\label{eq:3}
+\mathbf{h}_a^{(i)}=sigmoid(A^{(i)}\mathbf{h}_g^{(i)}+b_A^{(i)})
+\end{equation}
+
+softmax is okay
+

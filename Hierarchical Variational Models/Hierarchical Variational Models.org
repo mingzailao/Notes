@@ -1,0 +1,64 @@
+#+TITLE:     Hierarchical Variational Models
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Mon Jan  9 17:13:44 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Hierarchical Variational Models}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+* BBVI
+** BBVI
+*** Definition
+It sets up a parameterized family of distributions over the latent variables and then optimizes the parameters to be close to the posterior.
+* Technical summary
+** Technical summary
+Consider a posterior distribution $p(\mathbf{z}|\mathbf{x})$, a distribution on $d$ latent variables $z_1,\cdots,z_d$ conditional on a set of observations $\mathbf{x}$. the mean-field family is a factorized distribution of the latent variables,
+\begin{equation}
+\label{eq:1}
+q_{MF}(\mathbf{z},\pmb{\lambda})=\prod_{i=1}^dq(z_i;\pmb{\lambda})
+\end{equation}
+
+we fit the parameters $\pmb{\lambda}$ to find a variational distribution that is close to the exact posterior.
+** Technical summary
+   By putting Eq. ref:eq:1 as a model of the latent variables, we can expand it by placing a prior on its parameters, the result is a *hierarchical variational model*, a two-level distribution that first draws variational parameters from a prior $q(\pmb{\lambda};\pmb{\theta})$ and then draws latent variables from the corresponding likelihood (Eq. [[ref:eq:1]])
+** Technical summary
+HVMs include a family that marginalizes out the mean-field parameters
+\begin{equation}
+\label{eq:2}
+q_{HVM}(\mathbf{z},\pmb{\theta})=\int q(\pmb{\lambda},\pmb{\theta})\prod_iq(z_i|\pmb{\lambda}_i)d\pmb{\lambda}
+\end{equation}
+this expand family can capture both posterior dependencies between the latent variables and more complex marginal distributions, thus better inferring the posterior. (we note that during the inference the variational "posterior" $q(\pmb{\lambda}|\mathbf{z},\pmb{\theta})$ will also play a role; it is the conditional distri- bution of the variational parameters given a realization of the hidden variables.)
+* Hierarchical Variational Models
+** Hierarchical Variational Models
+Recall : $p(\mathbf{z}|\mathbf{x})$ is the prior. Variational Inference frames posterior inference as optimization : posit a family of distribution $q(\mathbf{z};\pmb{\lambda})$, parameterized by $\pmb{\lambda}$, and minimize the KL-divergence to the posterior distribution.
+
+Classically, variational inference uses the mean-field family, In the mean-field family, each latent variable is assumed independent and governed by its own variational parameter (Eq. [[ref:eq:1]]).
+** Hierarchical Variational Models
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-09 19:17:32
+[[file:Hierarchical Variational Models/screenshot_2017-01-09_19-17-32.png]]
+
+** Specifying an HVM
+An HVM has two components : the variational likelihood $q(\mathbf{z}|\pmb{\lambda})$ and the prior $p(\pmb{\lambda};\pmb{\theta})$.
+The likelihood comes from a variational family that admits gradients; here we focus on the mean-field family. As for the prior, the distribution of $\{\pmb{\lambda}_1,\cdots,\pmb{\lambda}_d\}$ should not have the same factorization structure as the variational likelihood, otherwise it will not induce dependence between latent variables. 
+** Specifying an HVM
+- Variational prior: Mixture of Gaussians
+

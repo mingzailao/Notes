@@ -97,3 +97,13 @@ the VAE learns a latent representation that is compatible with $p(\mathbf{z})$
 [[file:Relationship to Variational Autoencoders/screenshot_2016-12-14_14-03-15.png]]
 * Incorporating Label Information in the Adversarial Regularization
 ** Incorporating Label Information in the Adversarial Regularization
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-31 21:09:21
+[[file:Incorporating Label Information in the Adversarial Regularization/screenshot_2016-12-31_21-09-21.png]]
+** Incorporating Label Information in the Adversarial Regularization
+
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2016-12-31 21:17:19
+[[file:Incorporating Label Information in the Adversarial Regularization/screenshot_2016-12-31_21-17-19.png]]

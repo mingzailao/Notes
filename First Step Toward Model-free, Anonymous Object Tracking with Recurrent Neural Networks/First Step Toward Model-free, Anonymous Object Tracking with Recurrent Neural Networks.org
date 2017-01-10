@@ -1,4 +1,3 @@
-
 #+TITLE:     First Step Toward Model-free, Anonymous Object Tracking with Recurrent Neural Networks
 #+AUTHOR: mingzailao
 #+KEYWORDS:  Deep Learning
