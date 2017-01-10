@@ -1,0 +1,34 @@
+#+TITLE:     SalGAN: Visual Saliency Prediction with Generative Adversarial Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Tue Jan 10 15:51:46 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{SalGAN: Visual Saliency Prediction with Generative Adversarial Networks}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+* Network Structure
+** Network Structure
+[[https://raw.githubusercontent.com/imatge-upc/saliency-salgan-2017/junting/figs/fullarchitecture.jpg?token=AFOjyaH8cuBFWpldWWzo_TKVB-zekfxrks5Yc4NQwA%253D%253D][NetworkStructure]]
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-10 15:55:03
+[[file:Network Structure/screenshot_2017-01-10_15-55-03.png]]
+** Generator
