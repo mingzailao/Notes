@@ -83,6 +83,23 @@ F(\theta,\omega)=\mathbb{E}_{x\sim P}[g_f(V_{\omega}(x))]-\mathbb{E}_{x\sim Q_{\
   - Update : $\theta^{t+1}=\omega^t-\eta \nabla_{\theta}F(\theta^t,\omega^t)$.
 
 
+** Analysis.
+This algorithm geometrically converges to a saddle point $(\theta^{*},\omega^{*})$ if there is a neighborhood around the saddle point in which F is strongly convex in $\theta$ and strongly concave in $\omega$:
+
+$$\nabla_{\theta}F(\theta^{*},\omega^{*})=0$$
+$$\nabla_{\omega}F(\theta^{*},\omega^{*})=0$$
+$$\nabla_{\theta}^2F(\theta,\omega)\ge \delta I$$
+$$\nabla_{\omega}^2F(\theta,\omega)\le -\delta I$$
+** Analysis
+Define $\pi^t=(\theta^t,\omega^t)$,
+*** Theorem
+Suppose that there is a saddle point $\pi^t$ with a neighborhood that satisfies those conditions, Moreover, we define $J(\pi)=\frac{1}{2}||\nabla F(\pi)||_2^2$ and assume that in the above neighborhood $F$ is sufficiently smooth so that there is a constant $L>0$ such that $$||\nabla J(\pi^{'})-\nabla J(\pi)||_{2}\le L ||\pi^{'}-\pt||_2$$ for any $\pi,\pi^{'}$ in the neighborhood of $\pi^{*}$,  Then using the step-size $\eta=\delta/L$ in Algorithm we have :
+\begin{equation}
+\label{eq:7}
+J(\pi^t)\le (1-\frac{\delta^2}{2L})J(\pi^0)
+\end{equation}
+
+
 
 * Footnotes
 
