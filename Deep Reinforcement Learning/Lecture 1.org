@@ -1,0 +1,50 @@
+#+TITLE:     Deep Reinforcement Learning
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Sun Jan 29 01:35:48 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: Hannover
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+LATEX_HEADER:\usepackage{ragged2e}
+#+LATEX_HEADER:\justifying
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Lecture 1}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+
+
+
+* What is Reinforcement Learning?
+** What is Reinforcement Learning?
+- Branch of machine learning concerned with taking sequences of actions
+- Usually described in terms of target interacting with a previously unknown enviroment, trying to maximize cumulative reward
+- Formalized as partially observable Markov decision process (POMDP)
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-29 01:44:41
+
+[[file:What is Reinforcement Learning?/screenshot_2017-01-29_01-44-41.png]]
+* Terminology & notation
+** Terminology & notation
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-29 01:51:31
+[[file:Terminology & notation/screenshot_2017-01-29_01-51-31.png]]
+** Terminology & notation
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-29 01:53:09
+[[file:Terminology & notation/screenshot_2017-01-29_01-53-09.png]]

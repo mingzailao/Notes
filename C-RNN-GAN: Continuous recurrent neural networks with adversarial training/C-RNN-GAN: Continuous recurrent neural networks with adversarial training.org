@@ -1,0 +1,53 @@
+#+TITLE:     C-RNN-GAN: Continuous recurrent neural networks with adversarial training
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Thu Jan 12 20:26:19 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+BEAMER_THEME: Hannover
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{C-RNN-GAN: Continuous recurrent neural networks with adversarial training}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+* C-RNN-GAN
+** C-RNN-GAN
+*** Loss
+\begin{eqnarray*}
+L_G & =& \frac{1}{m}\sum_{i=1}^{m}\log (1-D(G(\boldsymbol{z}^{(i)})))\\
+L_D&=& \frac{1}{m}\sum_{i=1}^m[-\log D(\boldsymbol{x}^{(i)})-\log D(G(\boldsymbol{z}^{(i)}))]
+\end{eqnarray*}
+
+- $\boldsymbol{z}^{(i)}$ : a sequence of uniform random vectors in $[0,1]^k$
+- $\boldsymbol{x}^{(i)}$ : a sequence from the training data
+- $k$ : the dimensionality of the data in the random sequence
+** C-RNN-GAN
+*** Generator
+- The input of the generator $G$ : a random vector, concatenated with the output of the previous cell [fn:1]
+*** Discriminator
+The discriminator consists of a bidirectional recurrent net.
+** CNN-RNN-GAN
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-13 10:09:51
+[[file:C-RNN-GAN/screenshot_2017-01-13_10-09-51.png]]
+** TODO Modelling music
+* TODO Experiments
+** Experiments
+
+* Footnotes
+
+[fn:1] Feeding the output from the previous cell is a common practice when training RNNs as language models[Mikolov et al., 2010].
+

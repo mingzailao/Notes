@@ -1,7 +1,7 @@
 #+TITLE:     Auto-Encoding Variational Bayes
 #+AUTHOR:    mingzailao
 #+EMAIL:     mingzailao@gmail.com
-#+DATE:      Sun Dec 11 15:03:06 2016
+#+DATE:      Tue Feb 28 18:15:21 2017
 #+DESCRIPTION: 
 #+KEYWORDS: 
 #+STARTUP: beamer
@@ -18,11 +18,15 @@
 \AtBeginSection[]
 {
 \begin{frame}<beamer>
-\frametitle{Auto-Encoding Variational Bayes}
+\frametitle{}
 \tableofcontents[currentsection]
 \end{frame}
 }
 #+END_EXPORT
+
+
+
+
 
 * Variational Inference
 ** Variational Inference
@@ -243,4 +247,8 @@ where
 \mathbf{h}&=&\tanh(\mathbf{W}_{6}\mathbf{z}+b_{6})
 \end{eqnarray*}
 
+* Code
+** Code
+   - [[https://112.74.187.151:10001/notebooks/proj/keras/examples/VAE.ipynb][Code]]
+   - [[https://112.74.187.151:10001/notebooks/proj/keras/examples/ConvVAE.ipynb][Code]]
 

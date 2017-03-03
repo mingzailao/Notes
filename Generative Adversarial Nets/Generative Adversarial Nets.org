@@ -1,24 +1,28 @@
 #+TITLE:     Generative Adversarial Nets
 #+AUTHOR:    mingzailao
-#+EMAIL:     mingzaialo@126.com
-#+DATE:      <2016-11-04 Fri>
-#+KEYWORDS:  Deep Learning
-#+LANGUAGE:  en
-
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Tue Feb 28 16:52:29 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
 #+STARTUP: beamer
 #+STARTUP: oddeven
 #+LaTeX_CLASS: beamer
 #+LaTeX_CLASS_OPTIONS: [bigger]
-#+LATEX_HEADER: \usepackage{xeCJK}
-#+LATEX_HEADER: \setCJKmainfont[BoldFont=STSong, ItalicFont=STKaiti]{STSong}
-#+LATEX_HEADER: \setCJKsansfont[BoldFont=STHeiti]{STXihei}
-#+LATEX_HEADER: \setCJKmonofont{STFangsong}
-
 #+BEAMER_THEME: Madrid
 #+OPTIONS:   H:2 toc:t
 #+SELECT_TAGS: export
 #+EXCLUDE_TAGS: noexport
 #+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Generative Adversarial Nets}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
 
 * Adversarial nets
 ** Adversarial nets
@@ -80,9 +84,8 @@ After we got $D_g^{*}$, define:
 \mathbb{E}_{\mathbf{z}\sim P_{\mathbf{z}}}[\log (1-D_G^{*}(\mathbf{z}))]\nonumber\\
 &=&\mathbb{E}_{\mathbf{x}\sim P_{data}}[\log D_G^{*}(\mathbf{x})]+
 \mathbb{E}_{\mathbf{x}\sim P_g}[\log (1-D_G^{*}(\mathbf{x}))]\nonumber\\
-&=&\mathbb{E}_{\mathbf{x}\sim P_{data}}[\log \frac{P_{data}(\mathbf{x})}{P_{data}(\mathbf{x})+P_g(\mathbf{x})}]+
-\mathbb{E}_{\mathbf{x}\sim P_g}[\log \frac{P_g(\mathbf{x})}{P_{data}(\mathbf{x})+P_g(\mathbf{x})}]\nonumber\\
-
+&=&\mathbb{E}_{\mathbf{x}\sim P_{data}}[\log \frac{P_{data}(\mathbf{x})}{P_{data}(\mathbf{x})+P_g(\mathbf{x})}]\\
+&+&\mathbb{E}_{\mathbf{x}\sim P_g}[\log \frac{P_g(\mathbf{x})}{P_{data}(\mathbf{x})+P_g(\mathbf{x})}]\nonumber
 \end{eqnarray}
 ** Theoretical Results
 *** Theorem 1
@@ -114,8 +117,6 @@ where Jensen–Shannon divergence is always non-negative,and zero iff they are e
 
 #+DOWNLOADED: /tmp/screenshot.png @ 2016-11-08 19:05:52
 [[file:Conditional Generative Adversarial Nets/screenshot_2016-11-08_19-05-52.png]]
-* LAPGAN
-Deep Generative Image Models using a Laplacian Pyramid of Adversarial Networks cite:denton15:deep_gener_image_model_laplac
 * Deep Convolutional GANs
 ** Deep Convolutional GANs 
 #+DOWNLOADED: /tmp/screenshot.png @ 2016-11-08 21:43:40
@@ -218,4 +219,3 @@ C=\sigma(\sum_{t=1}^T\Delta C_t)
  \bibliographystyle{unsrtnat}
 
  bibliography:~/PAPERS/BibTex/mingzailao.bib
-

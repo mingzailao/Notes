@@ -1,0 +1,43 @@
+#+TITLE:     LightRNN: Memory and Computation-Efficient Recurrent Neural Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Wed Feb 15 15:35:02 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: Hannover
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{LightRNN: Memory and Computation-Efficient Recurrent Neural Networks}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+* LightRNN
+** RNN Model with 2-Component Shared Embedding
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-02-15 15:38:24
+[[file:LightRNN/screenshot_2017-02-15_15-38-24.png]]
+** RNN Model with 2-Component Shared Embedding
+Then for a vocabulary with $|V|$ words, we only need $2\sqrt{|V|}$ unique vectors for input word embeddings, it is the same case for the output word embeddings.
+** RNN Model with 2-Component Shared Embedding
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-02-15 15:41:49
+[[file:LightRNN/screenshot_2017-02-15_15-41-49.png]]
+** RNN Model with 2-Component Shared Embedding
+*** Notations
+- n : the dimension of a row/column input vector
+- m : the dimension of the hidden vector
+To compute the probability distribution of $\omega_t$, we need to use the column vector $x_{t-1}^c\in \mathbb{R}^n$, the row vector $x_t^r\in \mathbb{R}^n$ and the hidden state vector $h_{t-1}^r$

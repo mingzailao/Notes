@@ -31,12 +31,59 @@
 \begin{eqnarray*}
 D_f(P||Q) &= & \int_{\mathcal{X}}q(x)f(\frac{p(x)}{q(x)})dx\\
 \end{eqnarray*}
+- $f$ : $\mathbb{R}_{+}\rightarrow \mathbb{R}$ is a convex, lower-semicontinuous function satisfying $f(1)=0$
 
 *** Fenchel conjugate
 \begin{eqnarray*}
 f^{*}(t) & =& \sup_{u\in dom_f}\{ut-f(u)\}\\
 \end{eqnarray*}
 
+** The f-divergence of $P$ and $Q$:
+
+\begin{eqnarray}
+\label{eq:3}
+D_f(P||Q)&=&\int_{\mathcal{X}}q(x)\sup_{t\in dom_{f^{*}}}\{t\frac{p(x)}{q(x)}-f^{*}(t)\}dx\\
+&\ge&\sup_{T\in \mathcal{T}}(\int_{\mathcal{X}}p(x)T(x)dx-\int_{\mathcal{X}}q(x)f^{*}(T(x))dx)\\
+&=&\sup_{T\in \mathcal{T}}(\mathbb{E}_{x\sim P}[T(x)]-\mathbb{E}_{x\sim Q}[f^{*}(T(x))])
+\end{eqnarray}
+** What is $T^{*}(x)$
+By taking the variation of the lower bound in the equation we find that under mild conditions on f [fn:1], the bound is tight for
+\begin{equation}
+\label{eq:4}
+T^{*}(x)=f^{'}(\frac{p(x)}{q(x)})
+\end{equation}
+
+* Variational Divergence Minimization
+** Variational Divergence Minimization
+-  use the bound on f-divergence $D_f(P||Q)$ in order to estimate a generative model $Q$ given the true distribution $P$.
+- $Q_{\theta}$ is the generative model with parameter $\theta$, taking as input a random vector and outputting a sample of interest.
+- $T_{\omega}$ is the Discriminate model with parameter $\omega$. taking as input a sample and returning a scalar.
+
+** Variational Divergence Minimization
+*** Min-max The Loss(minimise with respect to $\theta$ and maximum with respect to $\omega$)
+\begin{equation}
+\label{eq:5}
+F(\theta,\omega)=\mathbb{E}_{x\sim P}[T_{\omega}(x)]-\mathbb{E}_{x\sim Q_{\theta}}[f^{*}(T_{\omega}(x))]
+\end{equation}
+To optimize this on a finite training data set, we approximate the expectations using minibatch samples. To approximate $\mathbb{E}_{x\sim P}[\cdot]$ we sample $B$ instances without replacement from the training set. To approximate $\mathbb{E}_{x\sim Q_{\theta}}[\cdot]$, we sample B instances from the current generative model $Q_{\theta}$
+** Variational Divergence Minimization
+we assume that variational function $T\omega$ is represented in the form $T\omega(x)=g_f(V_{\omega}(x))$, then:
+\begin{equation}
+\label{eq:6}
+F(\theta,\omega)=\mathbb{E}_{x\sim P}[g_f(V_{\omega}(x))]-\mathbb{E}_{x\sim Q_{\theta}}[-f^{*}(g_f(V_{\omega}(x)))]
+\end{equation}
+
+- $g_f$ : an output activation function specific to the f -divergence used
+- $V_{\omega}$ : $\mathcal{X}\rightarrow \mathbb{R}$
+* Algorithms for Variational Divergence Minimization (VDM)
+** Single-Step Gradient Method
+- *function* SINGLE-STEP-GRADIENT-ITERATION($P,\theta^t,\omega^t,B,\eta$)
+  - Sample $X_P=\{x_1,x_2,\cdots,x_B\}$ and $X_Q=\{x_1^{'},\cdots,x_B^{'}\}$, from $P$ and $Q_{\theta^t}$, respectively.
+  - Update : $\omega^{t+1}=\omega^t+\eta \nabla_{\omega}F(\theta^t,\omega^t)$.
+  - Update : $\theta^{t+1}=\omega^t-\eta \nabla_{\theta}F(\theta^t,\omega^t)$.
 
 
 
+* Footnotes
+
+[fn:1] X. Nguyen, M. J. Wainwright, and M. I. Jordan. Estimating divergence functionals and the likelihood ratio by convex risk minimization. Information Theory, IEEE, 56(11):5847–5861, 2010.

@@ -61,16 +61,16 @@ The adversarial autoencoder is an autoencoder that is regularized by matching th
 * Relationship to Variational Autoencoders
 ** Relationship to Variational Autoencoders
 *** VAE
-\begin{eqnarray*}
+\begin{align*}
 &\mathbb{E}_{\mathbf{x}\sim p_d(\mathbf{x})}[-\log p(\mathbf{x})] \\
 <& \mathbb{E}_{\mathbf{x}}[-ELBO(q(\mathbf{z}|\mathbf{x}))]\\
  =& \mathbb{E}_{\mathbf{x}}[\mathbb{E}_{q(\mathbf{z}|\mathbf{x})}[-\log p(\mathbf{x}|\mathbf{z})]]+\mathbb{E}_{\mathbf{x}}[KL(q(\mathbf{z}|\mathbf{x})||p(\mathbf{z}))]\\
 =&\mathbb{E}_{\mathbf{x}}[\mathbb{E}_{q(\mathbf{z}|\mathbf{x})}[-\log p(\mathbf{x}|\mathbf{z})]]-\mathbb{E}_{\mathbf{x}}[H(q(\mathbf{z}|\mathbf{x}))]\\
-+&\mathbb{E}_{q(\mathbf{z})}[-\log p(\mathbf{z})]\\
+&+\mathbb{E}_{q(\mathbf{z})}[-\log p(\mathbf{z})]\\
 =&\mathbb{E}_{\mathbf{x}}[E_{q(\mathbf{z}|\mathbf{x})}[-\log p(\mathbf{x}|\mathbf{z})]]-\mathbb{E}_{\mathbf{x}}[\sum_i\log \sigma_i(\mathbf{x})]\\
-+&\mathbb{E}_{q(\mathbf{z})}[-\log p(\mathbf{z})]+const \\
+&+\mathbb{E}_{q(\mathbf{z})}[-\log p(\mathbf{z})]+const \\
 =&Reconstruction - Entropy + CrossEntropy(q(\mathbf{z}), p(\mathbf{z}))
-\end{eqnarray*}
+\end{align*}
 
 ** Relationship to Variational Autoencoders
 *** Marks

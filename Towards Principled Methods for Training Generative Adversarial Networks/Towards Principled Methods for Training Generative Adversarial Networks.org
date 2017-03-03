@@ -1,0 +1,114 @@
+#+TITLE:     Towards Principled Methods for Training Generative Adversarial Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Fri Jan 13 14:04:39 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: Hannover
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+LATEX_HEADER:\usepackage{ragged2e}
+#+LATEX_HEADER:\justifying
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Towards Principled Methods for Training Generative Adversarial Networks}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+* The GAN
+** The GAN
+*** min-max 
+\begin{equation*}
+\label{eq:1}
+\min_G\max_D\mathbb{E}_{\boldsymbol{x}\in P_{data}}[\log D(\boldsymbol{x})]+\mathbb{E}_{\boldsymbol{x}\sim P_G}[\log (1-D(\boldsymbol{x}))]
+\end{equation*}
+
+* Sources of Instability
+** Sources of Instability
+- Lemma 1
+
+Let $g : \mathbf{Z} \rightarrow \mathcal{X}$ be a function composed by affine transformations and pointwise nonlinearities, which can either be rectifiers, leaky rectifiers, or smooth strictly increasing functions (such as the sigmoid, tanh, softplus, etc). Then, $g(\mathcal{Z})$ is contained in a countable union of manifolds of dimension at most $dim \mathcal{Z}$. Therefore, if the dimension of $\mathcal{Z}$ is less than the one of $\mathcal{X}$ , $g(\mathcal{Z})$ will be a set of measure 0 in $\mathcal{X}$ .
+** The Perfect Discrimination Theorem
+- Theorem 2.1.
+
+If two distributions $\mathbb{P}_r$ and $\mathbb{P}_{g}$ have support contained on two disjoint compact subsets $\mathcal{M}$ and $\mathcal{P}$ respectively, then there is a smooth optimal discrimator $D^{*}$ : $\mathcal{X}\rightarrow [0, 1]$ that has accuracy 1 and $\nabla_xD^{*}(x)=0$ for all $x \in \mathcal{M}\cup \mathcal{P}$.
+** The Perfect Discrimination Theorem
+- Proof
+
+The discrimator is trained to maximize 
+\begin{equation}
+\label{eq:2}
+\mathbb{E}_{x\sim \mathbb{P}_r}[\log D(x)] +\mathbb{E}_{x\sim \mathbb{P}_g}[\log (1-D(x))]
+\end{equation}
+Since $\mathcal{M}$ and $\mathcal{P}$ are compact and disjoint, $0<\delta=d(\mathcal{P},\mathcal{M})$, define:
+\begin{eqnarray*}
+\hat{M} & =& \{x : d(x,\mathcal{M})\le \delta/3\}\\
+\hat{P}& =&\{x : d(x,\mathcal{P})\le \delta/3\}
+\end{eqnarray*}
+Therefore, by Urysohn’s smooth lemma here exists a smooth function $D^{*} : \mathcal{X}\rightarrow [0,1]$ such that $D^{*}|_{\hat{\mathcal{M}}}\equiv 1$ and $D^{*}|_{\hat{\mathcal{P}}}\equiv 0$
+** The Perfect Discrimination Theorem
+- Proof
+
+Since $\log D^{*}(x) = 0$ for all $x$ in the support of $\mathbb{P}_{r}$ and $\log(1 - D^{*}(x)) = 0$ for all $x$ in the support of $\mathbb{P}_{g}$, the discriminator is completely optimal and has accuracy 1.
+ Furthermore, let $x$ be in $\mathcal{M} \cup \mathcal{P}$, If we assume that $x \in \mathcal{M}$, there is an open ball $B = B(x, \delta/3)$ on which $D^{*}|_{B}$ is constant. This shows that $\nabla_{x}D^{*}(x) \equiv 0$. Taking $x \in \mathcal{P}$ and working analogously we finish the proof.
+
+** The Perfect Discrimination Theorem
+- Definition 2.1.
+
+We first need to recall the definition of transversallity. Let $\mathcal{M}$ and $\mathcal{P}$ be two boundary free regular submanifolds of $\mathcal{F}$, which in our cases will simply be $\mathcal{F}=\mathbb{R}^d$. Let $x\in \mathcal{M}\cup \mathcal{P}$ be an intersection point of the two manifolds. We say that $\mathcal{M}$ and $\mathcal{P}$ intersect transversally in $x$ if $T_{x}\mathcal{M}+T_x\mathcal{P}=T_x\mathcal{F}$, where $T_x\mathcal{M}$ means the tangent space of $\mathcal{M}$ around $x$
+** The Perfect Discrimination Theorem
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-14 21:58:55
+[[file:Sources of Instability/screenshot_2017-01-14_21-58-55.png]]
+** The Perfect Discrimination Theorem
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-14 22:00:05
+[[file:Sources of Instability/screenshot_2017-01-14_22-00-05.png]]
+
+** The Perfect Discrimination Theorem
+- Definition 2.2.
+
+We say that two manifolds without boundary $\mathcal{M}$ and $\mathcal{P}$ *perfectly align* if there is an $x\in \mathcal{M}\cup \mathcal{P}$ such that $\mathcal{M}$ and $\mathcal{P}$ don't intersect transversally in $x$ 
+** The Perfect Discrimination Theorem
+- Lemma 2
+
+Let $\mathcal{M}$ and $\mathcal{P}$ be two regular submanifolds of $\mathbb{R}^d$ that don’t have full dimension. Let $\eta,\eta^{'}$ be arbitrary independent continuous random variables. We therefore define the perturbed manifolds as $\tilde{\mathcal{M}}=\mathcal{M}+\eta$ and $\tilde{\mathcal{P}}=\mathcal{P}+\eta'$. Then
+\begin{equation}
+\label{eq:4}
+\mathbb{P}_{\eta,\eta'}(\tilde{\mathcal{M}}\  does\  not\  perfectly\  align\  with\  \tilde{\mathcal{P}})=1
+\end{equation}
+
+** The Perfect Discrimination Theorem
+- Lemma 3
+
+Let $\mathcal{M}$ and $\mathcal{P}$ be two regular submanifolds of $\mathbb{R}^{d}$ that don’t perfectly align and don’t have full dimension. Let $\mathcal{L}=\mathcal{M}\cap \mathcal{P}$. If $\mathcal{M}$ and $\mathcal{P}$ don’t have boundary, then $\mathcal{L}$ is also a manifold, and has strictly lower dimension than both the one of $\mathcal{M}$ and the one of $\mathcal{P}$. If they have boundary, $\mathcal{L}$ is a union of at most $4$ strictly lower dimensional manifolds. In both cases, $\mathcal{L}$ has measure $0$ in both $\mathcal{M}$ and $\mathcal{P}$.
+** The Perfect Discrimination Theorem
+- Theorem 2.2.
+Let $\mathbb{P}_{r}$ and $\mathbb{P}_{g}$ be two distributions that have support contained in two closed manifolds $\mathcal{M}$ and $\mathcal{P}$ that don’t perfectly align and don’t have full dimension. We further assume that $\mathbb{P}_{r}$ and $\mathbb{P}_{g}$ are continuous in their respective manifolds, meaning that if there is a set $A$ with measure 0 in $\mathcal{M}$, then $\mathbb{P}_{r}(A) = 0$ (and analogously for $\mathbb{P}_{g}$). Then, there exists an optimal discriminator $D^{*} :\mathcal{X} \rightarrow[0,1]$ that has accuracy 1 and for almost any $x$ in $\mathcal{M}$ or $\mathcal{P}$ , $D^{*}$ is smooth in a neighbourhood of $x$ and $\nabla_xD^{*}(x)=0$.
+** The Perfect Discrimination Theorem
+- Proof
+By Lemma 3, we know that $\mathcal{L}=\mathcal{M}\cap \mathcal{P}$ is strictly lower dimensional than both $\mathcal{M}$ and $\mathcal{P}$, and has measure $0$ on both of them. By continuity, $\mathbb{P}_r(\mathcal{L})=0$ and $\mathbb{P}_g(\mathcal{L})=0$. Notes that this implies the support of $\mathbb{P}_r$ is contained in $\mathcal{M}\setminus\mathcal{L}$ and the support of $\mathbb{P}_g$ is contained in $\mathcal{P}\setminus \mathcal{L}$.
+
+Let $x\in \mathcal{M}\setminus \mathcal{L}$, Therefore, $x\in \mathcal{P}^c$ which is an open set, so there exists a ball of radius $\epsilon_x$ such that $B(x,\epsilon_x)\cap \mathcal{P}=\emptyset$, we define:
+\begin{equation}
+\label{eq:5}
+\hat{\mathcal{M}}=\cup_{x\in \mathcal{M}\setminus \mathcal{L}}B(x,\epsilon_x/3)
+\end{equation}
+** The Perfect Discrimination Theorem
+- Proof
+We define $\hat{\mathcal{P}}$ analogously. Note that by construction these are both open sets on $\mathbb{R}^d$. Since $\mathcal{M}\setminus \mathcal{L} \subset \hat{\mathcal{M}}$ and $\mathcal{P}\setminus \mathcal{L}\subset \hat{\mathcal{P}}$. the support of $\mathbb{P}_r$ and $\mathbb{P}_g$ is contained in $\hat{\mathcal{M}}$ and $\hat{\mathcal{P}}$ 
+
+
+

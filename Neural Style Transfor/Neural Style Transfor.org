@@ -1,0 +1,62 @@
+#+TITLE:     Neural Style Transfor
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Tue Jan 10 19:32:34 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Neural Style Transfor}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+* Network Structure
+** Network Structure
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-01-10 20:28:59
+[[file:Network Structure/screenshot_2017-01-10_20-28-59.png]]
+** Content Loss
+\begin{equation}
+\label{eq:1}
+\mathcal{L}_{content}(\vec{p},\vec{x},l)=\frac{1}{2}\sum_{i,j}(F_{ij}^l-P_{ij}^l)^2
+\end{equation}
+- $l$ : the layer output we chose
+- $F_{ij}^l$ : the combination image's $l$ layer's output
+- $P_{ij}^l$ : the content image's $l$ layer's output
+** Style Loss
+- Gram Matrix
+\begin{equation}
+\label{eq:2}
+G_{ij}^l=\sum_k F_{ik}^lF_{jk}^l
+\end{equation}
+
+- $\vec{a}$ and $\vec{x}$ : the original image and the image that is generated
+- $A^l$ and $G^{l}$ : their respective style representation(gram matrix) in layer $l$
+
+\begin{equation}
+\label{eq:3}
+\mathcal{L}_{style}^l=\frac{1}{4N_l^2M_l^2}\sum_{i,j}(G_{ij}^l-A_{ij}^l)^2
+\end{equation}
+\begin{equation}
+\label{eq:4}
+\mathcal{L}_{style}(\vec{a},\vec{x})=\sum \omega_l \mathcal{L}_{style}^l
+\end{equation}
+** Total Loss
+\begin{equation}
+\label{eq:5}
+\mathcal{L}_{total}(\vec{p},\vec{a},\vec{x})=\alpha \mathcal{L}_{content}(\vec{p},\vec{x})+\beta \mathcal{L}_{style}(\vec{a},\vec{x})
+\end{equation}
