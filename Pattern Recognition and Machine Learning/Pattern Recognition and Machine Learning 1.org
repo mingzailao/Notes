@@ -1,19 +1,33 @@
 #+TITLE:     Pattern Recogniton and Machine Learning(1)
 #+AUTHOR:    mingzailao
-#+EMAIL:     mingzailao@126.com
-#+DATE:      <2016-12-04 Sun>
-#+KEYWORDS:  Deep Learning
-#+LANGUAGE:  en
-
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Sat Mar  4 21:11:13 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
 #+STARTUP: beamer
 #+STARTUP: oddeven
 #+LaTeX_CLASS: beamer
 #+LaTeX_CLASS_OPTIONS: [bigger]
-#+BEAMER_THEME: Madrid
+#+BEAMER_THEME: metropolis
 #+OPTIONS:   H:2 toc:t
 #+SELECT_TAGS: export
 #+EXCLUDE_TAGS: noexport
 #+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+
+
+
 
 * Mathematical notation
 
@@ -206,7 +220,7 @@ what $cov[\mathbf{x}]=diag$ means?
 
 \begin{equation}
 \label{eq:17}
-\mathcal{N}(\mathbf{x}|\mathbf{\mu},\Sigma)=\frac{1}{(2\pi)^{D/2}}\frac{1}{|\Sigma|^{1/2}}\exp \{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu})^T\Sigma^{-1}(\mathbf{x}-\mathbf{\mu})\}
+\mathcal{N}(\mathbf{x}|\boldsymbol{\mu},\boldsymbol{\Sigma})=\frac{1}{(2\pi)^{D/2}}\frac{1}{|\boldsymbol{\Sigma}|^{1/2}}\exp \{-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\}
 \end{equation}
 
 ** The Gaussian distribution
@@ -284,5 +298,131 @@ p(\mathbf{w}|\alpha)=\mathcal{N}(\mathbf{w}|0,\alpha^{-1}\mathbf{I})=(\frac{\alp
 \label{eq:30}
 p(\mathbf{w}|\mathbf{X},\mathbf{t},\alpha,\beta)\propto p(\mathbf{t}|\mathbf{X},\mathbf{w},\beta)p(\mathbf{w}|\alpha)
 \end{equation*}
+then, maximum of the posterior is given by the minimum of
+\begin{equation}
+\label{eq:24}
+\frac{\beta}{2}\sum_{n=1}^N\{y(x_n,\mathbf{w})-t_n\}^2+\frac{\alpha}{2}\mathbf{w}^T\mathbf{w}
+\end{equation}
+** Bayesian curve fitting
+\begin{equation}
+\label{eq:25}
+p(t|x,\mathbf{x},\mathbf{t})=\mathcal{N}(t|m(x),s^2(x))
+\end{equation}
+where :
+\begin{eqnarray}
+\label{eq:32}
+m(x) & = & \beta\boldsymbol{\phi}(x)^T\mathbf{S}\sum_{n=1}^{N}\boldsymbol{\phi}(x_n)t_n\\
+s^2(x)&=& \beta^{-1}+\boldsymbol{\phi}(x)^T\mathbf{S}\boldsymbol{\phi}(x)
+\end{eqnarray}
+where 
+\begin{equation}
+\label{eq:33}
+\mathbf{S}^{-1}=\alpha I+ \beta\sum_{n=1}^N\boldsymbol{\phi}(x_n)\boldsymbol{\phi}(x_n)^T
+\end{equation}
+** Decision Theory
+Given :
+- image $\mathbf{x}$ 
+TODO :
+- decide which of the two classes to assign to the image
+\begin{equation}
+\label{eq:34}
+p(\mathcal{C}_k|\mathbf{x})=\frac{p(\mathbf{x}|\mathcal{C}_k)p(\mathcal{C}_k)}
+{p(\mathbf{x})}
+\end{equation}
+*** Minimizing the misclassification rate
+\begin{align}
+\label{eq:36}
+p(mistake)&=&p(\mathbf{x}\in \mathcal{R}_1,\mathcal{C}_2)+p(\mathbf{x}\in \mathcal{R}_2,\mathcal{C}_1)\\
+&=& \int_{\mathcal{R}_1}p(\mathbf{x},\mathcal{C}_2)d\mathbf{x}+\int_{\mathcal{R}_{2}}p(\mathbf{x},\mathcal{C}_1)
+\end{align}
+** Information Theory
+*** Entropy
+\begin{equation}
+\label{eq:37}
+H(P)=\mathbb{E}_{\mathbf{x}\sim P}[-log \mathbf{x}]
+\end{equation}
 
+*** Maximizing it with three constraints
+\begin{equation}
+\label{eq:40}
+\int_{-\infty}^{\infty}p(\mathbf{x})d\mathbf{x}=1
+\end{equation}
 
+\begin{equation}
+\label{eq:41}
+\int_{-\infty}^{\infty}\mathbf{x}p(\mathbf{x})d\mathbf{x}=\mu
+\end{equation}
+\begin{equation}
+\label{eq:42}
+\int_{-\infty}^{\infty}(\mathbf{x}-\mu)^2p(\mathbf{x})d\mathbf{x}=\sigma^2
+\end{equation}
+** Information Theory
+The constrained maximization can be performed using Lagrange multipliers so that we maximize the following functional with respect to $p(\mathbf{x})$:
+\begin{align}
+\label{eq:45}
+-&\int_{-\infty}^{\infty}p(\mathbf{x})\ln p(\mathbf{x})d\mathbf{x}+\lambda_1(\int_{-\infty}^{\infty}p(\mathbf{x})d\mathbf{x}-1)&\\
++&\lambda_2(\int_{-\infty}^{\infty}\mathbf{x}p(\mathbf{x})d\mathbf{x}-\mu)+\lambda_3(\int_{-\infty}^{\infty}(\mathbf{x}-\mu)^2p(\mathbf{x})d\mathbf{x}-\sigma^{2})
+\end{align}
+Using the calculus of variations, we set the derivative of this functional to zero giving
+\begin{equation}
+\label{eq:46}
+p(\mathbf{x})=exp\{-1+\lambda_1+\lambda_{2}\mathbf{x}+\lambda_{3}(\mathbf{x}-\mu)^2\}
+\end{equation}
+** Information Theory
+The Lagrange multipliers can be found by back substitution of this result into the three constraint equations, leading finally to the result
+\begin{equation}
+\label{eq:47}
+p(\mathbf{x})=\frac{1}{(2\pi \sigma^2)^{1/2}}exp\{-\frac{(\mathbf{x}-\mu)^2}{2\sigma^2}\}
+\end{equation}
+*** The entropy if Gaussian
+\begin{equation}
+\label{eq:48}
+H[\mathbf{x}]=\frac{1}{2}\{1+\ln (2\pi\sigma^2)\}
+\end{equation}
+** Information Theory
+*** conditional entropy
+    
+\begin{equation}
+\label{eq:49}
+H[\mathbf{y}|\mathbf{x}]=-\int\int p(\mathbf{y},\mathbf{x})\ln p(\mathbf{y}|\mathbf{x})d\mathbf{y}d\mathbf{x}
+\end{equation}
+
+the conditional entropy satisfies the relation
+\begin{equation}
+\label{eq:50}
+H[\mathbf{x},\mathbf{y}]=H[\mathbf{y}|\mathbf{x}]+H[\mathbf{x}]
+\end{equation}
+** Relative entropy and mutual information
+*** Relative entropy or KL-divergence(Kullback-Leibler divergence)
+\begin{equation}
+\label{eq:29}
+KL(p||q)=\int_{\mathcal{X}}p(\mathbf{x})\ln\frac{p(\mathbf{x})}{q(\mathbf{x})}d\mathbf{x}
+\end{equation}
+\begin{eqnarray*}
+\label{eq:35}
+KL(p||q)&=&\int_{\mathcal{X}} p(\mathbf{x})(-\ln \frac{q(\mathbf{x})}{p(\mathbf{x})})\\
+&\ge&-\ln \int_{\mathcal{X}}q(\mathbf{x})d\mathbf{x}\\
+&=&0
+\end{eqnarray*}
+** Relative entropy and mutual information
+ for a unknown distribution $p(\mathbf{x})$, approximating this distribution using some parametric distribution $q(\mathbf{x}|\boldsymbol{\theta})$
+\begin{equation}
+\label{eq:38}
+KL_{\boldsymbol{\theta}}(p||q)\approx \sum_{n=1}^N\{-\ln q(\mathbf{x}_n|\boldsymbol{\theta})+\ln p(\mathbf{x}_n)\}
+\end{equation}
+- $arg\min_{\boldsymbol{\theta}} KL_{\boldsymbol{\theta}}(p||q)\Leftrightarrow arg\max_{\boldsymbol{\theta}}likelihood$
+
+** Relative entropy and mutual information
+Now consider the joint distribution between two sets of variables $\mathbf{x},\mathbf{y}$ given by $p(\mathbf{x},\mathbf{y})$, If the sets of variables are independen, then their joint distribution will factorize into the product of their marginals
+ $$p(\mathbf{x},\mathbf{y})=p(\mathbf{x})p(\mathbf{y})$$
+If the variables are not independent,we can gain some idea of whether they are ‘close’ to being indepen- dent by considering the Kullback-Leibler divergence between the joint distribution and the product of the marginals, called *mutual information*, given by
+\begin{equation}
+\label{eq:39}
+I[\mathbf{x},\mathbf{y}]=KL(p(\mathbf{x},\mathbf{y})||p(\mathbf{x})p(\mathbf{y}))
+\end{equation}
+** Relative entropy and mutual information
+\begin{eqnarray}
+\label{eq:43}
+I[\mathbf{x},\mathbf{y}] & = & H[\mathbf{x}]-H[\mathbf{x}|\mathbf{y}]\\
+I[\mathbf{x},\mathbf{y}]&  = &H[\mathbf{y}]-H[\mathbf{y}|\mathbf{x}]
+\end{eqnarray}

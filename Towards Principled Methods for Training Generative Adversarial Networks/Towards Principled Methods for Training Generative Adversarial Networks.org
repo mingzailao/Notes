@@ -108,7 +108,26 @@ Let $x\in \mathcal{M}\setminus \mathcal{L}$, Therefore, $x\in \mathcal{P}^c$ whi
 \end{equation}
 ** The Perfect Discrimination Theorem
 - Proof
-We define $\hat{\mathcal{P}}$ analogously. Note that by construction these are both open sets on $\mathbb{R}^d$. Since $\mathcal{M}\setminus \mathcal{L} \subset \hat{\mathcal{M}}$ and $\mathcal{P}\setminus \mathcal{L}\subset \hat{\mathcal{P}}$. the support of $\mathbb{P}_r$ and $\mathbb{P}_g$ is contained in $\hat{\mathcal{M}}$ and $\hat{\mathcal{P}}$ 
+We define $\hat{\mathcal{P}}$ analogously. Note that by construction these are both open sets on $\mathbb{R}^d$. Since $\mathcal{M}\setminus \mathcal{L} \subset \hat{\mathcal{M}}$ and $\mathcal{P}\setminus \mathcal{L}\subset \hat{\mathcal{P}}$. the support of $\mathbb{P}_r$ and $\mathbb{P}_g$ is contained in $\hat{\mathcal{M}}$ and $\hat{\mathcal{P}}$ respectively. As well by construction, $\mathcal{\hat{M}}\cap \mathcal{\hat{P}}=\emptyset$
+Let us define $D^{*}(x)=1$ for all $x\in \mathcal{\hat{M}}$ ， and 0 elsewhere. so, the discriminator
+is completely optimal and has accuracy 1.
 
+** The Perfect Discrimination Theorem
+- Proof
+Furthermore, let $x\in \mathcal{\hat{M}}$, since $\mathcal{\hat{M}}$ is an open set and $D^{*}$ is constant on $\mathcal{\hat{M}}$, then $\nabla_xD^{*}|_{\mathcal{\hat{M}}}=0$. Analogously, $\nabla_xD^{*}|_{\mathcal{\hat{P}}}=0$
 
+** The Perfect Discrimination Theorem
+
+These two theorems tell us that there are perfect discriminators which are smooth and constant almost everywhere in $\mathcal{M}$ and $\mathcal{P}$. The fact that the discriminator is constant in both manifolds points to the fact that we won’t really be able to learn anything by backproping through it, as we shall see in the next subsection. To conclude this general statement, we state the following theorem on the divergences of $\mathbb{P}_r$ and $\mathbb{P}_g$ .
+
+** The Perfect Discrimination Theorem
+- Theorem 2.3
+Let $\mathbb{P}_{r}$ and $\mathbb{P}_g$ be two distributions whose support lies in two manifolds $\mathcal{M}$ and $\mathcal{P}$ that don’t have full dimension and don’t perfectly align. We further assume that $\mathbb{P}_{r}$ and $\mathbb{P}_g$ are continuous in their respective manifolds. Then,
+\begin{eqnarray}
+\label{eq:3}
+JSD(\mathbb{P}_r||\mathbb{P}_g)&=&\log 2\\
+KL(\mathbb{P}_r||\mathbb{P}_g)&=&+\infty\\
+KL(\mathbb{P}_g||\mathbb{P}_r)&=&+\infty
+\end{eqnarray}
+** 
 

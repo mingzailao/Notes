@@ -1,0 +1,103 @@
+#+TITLE:     Word Embedding
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Tue Mar 28 20:46:48 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Word Embedding}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+
+
+
+* Word Embedding
+**  Basic Idea
+If each attribute is a dimension, then we might give each word a vector, like this:
+$$ q_\text{mathematician} = \left[ \overbrace{2.3}^\text{can run},
+\overbrace{9.4}^\text{likes coffee}, \overbrace{-5.5}^\text{majored in Physics}, \dots \right] $$
+$$ q_\text{physicist} = \left[ \overbrace{2.5}^\text{can run},
+\overbrace{9.1}^\text{likes coffee}, \overbrace{6.4}^\text{majored in Physics}, \dots \right] $$
+** Basic Iead
+Then we can get a measure of similarity between these words by doing:
+$$ \text{Similarity}(\text{physicist}, \text{mathematician}) = q_\text{physicist} \cdot q_\text{mathematician} $$
+​
+Although it is more common to normalize by the lengths:
+
+\begin{eqnarray*}
+\text{Similarity}(\text{physicist}, \text{mathematician})&= &\frac{q_\text{physicist} \cdot q_\text{mathematician}}{\| q_\text{\physicist} \| \| q_\text{mathematician} \|} \\
+&=&\cos (\phi)
+\end{eqnarray*}
+Where $\phi$ is the angle between the two vectors.  That way, extremely similar words (words whose embeddings point in the same direction) will have similarity 1.  Extremely dissimilar words should have similarity -1.
+** Example
+#+BEGIN_SRC python
+  import torch.nn as nn
+  import torch
+  import torch.autograd as autograd
+  word_to_ix = { "hello": 0, "world": 1 }
+  embeds = nn.Embedding(2, 5)
+  lookup_tensor = torch.LongTensor([word_to_ix["hello"]])
+  hello_embed = embeds( autograd.Variable(lookup_tensor) )
+  return nn.functional.softmax(hello_embed).sum()
+  return hello_embed
+#+END_SRC
+
+
+
+** Result
+#+RESULTS:
+: Variable containing:
+:  1
+: [torch.FloatTensor of size 1]
+
+#+RESULTS:
+: Variable containing:
+:  0.1455  1.1563  1.0975 -0.3624  0.7921
+: [torch.FloatTensor of size 1x5]
+
+
+** N-Gram Language Modeling
+Recall that in an n-gram language model, given a sequence of words $w$, we want to compute the likelihood:
+$$ P(w_i | w_{i-1}, w_{i-2}, \dots, w_{i-n+1} ) $$
+Where $w_i$ is the ith word of the sequence.
+
+After compute this, we can minimize the negative log likelihood.
+** The Continuous Bag-of-Words model (CBOW)
+replace the likelihood as 
+$$ p(w_i |w_{i-c},\cdots,w_{i-1},w_{i+1},\cdots,w_{i+c} )$$
+$$C=\{w_{i-c},\cdots,w_{i-1},w_{i+1},\cdots,w_{i+c}\}$$
+the NLL os 
+$$ -\log p(w_i | C) = \log \text{Softmax}(A(\sum_{w \in C} q_w) + b) $$
+** Sequence Models and Long-Short Term Memory Networks
+
+** Bi-LSTM Conditional Random Field Discussion
+Recall that the CRF computes a conditional probability.  Let $y$ be a tag sequence and $x$ an input sequence of words.  Then we compute
+$$ P(y|x) = \frac{\exp{(\text{Score}(x, y)})}{\sum_{y'} \exp{(\text{Score}(x, y')})} $$
+
+Where the score is determined by defining some log potentials $\log \psi_i(x,y)$ such that
+$$ \text{Score}(x,y) = \sum_i \log \psi_i(x,y) $$
+To make the partition function tractable, the potentials must look only at local features.
+
+** COMMENT Bi-LSTM Conditional Random Field Discussion
+In the Bi-LSTM CRF, we define two kinds of potentials: emission and transition.  The emission potential for the word at index $i$ comes from the hidden state of the Bi-LSTM at timestep $i$.  The transition scores are stored in a $|T|\times|T|$ matrix $\textbf{P}$, where $T$ is the tag set.  In  implementation, $\textbf{P}_{j,k}$ is the score of transitioning to tag $j$ from tag $k$.  So:
+
+$$ \text{Score}(x,y) = \sum_i \log \psi_\text{EMIT}(y_i \rightarrow x_i) + \log \psi_\text{TRANS}(y_{i-1} \rightarrow y_i) $$
+$$ = \sum_i h_i[y_i] + \textbf{P}_{y_i, y_{i-1}} $$
+where in this second expression, we think of the tags as being assigned unique non-negative indices.
