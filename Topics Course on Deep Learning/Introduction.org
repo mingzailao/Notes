@@ -1,0 +1,92 @@
+#+TITLE:     Introduction
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@126.com
+#+DATE:      
+#+TAGS:      
+#+LAYOUT:    
+#+CATEGORIES: 
+
+* Convolutional Network
+** Convolutional Neural Network
+- Mathematic equation
+\begin{equation}
+\label{eq:1}
+\Phi(x,\Theta)=\rho(W_L(\rho(W_{L-1}\cdots\rho(W_1(x)))))
+\end{equation}
+
+- $W_i$ : Convolutional Tensors(Kernels)
+- $\rho(\cdot)$ : Point-wise Non-Linear Function
+
+Given labeled data $\{x_i,y_i\}_{i=1}^N$, using the method based on gradient.
+\begin{equation}
+\label{eq:2}
+\hat{y}_i(\Theta)=softmax(\bar{\Phi}(x_i,\Theta))
+\end{equation}
+\begin{equation}
+\label{eq:3}
+\Theta^{*}=arg\min_{\Theta}E(\Theta)=\sum_{i=1}^N loss(\hat{y}_i(\Theta),y_i)
+\end{equation}
+
+* Generative Models
+** GAN
+- min-max game
+\begin{equation}
+\label{eq:4}
+\min_G\max_D\mathbb{E}_{\boldsymbol{z}\sim P_{data}}[\log D(\boldsymbol{x})]+\mathbb{E}_{\boldsymbol{z}\sim P_z}[\log (1-D(G(\boldsymbol{z})))]
+\end{equation}
+
+** Some Variant 
+- DCGAN
+- CGAN
+- WGAN
+- CoGAN
+- ...
+* Recurrent Neural Network
+
+** Recurrent Neural Network
+- Where can we use RNN(NLP, Tracking, ... )
+\begin{equation}
+\label{eq:5}
+\boldsymbol{S}=(s_0,s_1,\cdots,s_k,\cdots)\   \ s_k\in \mathcal{X}
+\end{equation}
+\begin{equation}
+\label{eq:6}
+P(\boldsymbol{S})=p(s_0)\prod_kp(s_k|s_0,\cdots,s_{k-1})
+\end{equation}
+\begin{equation}
+\label{eq:7}
+P(\boldsymbol{S}|\boldsymbol{R})=p(s_0|\boldsymbol{R})\prod_kp(s_k|s_0,\cdots,s_{k-1},\boldsymbol{R})
+\end{equation}
+
+* Recurrent Neural Network
+#+attr_html: :width 800
+[[file:Introduction/20170516_161218_48433m6x.png]]
+* Some Tech
+- Attention Mechanisms
+- Gate Mechanisms(LSTM,GRU)
+* Some Application
+- Machine Translation
+- Language Modeling
+- ...
+
+* SVM
+- SVM (Vapnik 90's)
+consider binary classification problems
+\begin{equation}
+\label{eq:8}
+\hat{f}(\boldsymbol{x})=sign(\boldsymbol{a}^T\boldsymbol{x}+b)
+\end{equation}
+-  Empirical Risk MinimXization:
+\begin{equation}
+\label{eq:9}
+\min_{a,b}\frac{1}{n}\mathem{l}(y_i,\hat{f}(x_i))+\lambda ||a||^2
+\end{equation}
+where 
+- $l(\cdot,\cdot)$ : hinge loss 
+* SVM
+** Solution
+By using the Lagrangian dual of the previous program, we can rewrite our previous solution as
+\begin{equation}
+\label{eq:10}
+\hat{f}(x)=sign(\sum_i\alpha_iy_iK(x_i,x))
+\end{equation}

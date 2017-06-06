@@ -1,0 +1,90 @@
+#+TITLE:     Adversarial Neural Machine Translation
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Wed May 17 15:20:28 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Adversarial Neural Machine Translation}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+
+
+* Adversarial Neural Machine Translation
+** Adversarial Neural Machine Translation
+#+attr_html: :width 800
+[[file:Adversarial Neural Machine Translation/20170517_152103_48433Nug.png]]
+** Adversarial Neural Machine Translation
+- Ref : ground-truth translation
+- Hyp : model translation sentence
+** NMT Model
+Recurrent Neural Network (RNN) based encoder-decoder as the NMT model to seek a target language translation $y^{'}$ given the source sentence $x$,which means $y^{'}\sim G(y|x)$.
+ To be specific, given source sentence $x$ and previously generated words $y_{<t}$ the probability of generating word $y_t$ is :
+\begin{equation}
+\label{eq:2}
+G(y_t|y_{<t},x)\propto \exp(y_t;r_t,c_t)
+\end{equation}
+\begin{equation}
+\label{eq:3}
+r_t=g(r_{t-1},y_{t-1},c_t)
+\end{equation}
+** NMT Model
+- $g$ : recurrent unit(LSTM) or GRU
+- $c_t$ : Attention mechanism at $t$
+\begin{equation}
+\label{eq:4}
+c_t=\sum_{i=1}^{T_x}\alpha_{it}h_i
+\end{equation}
+\begin{equation}
+\label{eq:5}
+\alpha_{it}=\frac{\exp(a(h_i,r_{t-1}))}{\sum_j\exp(a(h_j,r_{t-1}))}
+\end{equation}
+- $T_x$ : the length of source sentence
+- $a(\cdot,\cdot)$ : a feed-forward neural network
+- $h_i$ : hidden state from RNN encoder. 
+** Adversary Model
+#+attr_html: :width 800
+[[file:Adversarial Neural Machine Translation/20170518_122936_48433nQV.png]]
+** Policy Gradient Algorithm to Train Adversarial-NMT
+- Objective
+\begin{eqnarray*}
+\label{eq:7}
+\min_G\max_DV(D,G) & = &\mathbb{E}_{(x,y)\sim P_{data}(x,y)}[\log(D(x,y))]+\\
+&&\mathbb{E}_{x\sim P_{data}(x),y^{'}\sim G(\cdot|x)}[\log(1-D(x,y^{'}))] 
+\end{eqnarray*}
+** Policy Gradient Algorithm to Train Adversarial-NMT
+Note that the objective of training $G$ under a fixed source language sentence $x$ and $D$ is to minimize the following loss item:
+\begin{equation}
+\label{eq:8}
+L=\mathbb{E}_{y^{'}\sim G(\cdot |x)}[log(1-D(x,y^{'}))]
+\end{equation}
+whose gradient w.r.t. $\Theta_G$ is :
+\begin{eqnarray*}
+\nabla_{\Theta_G}L& =& \nabla_{\Theta_G}\mathbb{E}_{y^{'}\sim G(\cdot |x)}[\log(1-D(x,y^{'}))] \\
+&=&\mathbb{E}_{y^{'}\sim G(\cdot|x)}[\log(1-D(x,y^{'}))]\nabla_{\Theta_G}\log G(y^{'}|x)
+\end{eqnarray*}
+** Policy Gradient Algorithm to Train Adversarial-NMT
+A sample $y^{'}$ from $G(\cdot |x)$ is used to approximate the above gradient
+\begin{equation}
+\label{eq:10}
+\nabla_{\Theta_D}\simeq \hat{\nabla}_{\Theta_{G}}=log(1-D(x,y^{'}))\nabla_{\Theta_G}\log G(y^{'}|x)
+\end{equation}
+
+
