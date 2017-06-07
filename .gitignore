@@ -1,0 +1,14 @@
+*/*.pdf
+*/*.bbl
+*/*.tex
+*/auto/
+*/ltximg/
+*/*.png
+*/*.dot
+*/*.ipynb
+*/*/
+*/*.html
+.DS_Store
+*/*.zip
+*/*.caffemodel
+*/*.org[*]
