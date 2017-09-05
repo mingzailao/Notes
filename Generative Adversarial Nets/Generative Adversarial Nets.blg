@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: Generative Adversarial Nets.aux
+The style file: unsrtnat.bst
+Database file #1: ../../BibTex/mingzailao.bib
+Warning--empty booktitle in theis15
+Warning--empty publisher in theis15
+Warning--can't use both author and editor fields in Zeiler2014
+You've used 2 entries,
+            2481 wiz_defined-function locations,
+            568 strings with 5029 characters,
+and the built_in function-call counts, 920 in all, are:
+= -- 81
+> -- 36
+< -- 2
++ -- 14
+- -- 10
+* -- 65
+:= -- 141
+add.period$ -- 9
+call.type$ -- 2
+change.case$ -- 3
+chr.to.int$ -- 2
+cite$ -- 5
+duplicate$ -- 51
+empty$ -- 83
+format.name$ -- 14
+if$ -- 200
+int.to.chr$ -- 1
+int.to.str$ -- 3
+missing$ -- 3
+newline$ -- 21
+num.names$ -- 6
+pop$ -- 24
+preamble$ -- 1
+purify$ -- 2
+quote$ -- 0
+skip$ -- 32
+stack$ -- 0
+substring$ -- 36
+swap$ -- 13
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 11
+warning$ -- 3
+while$ -- 7
+width$ -- 0
+write$ -- 38
+(There were 3 warnings)

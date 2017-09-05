@@ -1,0 +1,101 @@
+#+TITLE:     Variational Approaches for Auto-Encoding Generative Adversarial Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Wed Jul  5 16:19:30 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Variational Approaches for Auto-Encoding Generative Adversarial Networks
+}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+
+
+
+
+
+
+
+
+* Overcoming Intractability in Generative Models
+** Latent Variable Models
+ Latent variable models describe a stochastic process by which modeled data is assumed to be generated (and thereby a process by which synthetic data can be simulated from the model distribution).
+** The Density Ratio Trick
+   - $p^{*}(\mathbf{x})=p(\mathbf{x}|y=1)$ : true distribution
+   - $p_{\theta}(\mathbf{x})=p(\mathbf{x}|y=0)$ : the model 
+
+density ratio $r_{\theta}(\mathbf{x})$:
+     
+\begin{equation}
+\label{eq:1}
+r_{\theta}(\mathbf{x})=\frac{p^{*}(\mathbf{x})}{p_{\theta}(\mathbf{x})}=\frac{p(\mathbf{x}|y=1)}{p(\mathbf{x}|y=0)}=\frac{p(y=1|\mathbf{x})}{p(y=0|\mathbf{x})}  =\frac{D_{\phi}(\mathbf{x})}{1-D_{\phi}(\mathbf{x})}
+\end{equation}
+
+** Variational Inference
+A second approach for dealing with intractable likelihoods is to approximate them.
+
+ELBO
+\begin{eqnarray}
+\label{eq:2}
+\log p_{\theta}(\mathbf{x})&=&\log \int p_{\theta}(\mathbf{x}|\mathbf{z})p(\mathbf{z})d\mathbf{z}\\
+&\ge& \mathbb{E}_{q_{\eta}(\mathbf{z}|\mathbf{x})}[\log p_{\theta}(\mathbf{x}|\mathbf{z})]-KL[q_{\eta}(\mathbf{z}|\mathbf{x})||p(\mathbf{z})]
+\end{eqnarray}
+** Synthetic Likelihoods
+\begin{equation}
+\label{eq:3}
+\mathbb{E}_{q_{\boldsymbol{\eta}}(\mathbf{z}|\mathbf{x})}[\log p_{\boldsymbol{\theta}}(\mathbf{x}|\mathbf{z})]=\mathbb{E}_{q_{\eta}(\mathbf{z}|\mathbf{x})}[\log \frac{p_{\theta}(\mathbf{x}|\mathbf{z})}{p^{*}(\mathbf{x})}]+\mathbb{E}_{q_{\eta}(\mathbf{z}|\mathbf{x})}[\log p^{*}(\mathbf{x})]
+\end{equation}
+** Implicit Variational Distributions
+
+   the majoy task in variational inference is the choice of the variational distribution $q_{\eta}(\mathbf{z}|\mathbf{x})$
+\begin{eqnarray}
+\label{eq:10}
+-KL[q_{\eta}(\mathbf{z}|\mathbf{x})||p(\mathbf{z})]&=&\mathbb{E}_{q_{\eta}(\mathbf{z}|\mathbf{x})}[\log \frac{p(\mathbf{z})}{q_{\eta}(\mathbf{z}|\mathbf{x})}]\\
+&\approx& \mathbb{E}_{q_{\eta}(\mathbf{z}|\mathbf{x})}[\log \frac{\mathcal{C}_{\boldsymbol{\omega}}(\mathbf{z})}{1-\mathcal{}C_{\boldsymbol{\omega}}(\mathbf{z})}]
+\end{eqnarray}
+
+- $\mathcal{C}_{\omega}(\mathbf{z})$ : the latent classifier that discriminates between latent variable $\mathbf{z}$ produced by an encoder network and variables sampled from a standard Gaussian distribution.
+
+** Likelihood Choice
+The reconstruction term $\mathbb{E}_{q_{\eta}}(\mathbf{z}|\mathbf{x})[\log p_{\boldsymbol{\theta}}(\mathbf{x}|\mathbf{z})]$
+
+\begin{equation}
+\label{eq:12}
+\mathbb{E}_{q_{\eta}}[-\lambda||\mathbf{x}-\mathcal{G}(\mathbf{z})||_1]\ \ or\ \ \mathbb{E}_{q_{\eta}(\mathbf{z}|\mathbf{x})}[\log \frac{\mathcal{D}_{\phi}(\mathcal{G}_{\boldsymbol{\theta}}(\mathbf{z}))}{1-\mathcal{D}_{\phi}(\mathcal{G}_{\boldsymbol{\theta}}(\mathbf{z}))}]
+\end{equation}
+
+** Hybrid Loss Function
+\begin{equation}
+\label{eq:13}
+\mathcal{L}_{\boldsymbol{\theta},\boldsymbol{\eta}}=\mathbb{E}_{q_{\eta}(\mathbf{z}|\mathbf{x})}[-\lambda||x-\mathcal{G}_{\boldsymbol{\theta}}(\mathbf{z})||_1+\log \frac{\mathcal{D}(\mathcal{G}(\mathbf{z}))}{1-\mathcal{D}_{\phi}(\mathcal{G}_{\boldsymbol{\theta}}(\mathbf{z}))}+\log \frac{\mathcal{C}_{\boldsymbol{\omega}}(\mathbf{z})}{1-\mathcal{C}_{\boldsymbol{\omega}}(\mathbf{z})}]
+\end{equation}
+
+* Algorithm
+
+** Algorithm
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-07-07 10:16:03
+[[file:../../blog/source/img/screenshot_2017-07-07_10-16-03.png]]
+
+** Architectures
+
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-07-07 10:17:39
+[[file:../../blog/source/img/screenshot_2017-07-07_10-17-39.png]]

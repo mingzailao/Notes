@@ -1,0 +1,89 @@
+#+TITLE:     GAN and VAE from an Optimal Transport Point of View
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Sat Jun 17 10:03:03 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{GAN and VAE from an Optimal Transport Point of View}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Minimum Kantorovitch Estimators
+** MKE
+- empirical distribution $\nu:= \frac{1}{n}\sum_{j=1}^n\delta_{y_j}$, $y_j\in \mathcal{X}\subset \mathbb{R}^p$
+- parametric distribution family $(\mu_{\theta})_{\theta\in \Theta}\subset \mathcal{P}(\mathcal{X})$, $\Theta\subset \mathbb{R}^q$ 
+
+MKE for $\theta$ is defined as any solution of the problem
+\begin{equation}
+\label{eq:1}
+\min_{\theta}W_c(\mu_{\theta},\nu)
+\end{equation}
+
+- $W_c$ : Wassertein distance for some cost function $c$: 
+
+\begin{equation}
+\label{eq:2}
+W_c(\mu,\nu)=\min_{\gamma\in P(\mathcal{X}\times \mathcal{X})}\{\int_{\mathcal{X}\times \mathcal{X}}c(x,y)d\gamma(x,y); P_{1\#\gamma}=\mu,P_{2\#\gamma}=\nu\}
+\end{equation}
+- $P_{1\#}$, $P_{2\#}$ : marginalization operators
+** MKE-GM
+- $\mu_{\theta}$ is defined by a map and a given distribution $\zeta$ : $g_{\theta}: \mathcal{Z}\rightarrow \mathcal{X}$, i.e. $\mu_{\theta}=g_{\theta\#}\zeta$
+
+resulting in the following special case of the original (MKE) problem:
+
+\begin{equation}
+\label{eq:3}
+\min_{\theta}E(\theta)=\min_{\theta}W_c(g_{\theta\#}\zeta,\nu)
+\end{equation}
+
+- $g_{\theta}$ : a “decoding” map from a low dimension space to a high dimensional space
+* Dual Formulation and GAN
+** Dual Formulation and GAN
+
+Because [[ref:eq:1]]  is a linear program, it has a dual formulation, known as the Kantorovich problem
+
+\begin{equation}
+\label{eq:4}
+\max_{h,\tilde{h}}\{\int_{\mathcal{Z}}h(g_{\theta}(z))d\zeta(z)+\int_{\mathcal{X}}\tilde{h}(y)d\nu(y); h(x)+\tilde{h}(y)\le c(x,y)\}
+\end{equation}
+
+???
+there exists some error?
+
+

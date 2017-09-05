@@ -1,0 +1,76 @@
+#+TITLE:     Self-Normalizing Neural Networks
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Sun Jun 11 15:31:12 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Self-Normalizing Neural Networks}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+* Self-normalizing Neural Networks
+** Definition
+A neural network is self-normalizing if it possesses a mapping $g : \Omega \rightarrow \Omega$ for each activation $y$ that maps mean and variance from one layer to the next and has a stable and attracting fixed point depending on $(\omega,\tau)$ in $\Omega$. Furthermore, the mean and the variance remain in the domain $\Omega$, that is $g(\Omega) \subset \Omega$, where $\Omega =\{(\mu, \nu) | \mu \in [\mu_{min}, \mu_{max}], \nu \in [\nu_{min}, \nu_{max}]\}$. When iteratively applying the mapping $g$, each point within $\Omega$ converges to this fixed point.
+
+** Constructing Self-Normalizing Neural Networks
+***  Two design choices are available for the function g
+- the activation function
+- the initialization of the weights
+** Constructing Self-Normalizing Neural Networks
+*** scaled exponential linear units
+\begin{equation}
+selu(x) = \lambda\left\{ 
+\begin{array}{ll}
+x& if\ x>0\\
+\alpha e^x-\alpha& if\ x\le 0
+\end{array}\right .
+\end{equation}
+** Constructing Self-Normalizing Neural Networks
+1. negative and positive values for controlling the mean
+
+2. saturation regions (derivatives approaching zero) to dampen the variance if it is too large in the lower layer
+
+3. a slope larger than one to increase the variance if it is too small in the lower layer
+
+4. a continuous curve
+The latter ensures a fixed point, where variance damping is equalized by variance increasing. 
+For  weight initialization, we propose $\omega \triangleq \sum_{i=1}^n w_{i}=0$ and $\tau\triangleq \sum_{i=1}^n w_i^2=1$ for all units in the higher layer.
+** Deriving the Mean and Variance Mapping Function
+
+$z=\boldsymbol{w}^T\boldsymbol{x}$, then $\mathbb{E}[z]=\sum_{i=1}^n w_i\mathbb{E}[x_i]=\mu\omega$, $Var(z)=Var(\sum_{i=1}w_ix_i) = \nu \tau$( $x_i$ is independent)
+
+Notes
+\begin{eqnarray*}
+erf(x) &= &\frac{2}{\sqrt{\pi}}\int_{0}^{x}e^{-t^2}dt \\
+erfc(x)&=&1-erf(x)
+\end{eqnarray*}
+
+** Deriving the Mean and Variance Mapping Function
+\begin{eqnarray*}
+\tilde{\mu}(\mu,\omega,\nu,\tau) &= &\int_{-\infty}^{\infty}selu(z)p_{Gauss}(z;\mu\omega,\sqrt{\nu\tau})dz \\
+\tilde{\nu}(\mu,\omega,\nu,\tau)&=&\int_{-\infty}^{\infty}selu(z)^{2}P_{Gauss}(z;\mu\omega,\sqrt{\nu\tau})dz-(\tilde{\mu})^{2}
+\end{eqnarray*}
+#+attr_html: :width 800
+[[file:Self-Normalizing Neural Networks/20170611_165136_19101ncC.png]]
+
+** Stable and Attracting Fixed Point (0, 1) for Normalized Weights
+the solution is 
+- $\alpha_{01}\approx 1.6733$
+- $\lambda_{01}\approx 1.0507$

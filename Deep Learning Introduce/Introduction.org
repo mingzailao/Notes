@@ -1,0 +1,165 @@
+#+TITLE:     Deep Learning
+#+AUTHOR:    mingzailao
+#+EMAIL:     mingzailao@gmail.com
+#+DATE:      Sat Aug 19 15:03:16 2017
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+STARTUP: beamer
+#+STARTUP: oddeven
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: metropolis
+#+OPTIONS:   H:2 toc:t
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
+#+LATEX_HEADER:\def\mathfamilydefault{\rmdefault}
+#+BEGIN_EXPORT latex
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Deep Learning}
+\tableofcontents[currentsection]
+\end{frame}
+}
+#+END_EXPORT
+
+
+
+
+   
+* Deep Learning
+
+** Deep Learning
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-08-19 15:06:30
+[[file:../../blog/source/img/screenshot_2017-08-19_15-06-30.png]]
+
+** Some Topic in Deep Learning
+   1. Optimization(Numerical Optimization)
+   2. Probability Graph
+   3. Representation Learning
+   4. Inference
+
+** What is Deep?
+My opinion:
+   1. The database is big.
+
+   2. There are many parameters[fn:1] in the model.
+
+   3. The network structure is complex.
+* Deep Learning Models
+
+** Deep Feedforward Networks
+   - The output[fn:2]
+
+\begin{equation}
+\label{eq:1}
+p(y_{i}=j|\boldsymbol{x}_{i})=f_n(V_n(f_{n-1}(V_{n-1}(\cdots(f_1(V_1\boldsymbol{x}_i))))))
+\end{equation}
+
+   - The Loss(NLL-Negative Log-Likelihood)
+
+\begin{equation}
+\label{eq:3}
+J(\boldsymbol{\theta})=-\mathbb{E}_{\boldsymbol{x},y\sim P_{data}}p(y=y_{true}|\boldsymbol{x}=\boldsymbol{x}_{input})
+\end{equation}
+
+** Deep Feedforward Networks
+   - The Output
+
+\begin{equation}
+\label{eq:5}
+output(\boldsymbol{x}_{i})=f_n(V_n(f_{n-1}(V_{n-1}(\cdots(f_1(V_1\boldsymbol{x}_i))))))
+\end{equation}
+   - The Loss (MSE-Mean Squared Error)
+
+\begin{equation}
+\label{eq:4}
+J(\boldsymbol{\theta})=\frac{1}{2}\mathbb{E}_{\boldsymbol{x},y\sim P_{data}}||y-output(\boldsymbol{x},\theta)||^2
+\end{equation}
+** Convolutional Neural Networks
+Only change the structure of Deep Feedforward Networks.
+\begin{figure}[htbp]
+\centerline{\includegraphics[height=50]{conv_1D_nn.png}}
+\caption[]{\label{fig:Convolutional} The Structure}
+\end{figure}
+** Convolutional Neural Networks
+   - Filters
+     #+BEGIN_SRC bash
+       bash ./example1.py
+     #+END_SRC
+** Convolutional Neural Networks
+   1. Sparse Connectivity
+   2. Shared Weights
+** Convolutional Neural Networks
+   1. Computer Vision
+   2. Natural Language Processing
+** Convolutional Neural Networks
+*** Some Keys
+    - Kernel
+      1. size
+      2. stride
+      3. number
+    - Pool
+      1. Average or Max?
+      2. stride
+** Recurrent Neural Networks
+Take Sequence into consideration
+
+#+DOWNLOADED: /tmp/screenshot.png @ 2017-08-19 19:05:43
+[[file:../../blog/source/img/screenshot_2017-08-19_19-05-43.png]]
+** Recurrent Neural Networks
+   1. Sequence Modeling
+   2. Memory
+** Recurrent Neural Networks
+   1. LSTM
+   2. GRU
+** Autoencoders
+   Just Like Restricted Boltzmann Machines, pre-train method.
+   an autoencoder takes an input $\mathbf{x} \in [0,1]^d$ and first maps it (with an encoder) to a hidden representation $\mathbf{y} \in [0,1]^{d'}$ through a deterministic mapping, e.g.:
+
+\begin{equation}
+\label{eq:7}
+\mathbf{y} = s(\mathbf{W}\mathbf{x} + \mathbf{b})
+\end{equation}
+Where $s$ is a non-linearity such as the sigmoid. The latent representation $\mathbf{y}$, or code is then mapped back (with a decoder) into a reconstruction $\mathbf{z}$ of the same shape as $\mathbf{x}$. The mapping happens through a similar transformation, e.g.:
+\begin{equation}
+\label{eq:8}
+\mathbf{z} = s(\mathbf{W'}\mathbf{y} + \mathbf{b'})
+\end{equation}
+** Autoencoders
+The reconstruction error can be measured in many ways, depending on the appropriate distributional assumptions on the input given the code. The traditional squared error $L(\mathbf{x} \mathbf{z}) = || \mathbf{x} -\mathbf{z} ||^2$, can be used. If the input is interpreted as either bit vectors or vectors of bit probabilities, cross-entropy of the reconstruction can be used:
+
+\begin{equation}
+\label{eq:9}
+L_{H} (\mathbf{x}, \mathbf{z}) = - \sum^d_{k=1}[\mathbf{x}_k \log
+        \mathbf{z}_k + (1 - \mathbf{x}_k)\log(1 - \mathbf{z}_k)]
+\end{equation}
+** Autoencoders
+   - Stacked Autoencoder
+   - Stacked Denosing Autoencoder
+   - Autoencoder
+   - Denosing Autoencoder
+
+** Restricted Boltzmann Machines
+Pre-train Block
+   - All the unit must be in $[0,1]$
+
+** Restricted Boltzmann Machines
+   Keys
+   - MCMC
+   - Energy-Based Models(EBM)
+
+** Generative Adversarial Networks
+[[file:~/PAPERS/Notes/Generative%20Adversarial%20Nets/Generative%20Adversarial%20Nets.html][Generative Adversarial Networks]]
+
+** Inference
+[[file:~/PAPERS/Notes/Auto-Encoding%20Variational%20Bayes/Auto-Encoding%20Variational%20Bayes.html][Variational Inference]]
+* Footnotes
+
+[fn:2] There are some trick there, use softmax function as the last activation function
+
+[fn:1] Not only the parameters, also the super-parameters.
+
+
